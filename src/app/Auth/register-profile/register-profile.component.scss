@@ -7,6 +7,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin: 0px auto auto auto;
 
     .logo{
         color: whitesmoke;
@@ -24,15 +25,17 @@
 
 }
 
-.container-register{
+.container-register-profile{
     width: 90%;
     margin: auto;
+    margin-top: 20px;
     color: whitesmoke;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     background-color: darken($color: $gray, $amount: 4);
-
+    overflow: hidden;
+    height: 100%;
 
     .label-title{
         font-family: $titleFont;
@@ -41,9 +44,21 @@
     }
 
     .form{
+        overflow-y: auto;
+        overflow-x: hidden;        
+    
+        &::-webkit-scrollbar{
+            width: 2px;
+            border-radius: 100px;
+        }
+        &::-webkit-scrollbar-thumb{
+            background: $rojo;
+        }
 
-        .second-pass{
-            margin-top: 20px;
+        .container-input{
+            margin-top: 10px;
+            margin-bottom: 10px;
+
         }
 
         .btn{
@@ -51,5 +66,3 @@
         }        
     }
 }
-
-

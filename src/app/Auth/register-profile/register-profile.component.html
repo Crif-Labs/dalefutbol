@@ -1,0 +1,63 @@
+<div class="container-principal">
+    <div class="head-register">
+        <i class="fa-solid fa-arrow-left" (click)="backRegister()"></i>
+        <h1 class="logo">DaleFútbol <span>+</span></h1>
+    </div>
+
+
+    <div class="container-register-profile">
+        <label class="label-title">Algunos Datos Extras</label>
+    
+        <form class="form">
+            <div class="container-input">
+                <label for="" class="label-input"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;Ingrese Nombre:</label>
+                <input type="text" class="input-form">
+                <!-- <label *ngIf="show" class="label-error">Correo electrónico no válido</label> -->
+            </div>
+            
+            <div class="container-input">
+                <label for="" class="label-input"><i class="fa-regular fa-user"></i>&nbsp;&nbsp;Ingrese Apellido:</label>
+                <input type="text" class="input-form" >
+                <!-- <label *ngIf="show" class="label-error">Apellido necesario</label> -->
+            </div>
+
+            <div class="container-input">
+                <label for="" class="label-input"><i class="fa-solid fa-mobile-screen"></i>&nbsp;&nbsp;Ingrese Telefono:</label>
+                <input type="text" class="input-form" >
+                <!-- <label *ngIf="show" class="label-error">Apellido necesario</label> -->
+            </div>
+
+            <!-- Cambiar a Select -->
+            <div class="container-input">
+                <label for="" class="label-input"><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;Ingrese Comuna de Preferencia:</label>
+                <select name="" id="" class="select-form">
+                    <option class="option-select disabled-option" disabled selected>--Comuna--</option>
+                    <option class="option-select" *ngFor="let comuna of comunas" value="{{comuna.nombre}}">{{comuna.nombre}}</option>
+                    <option class="option-select" >No ingresar comuna</option>
+                </select>
+                <label *ngIf="show" class="label-message">* opcional</label>
+            </div>
+
+            
+            <div class="container-input">
+                <label for="" class="label-input"><i class="fa-regular fa-futbol"></i>&nbsp;&nbsp;Ingrese Posición Preferida:</label>
+                <select name="" id="" class="select-form">
+                    <option class="option-select disabled-option" disabled selected>--Posición--</option>
+                    <option class="option-select" value="Arquero">Arquero</option>
+                    <option class="option-select" value="Defensa">Defensa</option>
+                    <option class="option-select" value="Medio">Mediocampista</option>
+                    <option class="option-select" value="Delantero">Delantero</option>
+                    <option class="option-select" >No ingresar posición</option>
+                </select>
+                <label *ngIf="show" class="label-message">* opcional</label>
+            </div>
+            
+
+    
+            <button class="btn btn-primary" >Terminar Registro&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-thumbs-up"></i></button>
+        </form>
+    </div>
+
+
+    <app-footer-app></app-footer-app>
+</div>

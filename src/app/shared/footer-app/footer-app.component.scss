@@ -1,0 +1,11 @@
+@import '../../app.component.scss';
+
+.footer-presentation{
+    color: $gold;
+    margin: auto auto 0px auto;
+    font-family: $titleFont;
+
+    span{
+        color: whitesmoke;
+    }
+}

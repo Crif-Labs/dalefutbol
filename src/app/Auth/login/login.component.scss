@@ -1,0 +1,77 @@
+@import '../../app.component.scss';
+
+.head-login{
+    background-color: darken($gray, 5);
+    border-bottom-right-radius: 100px;
+    width: 100%;
+
+    .logo{
+        color: whitesmoke;
+        padding-left: 20px;
+
+        span{
+            color: $rojo;
+        }
+    }
+}
+
+
+.container-login{
+    width: 90%;
+    margin: auto;
+    background-color: rgba(darken($gray, 8), .4);
+    color: whitesmoke;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+
+    .label-title{
+        font-family: $titleFont;
+        font-size: 36px;
+        margin: 20px auto;
+    }
+
+
+    .line{
+        width: 80%;
+        height: 1px;
+        background-color: $gold;
+        margin: 40px auto;
+    }
+
+    .section-buttons{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 90%;
+        margin: 0px auto 20px auto;
+
+        .register{
+            text-align: center;
+            margin: 10px auto;
+
+            .link-register{
+                border-bottom: 1px solid $rojo;
+                color: $rojo;
+                cursor: pointer;
+
+                &:hover{
+                    border-bottom: 1px solid $azul;
+                    color: $azul;
+                }
+            }
+        }
+
+        .btn-google{
+            background-color: white;
+
+            i{
+                color: $rojo;
+            }
+        }
+    }
+
+}
+
+

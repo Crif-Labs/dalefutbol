@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+// Fuentes de Texto
+$logoFont: "Anton", serif;
+$titleFont: "Lato", serif;
+$textFont: "Roboto", serif;
+
+
+//Colores
+$rojo: #DC2121;
+$azul: #233D4D;
+$gray: #2C2C2C;
+$gold: #BDB246;
+$success: #00ec00;
+$error: #FF0019;
+
+
+.container-principal{
+    // background-color: green;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // overflow-x: hidden;
+    // overflow-y: auto;
+}
+
+.btn{
+    border: 2px solid $azul;
+    font-family: $textFont;
+    background-color: transparent;
+    color: $azul;
+    width: 100%;
+    padding: 5px;
+    font-size: 17px;
+    border-radius: 5px;
+}
+
+.btn-primary{
+    border: 2px solid $rojo !important;
+    background-color: $rojo !important;
+    color: whitesmoke !important;
+}
+
+.btn-secondary{
+    border: 2px solid $rojo !important;
+    background-color: whitesmoke !important;
+    color: $rojo !important;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+
+    .container-input{
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        margin: 0px auto 0px auto;
+        // border: 1px solid red;
+        height: 80px;
+
+        .label-input{
+            font-family: $titleFont;
+            font-size: 18px;
+            
+            .fa-solid, .fa-regular{
+                color: $gold;
+            }
+        }
+
+        .input-form, .select-form{
+            background-color: $gray;
+            border: none;
+            padding: 5px;
+            font-size: 16px;
+            color: white;
+            border-bottom: 1px solid red;
+            margin-top: 5px;
+            // border-bottom-right-radius: 100px;
+            // border-top-right-radius: 100px;
+        }
+
+        .select-form{
+            &::-webkit-scrollbar{
+                width: 2px;
+                border-radius: 100px;
+            }
+            &::-webkit-scrollbar-thumb{
+                background: $rojo;
+            }
+
+            .disabled-option{
+                color: red;
+            }
+        }
+
+        .label-error{
+            color: $error;
+            margin: 5px 0px 0px auto;
+        }  
+
+        .label-message{
+            color: lighten($color: $gray, $amount: 40);
+            margin: 5px 0px 0px auto;
+        }
+    }
+
+    .btn{
+        width: 90%;
+        margin: auto;
+    }
+    
+}
