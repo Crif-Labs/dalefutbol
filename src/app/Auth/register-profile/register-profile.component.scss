@@ -59,6 +59,24 @@
             margin-top: 10px;
             margin-bottom: 10px;
 
+            .input-phone{
+                display: flex;
+
+                .label-ip{
+                    padding-right: 5px;
+                    padding: 5px 5px 0px 5px;
+                    background-color: $gray;
+                    border-bottom: 1px solid $rojo;
+                    margin-top: 5px;
+                    
+                    
+                }
+
+                .input-form{
+                    width: 100%;
+                }
+            }
+
         }
 
         .btn{

@@ -1,7 +1,9 @@
-@import '../../app.component.scss';
+// @import '../../app.component.scss';
+@import '../../../styles.scss';
 
 .head-login{
     background-color: darken($gray, 5);
+    // background-color: scale($gray, 50%);
     border-bottom-right-radius: 100px;
     width: 100%;
 
@@ -20,6 +22,7 @@
     width: 90%;
     margin: auto;
     background-color: rgba(darken($gray, 8), .4);
+    // background-color: scale($gray, 80);
     color: whitesmoke;
     border-radius: 10px;
     display: flex;
@@ -30,6 +33,12 @@
         font-family: $titleFont;
         font-size: 36px;
         margin: 20px auto;
+    }
+
+    .form{
+        .btn{
+            margin-top: 10px;
+        }
     }
 
 

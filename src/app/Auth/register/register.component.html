@@ -7,27 +7,27 @@
     <div class="container-register">
 
         <label class="label-title">Registro de Usuario</label>
-    
-        <form class="form">
+     
+        <form class="form" [formGroup]="formRegister">
             <div class="container-input">
                 <label for="" class="label-input"><i class="fa-regular fa-at"></i>&nbsp;&nbsp;Ingrese Correo:</label>
-                <input type="email" class="input-form">
-                <label *ngIf="show" class="label-error">Correo electrónico no válido</label>
+                <input formControlName="correo" type="email" class="input-form">
+                <label *ngIf="!validCorreo" class="label-error">Correo electrónico no válido</label>
             </div>
             
             <div class="container-input">
                 <label for="" class="label-input"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Ingrese Contraseña:</label>
-                <input type="password" class="input-form" >
-                <label *ngIf="show" class="label-error">Contraseña no válida <br><span>Minimo: 6 caracteres</span></label>
+                <input formControlName="password" type="password" class="input-form" >
+                <label *ngIf="!validPassword" class="label-error">Contraseña no válida <br><span>Minimo: 6 caracteres</span></label>
             </div>
 
             <div class="container-input second-pass">
                 <label for="" class="label-input"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Repita Contraseña:</label>
-                <input type="password" class="input-form" >
-                <label *ngIf="show" class="label-error">Contraseñas no coinciden</label>
+                <input formControlName="repPass" type="password" class="input-form" >
+                <label *ngIf="!validRepPass" class="label-error">Contraseñas no coinciden</label>
             </div>
     
-            <button class="btn btn-primary" (click)="onRegister()">Siguiente Paso &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+            <button class="btn btn-primary" (click)="validateForm()">Siguiente Paso &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-arrow-right"></i></button>
         </form>
     
     </div>

@@ -7,20 +7,20 @@
     
         <label class="label-title">Inicia Sesión</label>
     
-        <form class="form">
+        <form class="form" [formGroup]="formLogin">
             <div class="container-input">
                 <label for="" class="label-input"><i class="fa-regular fa-at"></i>&nbsp;&nbsp;Correo:</label>
-                <input type="email" class="input-form">
-                <label *ngIf="show" class="label-error">Correo electrónico no válido</label>
+                <input formControlName="correo" type="email" class="input-form">
+                <label *ngIf="!validCorreo" class="label-error">Correo electrónico no válido</label>
             </div>
             
             <div class="container-input">
                 <label for="" class="label-input"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Contraseña:</label>
-                <input type="password" class="input-form">
-                <label *ngIf="show" class="label-error">Contraseña no válida</label>
+                <input formControlName="password" type="password" class="input-form">
+                <label *ngIf="!validPassword" class="label-error">Contraseña no válida</label>
             </div>
     
-            <button class="btn btn-primary" (click)="onLogin()">Iniciar</button>
+            <button class="btn btn-primary" (click)="validateForm()">Iniciar</button>
         </form>
     
         <div class="line">
@@ -30,7 +30,7 @@
         <div class="section-buttons">
             <p class="register">Si no tienes cuenta <a class="link-register" (click)="onRegister()">Regístrate acá</a> <br>o Inicia con Google+</p>
 
-            <button class="btn btn-google">Iniciar con <i class="fa-brands fa-google-plus-g"></i></button>
+            <button class="btn btn-google" (click)="onLoginWithGoogle()">Iniciar con <i class="fa-brands fa-google-plus-g"></i></button>
             <!-- <button class="btn btn-secondary" (click)="onRegister()">Registrate</button> -->
         </div>
     </div>

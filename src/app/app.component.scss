@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-
 // Fuentes de Texto
 $logoFont: "Anton", serif;
 $titleFont: "Lato", serif;
@@ -14,6 +13,8 @@ $gray: #2C2C2C;
 $gold: #BDB246;
 $success: #00ec00;
 $error: #FF0019;
+
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
 
 .container-principal{
@@ -104,6 +105,10 @@ $error: #FF0019;
 
         .label-message{
             color: lighten($color: $gray, $amount: 40);
+            // color: color.scale($gray,40%);
+            // color: mix(white, $gray, 40%);
+
+
             margin: 5px 0px 0px auto;
         }
     }
