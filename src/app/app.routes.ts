@@ -15,7 +15,7 @@ export const routes: Routes = [
     {
         path: 'user-main',
         component: UserMainComponent,
-        ...canActivate( () => redirectUnauthorizedTo(['login']))
+        // ...canActivate( () => redirectUnauthorizedTo(['login']))
     },
     {
         path: 'admin-main',

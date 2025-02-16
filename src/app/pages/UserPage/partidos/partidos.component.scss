@@ -1,0 +1,207 @@
+@import '../../../app.component.scss';
+
+.data-search{
+    background-color: $darkGray;
+    border-bottom: 2px solid $gray;
+    padding-bottom: 10px;
+
+    .calendar{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 95%;
+        margin: auto;
+
+        .info-date{
+            font-family: $titleFont;
+            color: whitesmoke;
+
+            .comuna{
+                .fa-solid{
+                    color: $rojo;
+                }
+            }
+
+        }
+
+        .date-picker-container{
+            position: relative;
+            display: inline-block;
+
+            .date-picker{
+                appearance: none;
+                padding: 10px;
+                font-size: 16px;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                transition: 0.3s ease-in-out;
+                color: transparent;
+                background-color: transparent;
+
+                width: 20px;
+              
+                &:hover {
+                  border-color: $gray;
+                }
+              
+                &:focus {
+                  border-color: $gray;
+                  box-shadow: 0 0 5px rgba($gray, 0.5);
+                }
+            }
+
+            span{
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none; // Evita que se haga clic en el icono
+                font-size: 20px;
+                color: whitesmoke;
+            }
+
+        }
+
+    }
+
+    .search-container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 95%;
+        margin: auto;
+
+        .form-search{
+            .search-input{
+                border: none;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                background-color: $lightGray;
+                font-size: 14px;
+                padding: 3px 0px 3px 10px;
+                color: whitesmoke;
+
+                &::placeholder{
+                    color: $darkGray;
+                    font-style: italic;
+                }
+
+                &:focus-visible{
+                    border: none;
+                    outline: none;
+                }
+            }
+            .btn-search{
+                width: auto;
+                padding: 4px 10px 3px 0px;
+                font-size: 15px;
+                border: none;
+                background-color: $lightGray;
+                border-radius: 0px;
+                border-bottom-right-radius: 10px;
+                border-top-right-radius: 10px;
+
+            }
+        }
+
+        .comuna-select{
+            background-color: transparent;
+            border: 1px solid $lightGray;
+            color: whitesmoke;
+            padding: 0px 10px;
+            border-radius: 5px;
+        }
+
+    }
+
+
+}
+
+.cancha-list{
+    .cancha-card{
+        background: $gray;
+        position: relative;
+        width: 90%;
+        margin: 20px auto;
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        color: whitesmoke;
+        background-position: center;
+        background-repeat: unset;
+        background-size: cover;
+        height: 200px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(255, 255, 255, 0));
+            z-index: 1;
+          }
+        
+          &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: inherit;
+            filter: blur(5px);
+            z-index: 0;
+          }
+
+
+        .detail-cancha, .bottom-card{
+            position: relative;
+            z-index: 2;
+        }
+
+        .detail-cancha{
+            font-family: $titleFont;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 30px;;
+
+            .cancha-name{
+                font-size: 32px;
+                padding: 0px; margin: 0px;
+                max-width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .cancha-detail{
+                max-width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .cancha-hours{
+                font-weight: bold;
+            }
+        }
+
+        .bottom-card{
+            display: flex;
+            align-items: center;
+            height: 100%;
+            justify-content: space-between;
+            padding: 0px 30px;
+
+            .btn-cancha-reserva{
+                width: auto;
+                border: none;
+                background-color: $rojo;
+                color: whitesmoke;
+                padding: 3px 20px;
+                font-size: 16px;
+                box-shadow: 0px 4px 4px $darkGray;
+            }
+
+        }
+    }
+}

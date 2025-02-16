@@ -1,0 +1,43 @@
+@import '../../app.component.scss';
+
+.container-working-page{
+    color: whitesmoke;
+    background-color: $darkGray;
+    width: 80%;
+    margin: auto;
+    margin-top: 50px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: $titleFont;
+    border-radius: 10px;
+    box-shadow: 4px 1px 4px $gray;
+
+    .title{
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .line{
+        height: 2px;
+        background-color: $rojo;
+        width: 50%;
+        margin-bottom: 20px;
+    }
+
+    .icons{
+        margin-top: 5px;
+        font-size: 24px;
+        color: $rojo;
+        font-weight: lighter;
+        display: flex;
+        gap: 10px;
+
+        .pages{
+            color: whitesmoke;
+            font-family: $titleFont !important;  
+            font-weight: bold;
+        }
+    }
+}
