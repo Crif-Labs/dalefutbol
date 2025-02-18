@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class WorkingPageComponent {
 
-  @Input() namePage: string = 'pagina'
+  @Input() namePage: string = ''
 
 }

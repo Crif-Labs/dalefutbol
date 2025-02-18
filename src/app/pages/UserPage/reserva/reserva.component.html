@@ -1,0 +1,36 @@
+<div class="reserva-component">
+    <div class="reserva-header">
+        <a class="arrow-back"><i class="fa-solid fa-arrow-left"></i></a>
+    </div>
+
+    <div class="reserva-body">
+        <h2 class="cancha-name">SuperCancha</h2>
+
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" class="d-block w-100" alt="...">
+              </div>
+
+              <div class="carousel-item" *ngFor="let image of images">
+                <img [src]="image" class="d-block w-100" alt="...">
+              </div>
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+
+    </div>
+
+    <div class="reserva-footer">
+        <button class="btn btn-reservar">Reservar</button>
+    </div>
+</div>

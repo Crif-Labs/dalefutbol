@@ -5,6 +5,7 @@ import { AdminMainComponent } from './pages/AdminPage/admin-main/admin-main.comp
 import { LoginComponent } from './Auth/login/login.component';
 import { RegisterComponent } from './Auth/register/register.component';
 import { RegisterProfileComponent } from './Auth/register-profile/register-profile.component';
+import { ReservaComponent } from './pages/UserPage/reserva/reserva.component';
 
 export const routes: Routes = [
     {
@@ -33,6 +34,10 @@ export const routes: Routes = [
     {
         path: 'register-profile',
         component: RegisterProfileComponent
+    },
+    {
+        path: 'reservar',
+        component: ReservaComponent
     },
     {
         path: '**',
