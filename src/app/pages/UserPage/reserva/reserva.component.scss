@@ -19,10 +19,199 @@
     }
 
     .reserva-body{
-        border: 2px solid blue;
         display: flex;
         flex-direction: column;
         overflow-y: auto;
+
+        .cancha-name{
+            color: whitesmoke;
+            padding-left: 30px;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .carousel{
+            .carousel-item img{
+                height: 25vh;
+                object-fit: cover;
+
+            }
+
+            .btn-carousel{
+                width: 30px;
+                box-shadow: 0px 0px 4px $darkGray;
+            }
+    
+            .carousel-control-prev{
+                border-top-right-radius: 20px;
+                border-bottom-right-radius: 20px;
+            }
+    
+            .carousel-control-next{
+                border-top-left-radius: 20px;
+                border-bottom-left-radius: 20px;
+            }
+        }
+
+        .info-cancha{
+            display: flex;
+            flex-direction: column;
+            color: whitesmoke;
+            padding: 10px;
+
+
+            .detail-cancha{
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .data-reserva{
+                display: grid;
+                grid-template-rows: 1fr 1fr;
+                grid-template-columns: 1fr 1fr;
+
+                .data{
+                    background-color: $azul;
+                    width: 90%;
+                    font-size: 21px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 10px 20px;
+                    margin: 5px auto;
+                }
+
+            }
+
+
+        }
+
+        .format-match{
+            padding: 10px 20px;
+
+            .title-format{
+                color: whitesmoke;
+                font-size: 21px;
+                font-weight: bold;
+            }
+
+            .text-format{
+                color: whitesmoke;
+                padding-left: 20px;
+
+                &.important{
+                    font-weight: bold;
+                }
+            }
+
+            .line{
+                height: 2px;
+                width: 60%;
+                background-color: $rojo;
+                margin: auto;
+            }
+        }
+
+
+        .play-match{
+            color: whitesmoke;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+
+            .title{
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .teams-match{
+                display: flex;
+                justify-content: space-between;
+                width: 90%;
+                gap: 30px;
+
+                .team{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 100%;
+
+                    &.blue{
+                        border: 2px solid $teamBlue;
+
+                        .team-name{
+                            background-color: $teamBlue;
+                            width: 100%;
+                            text-align: center;
+                            color: whitesmoke;
+                            font-weight: bold;
+                        }
+                    }
+
+                    &.white{
+                        border: 2px solid white;
+
+                        .team-name{
+                            background-color: white;
+                            width: 100%;
+                            text-align: center;
+                            color: $darkGray;
+                            font-weight: bold;
+                        }
+                    }
+
+                    &.red{
+                        border: 2px solid $rojo;
+
+                        .team-name{
+                            background-color: $rojo;
+                            width: 100%;
+                            text-align: center;
+                            color: whitesmoke;
+                            font-weight: bold;
+                        }
+                    }
+                    &.gold{
+                        border: 2px solid $gold;
+
+                        .team-name{
+                            background-color: $gold;
+                            width: 100%;
+                            text-align: center;
+                            color: $darkGray;
+                            font-weight: bold;
+                        }
+                    }
+
+
+                    .player-match-team{
+                        background-color: $darkGray;
+                        width: 99%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        padding: 10px;
+
+                        .photo-profile{
+                            background-color: $gray;
+                            height: 80px;
+                            width: 80px;
+                            border-radius: 50px;
+                        }
+
+                        .player-name{
+                            text-overflow: ellipsis;
+                            width: 130px;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
     .reserva-footer{

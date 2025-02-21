@@ -4,27 +4,64 @@
     </div>
 
     <div class="reserva-body">
-        <h2 class="cancha-name">SuperCancha</h2>
+        <h2 class="cancha-name">{{dataCancha.nombre}}</h2>
 
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" class="d-block w-100" alt="...">
-              </div>
 
-              <div class="carousel-item" *ngFor="let image of images">
+              <div class="carousel-item" [ngClass]="{'active': first}" *ngFor="let image of images; let first = first">
                 <img [src]="image" class="d-block w-100" alt="...">
               </div>
 
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+            <button class="carousel-control-prev btn-carousel" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+            <button class="carousel-control-next btn-carousel" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
+        </div>
+
+        <div class="info-cancha">
+          <label class="detail-cancha">
+            Cancha {{dataCancha.capacidad}} vs {{dataCancha.capacidad}}, {{dataCancha.direccion}}
+          </label>
+
+          <div class="data-reserva">
+            <span class="data" *ngFor="let data of dataReserva">
+              <i class="{{data.icon}}"></i>
+              {{data.detail}}
+            </span>
+          </div>
+        </div>
+
+        <div class="format-match">
+          <h4 class="title-format">Formato:</h4>
+
+          <p class="text-format" [ngClass]="{'important': format.category == 'important'}" *ngFor="let format of formatMatch">
+            {{format.text}}
+          </p>
+
+          <div class="line"></div>
+        </div>
+
+        <div class="play-match">
+          <label class="title">Jugadores</label>
+          <span class="count-player">7 / 14 cupos</span>
+
+          <div class="teams-match">
+            <div class="team" [ngClass]="team.color" *ngFor="let team of teams">
+              <span class="team-name">{{team.name}}</span>
+              
+              <div class="player-match-team" *ngFor="let player of team.players">
+                <img src="{{player.url_photo_profile}}" alt="profile-photo" class="photo-profile">
+                <span class="player-name">{{player.name}}</span>
+              </div>
+
+            </div>
+          </div>
         </div>
 
 
