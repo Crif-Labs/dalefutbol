@@ -4,7 +4,7 @@
     </div>
 
     <div class="reserva-body">
-        <h2 class="cancha-name">{{dataCancha.nombre}}</h2>
+        <!-- <h2 class="cancha-name">{{dataCancha.nombre}}</h2>
 
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -22,7 +22,9 @@
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
-        </div>
+        </div> -->
+
+     
 
         <div class="info-cancha">
           <label class="detail-cancha">
@@ -47,22 +49,57 @@
           <div class="line"></div>
         </div>
 
-        <div class="play-match">
-          <label class="title">Jugadores</label>
-          <span class="count-player">7 / 14 cupos</span>
 
-          <div class="teams-match">
-            <div class="team" [ngClass]="team.color" *ngFor="let team of teams">
-              <span class="team-name">{{team.name}}</span>
-              
-              <div class="player-match-team" *ngFor="let player of team.players">
-                <img src="{{player.url_photo_profile}}" alt="profile-photo" class="photo-profile">
-                <span class="player-name">{{player.name}}</span>
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Jugadores
+                <span>7/14 cupos</span>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body"> 
+                <div class="teams-match">
+                  <div class="team" [ngClass]="team.color" *ngFor="let team of teams">
+                    <span class="team-name">{{team.name}}</span>
+                    
+                    <div class="player-match-team" *ngFor="let player of team.players">
+                      <img src="{{player.url_photo_profile}}" alt="profile-photo" class="photo-profile">
+                      <span class="player-name">{{player.name}}</span>
+                    </div>
+      
+                  </div>
+                </div>
               </div>
-
             </div>
           </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Tu lugar de juego
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                
+              </div>
+            </div>
+          </div>
+          <!-- <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Accordion Item #3
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
+            </div>
+          </div> -->
         </div>
+
 
 
     </div>

@@ -72,7 +72,9 @@
 
                 .data{
                     background-color: $azul;
-                    width: 90%;
+                    // width: 90%;
+                    max-width: 90%;
+                    min-width: 85%;
                     font-size: 21px;
                     border-radius: 10px;
                     display: flex;
@@ -99,6 +101,7 @@
             .text-format{
                 color: whitesmoke;
                 padding-left: 20px;
+                padding-right: 5px;
 
                 &.important{
                     font-weight: bold;
@@ -113,6 +116,154 @@
             }
         }
 
+        .accordion{
+            background-color: transparent;
+            width: 95%;
+            margin: 10px auto;
+
+            .accordion-item{
+                background-color: transparent;
+
+                .accordion-header{
+                    background-color: transparent;
+
+                    .accordion-button{
+                        background-color: $darkGray;
+                        color: white;
+                        font-family: $titleFont;
+                        font-size: 21px;
+                        align-items: baseline;
+                        font-weight: bold;
+                        border-bottom: 1.5px solid $rojo;
+
+
+                        &:focus{
+                            box-shadow: none;                            
+                        }
+
+                        span{
+                            font-size: 14px;
+                            font-weight: lighter;
+                            margin-left: auto;
+                            margin-right: 0px;
+                        }
+
+
+
+                    }
+
+                    .accordion-button::after{
+                        color: red;
+                        background-color: whitesmoke;
+                        padding: 5px;
+                        border-radius: 5px;
+                    }
+
+
+                }
+
+                .accordion-collapse{
+
+                    .accordion-body{                
+                        color: whitesmoke;
+                        padding: 10px;
+
+                        .teams-match{
+                            display: flex;
+                            justify-content: space-between;
+                            gap: 30px;
+            
+                            .team{
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                width: 100%;
+            
+                                &.blue{
+                                    border: 2px solid $teamBlue;
+            
+                                    .team-name{
+                                        background-color: $teamBlue;
+                                        width: 100%;
+                                        text-align: center;
+                                        color: whitesmoke;
+                                        font-weight: bold;
+                                    }
+                                }
+            
+                                &.white{
+                                    border: 2px solid white;
+            
+                                    .team-name{
+                                        background-color: white;
+                                        width: 100%;
+                                        text-align: center;
+                                        color: $darkGray;
+                                        font-weight: bold;
+                                    }
+                                }
+            
+                                &.red{
+                                    border: 2px solid $rojo;
+            
+                                    .team-name{
+                                        background-color: $rojo;
+                                        width: 100%;
+                                        text-align: center;
+                                        color: whitesmoke;
+                                        font-weight: bold;
+                                    }
+                                }
+                                &.gold{
+                                    border: 2px solid $gold;
+            
+                                    .team-name{
+                                        background-color: $gold;
+                                        width: 100%;
+                                        text-align: center;
+                                        color: $darkGray;
+                                        font-weight: bold;
+                                    }
+                                }
+            
+            
+                                .player-match-team{
+                                    background-color: $darkGray;
+                                    width: 99%;
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                    padding: 10px;
+            
+                                    .photo-profile{
+                                        background-color: $gray;
+                                        height: 80px;
+                                        width: 80px;
+                                        border-radius: 50px;
+                                    }
+            
+                                    .player-name{
+                                        text-overflow: ellipsis;
+                                        width: 130px;
+                                        text-align: center;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // background-color: transparent;
+
+                    // display: grid;
+                    // grid-template-columns: 1fr 1fr;
+                    // justify-content: space-between;
+                    // width: 100%;
+                    // gap: 30px;
+
+
+
+                }
+            }
+        }
 
         .play-match{
             color: whitesmoke;
