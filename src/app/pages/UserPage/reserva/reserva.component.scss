@@ -120,6 +120,7 @@
             background-color: transparent;
             width: 95%;
             margin: 10px auto;
+            margin-bottom: 100px;
 
             .accordion-item{
                 background-color: transparent;
@@ -148,8 +149,6 @@
                             margin-right: 0px;
                         }
 
-
-
                     }
 
                     .accordion-button::after{
@@ -164,9 +163,43 @@
 
                 .accordion-collapse{
 
+                    .body-maps{
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+
+                        .btn-redirecTo{
+                            color: whitesmoke;
+                            margin-bottom: 10px;
+                            text-decoration: none;
+                            border-bottom: 2px solid $rojo;
+                            width: fit-content;
+                            padding-right: 20px;
+
+                            &:hover{
+                                color: $rojo;
+
+                                .fa-solid{
+                                    color: $rojo;
+                                }
+                            }
+
+                            .fa-solid{
+                                color: $teamGreen;
+                            }
+                        }
+
+                        .adress-cancha{
+                            text-overflow: ellipsis;
+                            width: 100%;
+                            margin-top: 5px;
+                        }
+                    }
+
                     .accordion-body{                
                         color: whitesmoke;
                         padding: 10px;
+
 
                         .teams-match{
                             display: flex;
@@ -250,16 +283,9 @@
                                 }
                             }
                         }
+
+
                     }
-                    // background-color: transparent;
-
-                    // display: grid;
-                    // grid-template-columns: 1fr 1fr;
-                    // justify-content: space-between;
-                    // width: 100%;
-                    // gap: 30px;
-
-
 
                 }
             }

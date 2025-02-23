@@ -2,15 +2,24 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Storage, ref, listAll, getDownloadURL  } from '@angular/fire/storage';
 import { Cancha } from '../../../interfaces/cancha';
-import { response } from 'express';
+import {GoogleMap, GoogleMapsModule, MapGeocoder} from '@angular/google-maps';
+import { GoogleMapsService } from '../../../services/google-maps.service';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-reserva',
-  imports: [CommonModule],
+  imports: [CommonModule, GoogleMap, FormsModule, GoogleMapsModule],
   templateUrl: './reserva.component.html',
   styleUrl: './reserva.component.scss'
 })
 export class ReservaComponent {
+
+  center = { lat: 0, lng: 0 }; // Ejemplo: Santiago, Chile
+  zoom = 13;
+  markerPosition = this.center
+  adress = 'Parque Deportivo La Araucana, Walker Martínez 2295, La Florida'
+
 
   images: string[];
   profile_photo: string[];
@@ -111,11 +120,42 @@ export class ReservaComponent {
     
   ]
 
-  constructor(private storage: Storage){
+  constructor(private storage: Storage, private googleMapsServices: GoogleMapsService){
     this.getPhoto()
     this.getProfilePhoto()
     this.images = []
     this.profile_photo = []
+    this.buscarDireccion()
+
+    // geocoder.geocode({
+    //   address: 'El Quillay 1168, La Pintana'
+    // }).subscribe(({results}) => {
+    //   console.log(results[0].geometry.location)
+    // })
+  }
+
+
+  async buscarDireccion(){
+    const coordenadas = await this.googleMapsServices.getCoordenadas(this.adress);
+
+    if(coordenadas){
+      this.markerPosition = coordenadas,
+      this.center = coordenadas
+    }
+
+    return coordenadas;
+
+  }
+
+  async abrirGoogleMaps(){
+    const coordenadas: {lat: number; lng: number;} | any = await this.buscarDireccion();
+
+    if(coordenadas){
+      const url = `https://www.google.com/maps?q=${coordenadas.lat},${coordenadas.lng}`
+      window.open(url, '_blank')
+    }
+
+
   }
 
   getPhoto(){
