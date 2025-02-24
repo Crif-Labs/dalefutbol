@@ -6,10 +6,11 @@
     </div>
 
     <div class="body-user-main">
-        <app-partidos *ngIf="selectedMenu == 0"></app-partidos>
+        <!-- <app-partidos *ngIf="selectedMenu == 0"></app-partidos>
         <app-torneo *ngIf="selectedMenu == 1"></app-torneo>
         <app-mensajes *ngIf="selectedMenu == 2"></app-mensajes>
-        <app-perfil *ngIf="selectedMenu == 3"></app-perfil>
+        <app-perfil *ngIf="selectedMenu == 3"></app-perfil> -->
+        <router-outlet></router-outlet>
     </div>
 
     <div class="footer-user-main">

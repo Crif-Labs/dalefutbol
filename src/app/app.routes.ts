@@ -6,6 +6,10 @@ import { LoginComponent } from './Auth/login/login.component';
 import { RegisterComponent } from './Auth/register/register.component';
 import { RegisterProfileComponent } from './Auth/register-profile/register-profile.component';
 import { ReservaComponent } from './pages/UserPage/reserva/reserva.component';
+import { PartidosComponent } from './pages/UserPage/partidos/partidos.component';
+import { MensajesComponent } from './pages/UserPage/mensajes/mensajes.component';
+import { PerfilComponent } from './pages/UserPage/perfil/perfil.component';
+import { TorneoComponent } from './pages/UserPage/torneo/torneo.component';
 
 export const routes: Routes = [
     {
@@ -16,13 +20,22 @@ export const routes: Routes = [
     {
         path: 'user-main',
         component: UserMainComponent,
-        // ...canActivate( () => redirectUnauthorizedTo(['login']))
+        // ...canActivate( () => redirectUnauthorizedTo(['login'])),
+        children: [
+            {path: 'partidos', component: PartidosComponent},
+            {path: 'chat', component: MensajesComponent},
+            {path: 'perfil', component: PerfilComponent},
+            {path: 'torneo', component: TorneoComponent},
+            {path: '**', redirectTo: 'partidos'}
+        ]
     },
     {
         path: 'admin-main',
         component: AdminMainComponent,
         ...canActivate( () => redirectUnauthorizedTo(['login']))
     },
+    
+    {path: 'reservas', component: ReservaComponent},
     {
         path: 'login',
         component: LoginComponent
@@ -35,10 +48,10 @@ export const routes: Routes = [
         path: 'register-profile',
         component: RegisterProfileComponent
     },
-    {
-        path: 'reservar',
-        component: ReservaComponent
-    },
+    // {
+    //     path: 'reservar',
+    //     component: ReservaComponent
+    // },
     {
         path: '**',
         redirectTo: '/user-main'
