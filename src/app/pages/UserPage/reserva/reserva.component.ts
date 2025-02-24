@@ -5,11 +5,14 @@ import { Cancha } from '../../../interfaces/cancha';
 import {GoogleMap, GoogleMapsModule, MapGeocoder} from '@angular/google-maps';
 import { GoogleMapsService } from '../../../services/google-maps.service';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoadingPageComponent } from "../../../shared/loading-page/loading-page.component";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @Component({
   selector: 'app-reserva',
-  imports: [CommonModule, GoogleMap, FormsModule, GoogleMapsModule],
+  imports: [CommonModule, GoogleMap, FormsModule, GoogleMapsModule, LoadingPageComponent],
   templateUrl: './reserva.component.html',
   styleUrl: './reserva.component.scss'
 })
@@ -19,7 +22,8 @@ export class ReservaComponent {
   zoom = 13;
   markerPosition = this.center
   adress = 'Parque Deportivo La Araucana, Walker Martínez 2295, La Florida'
-
+  
+  loading: Boolean = true
 
   images: string[];
   profile_photo: string[];
@@ -120,27 +124,36 @@ export class ReservaComponent {
     
   ]
 
-  constructor(private storage: Storage, private googleMapsServices: GoogleMapsService){
-    this.getPhoto()
-    this.getProfilePhoto()
+  constructor(private storage: Storage, private googleMapsServices: GoogleMapsService, private router: Router){
+    this.initPage()
     this.images = []
     this.profile_photo = []
-    this.buscarDireccion()
-
-    // geocoder.geocode({
-    //   address: 'El Quillay 1168, La Pintana'
-    // }).subscribe(({results}) => {
-    //   console.log(results[0].geometry.location)
-    // })
   }
 
+  async initPage(){
+    await this.getPhoto()
+    await this.getProfilePhoto()
+    await this.buscarDireccion()
+
+    // await this.sleep(3000)
+
+    this.loading = false
+  }
+
+  sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  buttonBack(){
+    this.router.navigate(['user-main/partidos'])
+  }
 
   async buscarDireccion(){
     const coordenadas = await this.googleMapsServices.getCoordenadas(this.adress);
 
     if(coordenadas){
-      this.markerPosition = coordenadas,
-      this.center = coordenadas
+      this.markerPosition = await coordenadas,
+      this.center = await coordenadas
     }
 
     return coordenadas;
@@ -158,16 +171,16 @@ export class ReservaComponent {
 
   }
 
-  getPhoto(){
+  async getPhoto(){
     const imageRef = ref(this.storage, '/MaiClub-LaFlorida/Carrousel');
 
-    listAll(imageRef)
+    await listAll(imageRef)
       .then( async (response) => {
         this.images = []
 
         for (let item of response.items) {
            const url = await getDownloadURL(item)
-           this.images.push(url)
+           await this.images.push(url)
             
         }
 

@@ -1,9 +1,13 @@
-<div class="reserva-component">
+
+
+<div  class="reserva-component">
     <div class="reserva-header">
-        <a class="arrow-back"><i class="fa-solid fa-arrow-left"></i></a>
+        <a (click)="buttonBack()" class="arrow-back"><i class="fa-solid fa-arrow-left"></i></a>
     </div>
 
-    <div class="reserva-body">
+    <app-loading-page *ngIf="loading" ></app-loading-page>
+
+    <div class="reserva-body" *ngIf="!loading">
         <h2 class="cancha-name">{{dataCancha.nombre}}</h2>
 
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
