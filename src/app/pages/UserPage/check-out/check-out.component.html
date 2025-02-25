@@ -1,0 +1,75 @@
+<div class="check-out-component">
+    <div class="header-check-out">
+        <a (click)="buttonBack()" class="arrow-back"><i class="fa-solid fa-arrow-left"></i></a>
+    </div>
+
+    <div class="body-check-out">
+        <div class="cancha-detail">
+            <span class="nombre">{{cancha.nombre}}</span>
+            <span class="capacidad">{{cancha.capacidad_equipo}} vs {{cancha.capacidad_equipo}}</span>
+            <span class="direccion">{{cancha.direccion}}, {{cancha.comuna}}</span>
+            <div class="line"></div>
+        </div>
+
+        <div class="perfil-detail">
+            <span class="jugador"><b>Jugador:</b> {{perfil.nombre}} {{perfil.apellido}}</span>
+            <span class="posicion"><b>Posicion:</b> {{perfil.posicion}}</span>
+            <div class="line"></div>
+        </div>
+
+        <div class="reserva-detail">
+            <span class="horario">{{horario.hora_inicio}} hr</span>
+            <span class="fecha">{{reserva.fecha}}</span>
+            <div class="line"></div>
+        </div>
+
+        <div class="precio-detail">
+            <span class="valor-title">Valor Cancha: $</span>
+            <span class="valor-detail">{{cancha.precio}}</span>
+
+            <span class="descuento-title">Descuento: $</span>
+            <span class="descuento-detail">{{descuento}}</span>
+
+            <div class="line"></div>
+
+            <span class="total-title">Total: $</span>
+            <span class="total-detail">{{cancha.precio - descuento}}</span>
+        </div>
+
+
+        <div class="condiciones-de-pago">
+            <p class="condicion">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum obcaecati harum dolore odit dolorum, ipsam dolorem, debitis ullam nesciunt nemo, hic doloribus sapiente! Consequatur minus quos possimus modi fugiat atque.</p>
+            
+
+            <div class="aceptacion">
+                <div class="checkbox-wrapper-12">
+                    <div class="cbx">
+                      <input  type="checkbox" id="cbx-12">
+                      <label for="cbx-12"></label>
+                      <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                      </svg>
+                    </div>
+                    
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <filter id="goo-12">
+                          <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic"></feGaussianBlur>
+                          <feColorMatrix result="goo-12" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" mode="matrix" in="blur"></feColorMatrix>
+                          <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                        </filter>
+                      </defs>
+                    </svg>
+                </div>
+
+                <span class="text-aceptacion">Aceptas los terminos y condiciones</span>
+            </div>
+
+            <button class="btn btn-pay">Pagar</button>
+
+
+        </div>
+
+
+    </div>
+</div>

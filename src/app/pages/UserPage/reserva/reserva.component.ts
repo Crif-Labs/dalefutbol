@@ -76,7 +76,9 @@ export class ReservaComponent {
     nombre: 'SuperCancha',
     direccion: 'San Ricardo, La Pintana',
     capacidad: 7,
-    precio: 4700
+    precio: 4700,
+    capacidad_equipo: '',
+    comuna: ''
   }
 
   dataReserva = [
@@ -214,6 +216,11 @@ export class ReservaComponent {
       }).catch( (error) => {
         console.log(error)
       })
+  }
+
+
+  redirecToCheckOut(){
+    this.router.navigate(['check-out'])
   }
 
 }

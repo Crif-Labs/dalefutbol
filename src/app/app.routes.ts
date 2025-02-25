@@ -10,6 +10,7 @@ import { PartidosComponent } from './pages/UserPage/partidos/partidos.component'
 import { MensajesComponent } from './pages/UserPage/mensajes/mensajes.component';
 import { PerfilComponent } from './pages/UserPage/perfil/perfil.component';
 import { TorneoComponent } from './pages/UserPage/torneo/torneo.component';
+import { CheckOutComponent } from './pages/UserPage/check-out/check-out.component';
 
 export const routes: Routes = [
     {
@@ -34,8 +35,8 @@ export const routes: Routes = [
         component: AdminMainComponent,
         ...canActivate( () => redirectUnauthorizedTo(['login']))
     },
-    
-    {path: 'reservas', component: ReservaComponent},
+    {path: 'reservas-check-in', component: ReservaComponent},
+    {path: 'check-out', component: CheckOutComponent},
     {
         path: 'login',
         component: LoginComponent

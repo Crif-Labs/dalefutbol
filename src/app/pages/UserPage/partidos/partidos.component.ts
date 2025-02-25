@@ -15,7 +15,7 @@ export class PartidosComponent {
 
   redirecToReserva(){
     console.log("Hola ")
-    this.route.navigate(['/reservas'])
+    this.route.navigate(['/reservas-check-in'])
   }
 
 
