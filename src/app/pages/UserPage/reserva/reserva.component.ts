@@ -189,6 +189,8 @@ export class ReservaComponent {
       }).catch( (error) => {
         console.log(error)
       })
+
+    console.log(this.images)
   }
 
   getProfilePhoto(){

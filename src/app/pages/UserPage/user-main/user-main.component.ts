@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Perfil } from '../../../interfaces/perfil';
+import { PerfilService } from '../../../services/perfil.service';
 
 @Component({
   selector: 'app-user-main',
@@ -10,6 +12,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-main.component.scss'
 })
 export class UserMainComponent {
+
+
+  /**
+   * con el id_usuario obtenido de Auth
+   * sacar el id de la coleccion Perfil
+   */
+  id_usuario: string | any //= "hcJa0nlFOBaC9Zbi9zNoxbmFo1i2"
+  idPerfil: string = "LDLekObQQxllfp1u3O9U"
+
+
 
   correo: string | any = ''
 
@@ -34,9 +46,20 @@ export class UserMainComponent {
 
   selectedMenu: number = 0
 
-  constructor(private authService: AuthService, private router:Router){
-    this.getAuth()
+  constructor(private authService: AuthService, private router:Router, private perfilService: PerfilService){
+    this.id_usuario = this.getAuth()
     this.getMenu()
+    this.setIdUsuarioLocalStorage()
+  }
+
+  async setIdUsuarioLocalStorage(){
+    await localStorage.setItem('idPerfil',this.idPerfil);
+
+    await this.perfilService.getPerfilById(this.idPerfil).subscribe(
+      response => {
+        localStorage.setItem('perfil', JSON.stringify(response))
+      }
+    )
   }
 
   getMenu(){
@@ -87,9 +110,11 @@ export class UserMainComponent {
 
   async getAuth(){
 
-    await this.authService.getAuth().subscribe( user => {
-      this.correo = user?.email
-    })
+    return "hcJa0nlFOBaC9Zbi9zNoxbmFo1i2"
+
+    // await this.authService.getAuth().subscribe( user => {
+    //   this.correo = user?.email
+    // })
   }
 
 

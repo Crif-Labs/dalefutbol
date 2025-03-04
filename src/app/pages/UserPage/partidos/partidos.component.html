@@ -1,8 +1,13 @@
-<div class="data-search">
+<div *ngIf="loading" class="loader-container">
+    <app-loading-page></app-loading-page>
+</div>
+
+
+<div *ngIf="!loading" class="data-search">
     <div class="calendar">
         <div class="info-date">
-            <span class="date"><b>Hoy</b>, martes 11 </span>
-            <span class="comuna">en <b>La Pintana</b>&nbsp;<i class="fa-solid fa-location-dot"></i></span>
+            <span class="date"><b>Hoy</b>, {{today | date: 'EEEE'}} {{today | date: 'd' }}</span>
+            <span class="comuna"> en <b>{{comuna}}</b>&nbsp;<i class="fa-solid fa-location-dot"></i></span>
         </div>
 
         <div class="date-picker-container">
@@ -17,87 +22,33 @@
             <button class="btn btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
 
-        <select name="" id="" class="comuna-select">
-            <option value="" selected>Comuna</option>
-            <option value="">La Pintana</option>
+        <select [(ngModel)]="comunaSelected" (change)="changeComuna($event)" class="comuna-select">
+            <option class="option-select" value="Comuna" disabled selected>Comuna</option>
+            <option class="option-select" [value]="comuna.nombre" *ngFor="let comuna of comunaList">
+                {{comuna.nombre}}<i class="fa-solid fa-location-dot"></i>
+            </option>
         </select>
     </div>
 </div>
 
-<div class="cancha-list">
-    <div class="cancha-card" style="background-image: url('{{url1}}');">
-        <div class="detail-cancha">
-            <h3 class="cancha-name">SuperCancha SuperCanchaSuperCanchaSuperCancha</h3>
-            <span class="cancha-detail">Infoor 7 vs 7, sintetico</span>
-            <span class="cancha-hours">21:00 hr</span>
-        </div>
-
-        <div class="bottom-card">
-            <span class="cuantity-group">7/14&nbsp;<i class="fa-solid fa-users"></i></span>
-            <a class="btn btn-cancha-reserva" (click)="redirecToReserva()">Reservar a</a>
-        </div>
-    </div>
-
-    <div class="cancha-card" style="background-image: url({{url2}});">
-        <div class="detail-cancha">
-            <h3 class="cancha-name">SuperCancha</h3>
-            <span class="cancha-detail">Infoor 7 vs 7, sintetico</span>
-            <span class="cancha-hours">21:00 hr</span>
-        </div>
-
-        <div class="bottom-card">
-            <span class="cuantity-group">7/14&nbsp;<i class="fa-solid fa-users"></i></span>
-            <a class="btn btn-cancha-reserva">Reservar</a>
-        </div>
-    </div>
-    <div class="cancha-card" style="background-image: url('{{url1}}');">
-        <div class="detail-cancha">
-            <h3 class="cancha-name">SuperCancha</h3>
-            <span class="cancha-detail">Infoor 7 vs 7, sintetico</span>
-            <span class="cancha-hours">21:00 hr</span>
-        </div>
-
-        <div class="bottom-card">
-            <span class="cuantity-group">7/14&nbsp;<i class="fa-solid fa-users"></i></span>
-            <a class="btn btn-cancha-reserva">Reservar</a>
+<div *ngIf="!loading" class="cancha-list">
+    <div *ngFor="let horario of listHorarioCancha">
+        <div *ngFor="let cancha of horario.cancha_list" class="cancha-card" style="background-image: url('{{cancha.link_image}}');">
+            <div class="detail-cancha">
+                <h3 class="cancha-name">{{cancha.nombre}}</h3>
+                <span class="cancha-detail">{{cancha.capacidad_equipo}} vs {{cancha.capacidad_equipo}}, {{cancha.direccion}}</span>
+                <span class="cancha-hours">{{horario.hora_inicio}} hr</span>
+            </div>
+    
+            <div class="bottom-card">
+                <span class="cuantity-group">{{cancha.inscritos}}/{{cancha.capacidad}}&nbsp;<i class="fa-solid fa-users"></i></span>
+                <a class="btn btn-cancha-reserva" (click)="redirecToReserva(horario, cancha)">Reservar</a>
+            </div>
         </div>
     </div>
 
-    <div class="cancha-card" style="background-image: url({{url2}});">
-        <div class="detail-cancha">
-            <h3 class="cancha-name">SuperCancha</h3>
-            <span class="cancha-detail">Infoor 7 vs 7, sintetico</span>
-            <span class="cancha-hours">21:00 hr</span>
-        </div>
 
-        <div class="bottom-card">
-            <span class="cuantity-group">7/14&nbsp;<i class="fa-solid fa-users"></i></span>
-            <a class="btn btn-cancha-reserva">Reservar</a>
-        </div>
-    </div>
-    <div class="cancha-card" style="background-image: url('{{url1}}');">
-        <div class="detail-cancha">
-            <h3 class="cancha-name">SuperCancha</h3>
-            <span class="cancha-detail">Infoor 7 vs 7, sintetico</span>
-            <span class="cancha-hours">21:00 hr</span>
-        </div>
+    <!-- <button class="btn" *ngFor="let horario of horarios" (click)="getCanchasPorHorarios(horario.id)">{{horario.hora_inicio}} - {{horario.dia}}</button> -->
 
-        <div class="bottom-card">
-            <span class="cuantity-group">7/14&nbsp;<i class="fa-solid fa-users"></i></span>
-            <a class="btn btn-cancha-reserva">Reservar</a>
-        </div>
-    </div>
-
-    <div class="cancha-card" style="background-image: url({{url2}});">
-        <div class="detail-cancha">
-            <h3 class="cancha-name">SuperCancha</h3>
-            <span class="cancha-detail">Infoor 7 vs 7, sintetico</span>
-            <span class="cancha-hours">21:00 hr</span>
-        </div>
-
-        <div class="bottom-card">
-            <span class="cuantity-group">7/14&nbsp;<i class="fa-solid fa-users"></i></span>
-            <a class="btn btn-cancha-reserva">Reservar</a>
-        </div>
-    </div>
 </div>
+

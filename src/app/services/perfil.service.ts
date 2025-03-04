@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Perfil } from '../interfaces/perfil';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, getDoc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -51,6 +51,44 @@ export class PerfilService {
       console.error('Error al obtener el rol: ', error)
       return null
     }
+
+  }
+
+  async getComunaPerfil(id:string){
+    try{
+      const ref = collection(this.firestore, this.collectionName)
+
+      const q =  query(ref,where('id_usuario', '==', id));
+      const element = await getDocs(q);
+
+  
+      if(!element.empty){
+        const data: Perfil | any = element.docs[0].data();
+
+        return data.comuna
+      }
+  
+      return null;
+    }catch (error) {
+      console.error('Error al obtener la comuna: ', error)
+      return null
+    }
+
+    // console.log(id)
+
+    // const docRef = doc(this.firestore, 'Perfil',id);
+    // const docSanp = await getDoc(docRef)
+
+    // console.log(docSanp)
+
+    // if(docSanp.exists()){
+
+
+    //   return docSanp.data()['comuna'];
+    // } else {
+    //   console.log("No se encontro nada")
+    //   return null
+    // }
 
   }
 

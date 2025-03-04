@@ -28,8 +28,8 @@ export class CheckOutComponent {
     hora_inicio: '22:00',
     hora_fin: '23:00',
     dia: '',
-    disponibilidad: true,
-    id_cancha: '123'
+    // disponibilidad: true,
+    // id_cancha: '123'
   }
 
   reserva: Reserva ={
