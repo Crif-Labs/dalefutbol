@@ -33,7 +33,7 @@ export const routes: Routes = [
     {
         path: 'admin-main',
         component: AdminMainComponent,
-        ...canActivate( () => redirectUnauthorizedTo(['login']))
+        // ...canActivate( () => redirectUnauthorizedTo(['login']))
     },
     {path: 'reservas-check-in', component: ReservaComponent},
     {path: 'check-out', component: CheckOutComponent},

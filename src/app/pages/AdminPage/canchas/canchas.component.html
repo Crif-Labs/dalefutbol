@@ -1,0 +1,76 @@
+<div class="container-canchas">
+    <h2 class="mb-3">Ingresar Cancha:</h2>
+
+    <form class="form-add-cacha" [formGroup]="formCancha"> 
+        <div *ngFor="let input of listInputs" class="form-floating mb-3">
+            <input formControlName="{{input.control}}" type="{{input.type}}" class="form-control" [ngClass]="{'is-invalid': formCancha.controls[input.control].invalid && formCancha.controls[input.control].touched}" id="{{input.control}}" placeholder="{{input.control}}">
+            <label for="floatingInput">{{input.text}}</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input formControlName="comuna" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+            <label for="exampleDataList" class="form-label">Seleccione Comuna:</label>
+            <datalist id="datalistOptions">
+                <option *ngFor="let comuna of comunaList" value="{{comuna.nombre}}">
+            </datalist>            
+        </div>
+
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#canchaModal">Ingresar</button>
+
+        <span>{{formCancha.valid}}</span>
+    </form>
+
+    <div class="modal fade" id="canchaModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="canchaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" *ngIf="!errorPop">
+            <div *ngIf="!formCancha.valid" class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="canchaModalLabel"><b>Algo anda mal...</b></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Hay campos incorrectos o vacíos <i class="fa-solid fa-circle-exclamation" style="color: #DC2121;"></i></b> <br> Por favor, revise la información</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+            <div *ngIf="formCancha.valid" class="modal-content">
+                <div class="modal-header" *ngIf="!loadingAddCachan">
+                    <h1 class="modal-title fs-5" id="canchaModalLabel">Subir Imágenes</h1>
+                    <button *ngIf="!loadingAddImages" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div *ngIf="!loadingAddImages && !checkAddImages" class="mb-3">
+                        <label for="formFileMultiple" class="form-label">Seleccione imagenes:</label>
+                        <input (change)="selectImages($event)" class="form-control" type="file" id="formFileMultiple" multiple>
+                    </div>
+
+                    <app-simple-loading [message]="'Subiendo imagenes...'" *ngIf="loadingAddImages"></app-simple-loading>
+
+                    <p *ngIf="!loadingAddImages && checkAddImages">Imagenes guardadas... 👌👌</p>                        
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="!checkAddImages && !loadingAddImages" type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForm()">No subir imagenes</button>
+                    <button *ngIf="checkAddImages " type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="resetForm()" >Aceptar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-dialog modal-dialog-centered" *ngIf="errorPop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="canchaModalLabel">Algo anda mal...</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="errorReset()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{messageError}}</p>                        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="errorReset()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
