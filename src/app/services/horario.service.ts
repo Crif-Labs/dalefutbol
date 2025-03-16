@@ -19,6 +19,12 @@ export class HorarioService {
     return addDoc(ref, horario)
   }
 
+  addCanchaToHorario(cancha: Cancha, id: string){
+    const ref = collection(this.firestore, `${this.collectionName}/${id}/cancha`)
+
+    return addDoc(ref, cancha)
+  }
+
   async getHorariosHoy(dia: string){
 
     try{

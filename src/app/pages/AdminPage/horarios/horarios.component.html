@@ -1,1 +1,63 @@
-<p>horarios works!</p>
+<div class="container-horario">
+    <h2 class="mb-3">Ingresar Horario</h2>
+
+    <div class="form-floating mb-3">
+        <select (change)="selectComuna()" [(ngModel)]="comunaSelected" class="form-select" id="floatingSelect" aria-label="Floating label select example" >
+          <option disabled selected>-- Comuna --</option>
+          <option  *ngFor="let comuna of listComunas" value="{{comuna.nombre}}">{{comuna.nombre}}</option>
+        </select>
+        <label for="floatingSelect">Ingrese Comuna:</label>
+    </div>
+
+    <span *ngIf="comunaList" class="error-comunas">No existen canchas, para la comuna seleccionada</span>
+
+
+
+    <form *ngIf="!booleanComuna && !comunaList" class="formHorario" [formGroup]="formHorario">
+        <div *ngFor="let input of inputHorario" class="form-floating mb-3" >
+            <input formControlName="{{input.control}}" type="{{input.type}}" class="form-control" [ngClass]="{'is-invalid': formHorario.controls[input.control].invalid && formHorario.controls[input.control].touched}" id="{{input.control}}">
+            <label for="floatingInput">{{input.text}}</label>
+        </div>
+        <div >
+            <div class="checkbox-wrapper" *ngFor="let cancha of listCancha" >
+                <input name="{{cancha.nombre}}" type="checkbox"
+                    id="{{cancha.nombre}}"
+                    [checked]="selectedCanchas.includes(cancha)"
+                    (change)="toggleCancha(cancha, $event)"
+                >
+                <label class="terms-label" for="{{cancha.nombre}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 200 200" class="checkbox-svg">
+                    <mask fill="white" id="path-1-inside-1_476_5-37">
+                      <rect height="200" width="200"></rect>
+                    </mask>
+                    <rect mask="url(#path-1-inside-1_476_5-37)" stroke-width="40" class="checkbox-box" height="200" width="200"></rect>
+                    <path stroke-width="15" d="M52 111.018L76.9867 136L149 64" class="checkbox-tick"></path>
+                  </svg>
+                  <span class="label-text">{{cancha.nombre}}</span>
+                </label>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="addHorario()" data-bs-toggle="modal" data-bs-target="#modalMessage" >Agregar</button>
+    </form>
+
+</div>
+
+  
+<!-- Modal -->
+<div class="modal fade" id="modalMessage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalMessageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalMessageLabel">{{messageModal.title}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{messageModal.message}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" [ngClass]="messageModal.button" (click)="closeModal()" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

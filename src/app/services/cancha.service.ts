@@ -35,5 +35,12 @@ export class CanchaService {
       return collectionData(ref, {idField: 'id'}) as Observable<Cancha[]>
     }
 
+    getCanchasByComunas(comuna: string): Observable<Cancha[]>{
+      const ref = collection(this.firestore, this.collectionName)
+      const q = query(ref, where('comuna','==',comuna))
+
+      return collectionData(q, { idField: 'id'}) as Observable<Cancha[]>
+    }
+
 
 }

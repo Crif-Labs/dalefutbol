@@ -26,7 +26,7 @@ registerLocaleData(localeEs, 'es-ES');
 export class PartidosComponent {
 
   // today: Date;
-  today: string = '03-02-2025'
+  today: string = '2025-03-15'
   comuna: string | any = 'comuna'
   loading: boolean;
   comunaSelected: string = "Comuna";
