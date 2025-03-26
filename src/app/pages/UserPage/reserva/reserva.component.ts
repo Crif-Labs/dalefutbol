@@ -1,32 +1,33 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, DatePipe, isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Storage, ref, listAll, getDownloadURL  } from '@angular/fire/storage';
 import { Cancha } from '../../../interfaces/cancha';
-import {GoogleMap, GoogleMapsModule, MapGeocoder} from '@angular/google-maps';
+import {GoogleMap, GoogleMapsModule} from '@angular/google-maps';
 import { GoogleMapsService } from '../../../services/google-maps.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingPageComponent } from "../../../shared/loading-page/loading-page.component";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Horario } from '../../../interfaces/horario';
+import { SessionStorageService } from '../../../services/session-storage.service';
 
 
 @Component({
   selector: 'app-reserva',
-  imports: [CommonModule, GoogleMap, FormsModule, GoogleMapsModule, LoadingPageComponent],
+  imports: [CommonModule, FormsModule, GoogleMap, GoogleMapsModule, LoadingPageComponent],
   templateUrl: './reserva.component.html',
   styleUrl: './reserva.component.scss'
 })
-export class ReservaComponent {
+export class ReservaComponent implements OnInit, AfterViewInit {
 
   center = { lat: 0, lng: 0 }; // Ejemplo: Santiago, Chile
   zoom = 13;
   markerPosition = this.center
-  adress = 'Parque Deportivo La Araucana, Walker Martínez 2295, La Florida'
+  adress = ''
   
   loading: Boolean = true
 
-  images: string[];
-  profile_photo: string[];
+  images: string[] = [];
+  profile_photo: string[] = [];
 
   teams = [
     {
@@ -81,24 +82,7 @@ export class ReservaComponent {
     comuna: ''
   }
 
-  dataReserva = [
-    {
-      icon: 'fa-solid fa-stopwatch',
-      detail: '21:00 hr'
-    },
-    {
-      icon: 'fa-solid fa-calendar-days',
-      detail: '11/02'
-    },
-    {
-      icon: 'fa-regular fa-hourglass-half',
-      detail: '60 min'
-    },
-    {
-      icon: 'fa-solid fa-dollar-sign',
-      detail: this.dataCancha.precio
-    }
-  ]
+  dataReserva: any
 
   formatMatch = [
     {
@@ -120,26 +104,130 @@ export class ReservaComponent {
     {
       category: 'medio',
       text: "Por favor llegar con 10 minutos de anticipacion para la preparacion del partido; esto podria afectar a la duracion de tu juego."
-    }
-    
-    
-    
+    } 
   ]
 
-  constructor(private storage: Storage, private googleMapsServices: GoogleMapsService, private router: Router){
+  isBroser: boolean = false
+
+  constructor(private storage: Storage, private router: Router, private googleMapsServices: GoogleMapsService, 
+    private ssService: SessionStorageService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ){
+    console.log("Constructor ejecutado.-")
+
+    this.isBroser = isPlatformBrowser(platformId)
+
+    console.log("Constructor finalizado.-")
+
+  }
+
+  ngOnInit(): void {
+    console.log("ngOnInit ejecutado.-") 
+    
+    // if (this.isBroser) {
+    //   console.log("🔴 Angular está en modo SSR, no se puede acceder a sessionStorage aún.");
+    //   return;
+    // }
+
+    // console.log("✅ Estamos en el navegador, podemos usar sessionStorage.");
+
+    // // Llamamos a cargarDatos() solo si estamos en el navegador
+    // this.cargarDatos();
+
+    // setTimeout(() => {
+    //   console.log("✅ Estamos en el navegador, podemos usar sessionStorage.");
+    //   const cancha = this.ssService.getItem('cancha');
+    //   console.log("🎯 Cancha obtenida después de la redirección:", cancha);
+    // }, 500);
+
+    const cancha = this.ssService?.getItem('cancha')
+    // console.log(cancha)
+
+    if(!cancha){
+      console.log("Cancha es undefined")
+      location.reload()    
+    }else{
+      this.cargarDatos()
+    }    
+    console.log("ngOnInit finalizado.-") 
+  }
+
+
+  ngAfterViewInit(): void {
+
+    console.log("ngAfterViewInit ejecutado.-") 
+    console.log("Loading: ",this.loading)
+    this.loading = false
+    console.log("Loading: ",this.loading)
+    console.log("ngAfterViewInit Finalizado.-") 
+      
+  }
+
+
+  cargarDatos(){
+    console.log("Cargar Datos ejecutado.-")  
+    // this.ssService.setItem('prueba','alguna wea')
+
+  //   console.log("sessionStorageService:", this.ssService);
+  // console.log("sessionStorageService.getItem('cancha'):", this.ssService?.getItem('cancha'));
+
+
+
+    const ssCancha =  this.ssService.getItem('cancha')
+    // console.log("paso por ssCancha ",ssCancha)
+    const ssHorario =  this.ssService.getItem('horario')
+    // console.log("paso por ssHorario ", ssHorario)
+
+    if(ssCancha != null || ssHorario != null){
+      this.dataCancha = JSON.parse(String(ssCancha))
+
+      const horario: Horario = JSON.parse(String(ssHorario))
+
+    // se asigna los links de las imagenes obtenidas de la cancha
+      this.dataCancha.link_image != undefined ? this.images = this.dataCancha.link_image : this.images = []
+
+      this.adress = this.dataCancha.direccion+", "+this.dataCancha.comuna
+
+      const datePipe = new DatePipe('en-US')
+      this.dataReserva = [
+        {
+          icon: 'fa-solid fa-stopwatch',
+          detail: horario.hora_inicio
+        },
+        {
+          icon: 'fa-solid fa-calendar-days',
+          detail: datePipe.transform(horario.dia, 'dd/MM')
+        },
+        {
+          icon: 'fa-regular fa-hourglass-half',
+          detail: '60 min'
+        },
+        {
+          icon: 'fa-solid fa-dollar-sign',
+          detail: ((this.dataCancha.precio/(this.dataCancha.capacidad))+1500)*1.19
+        }
+      ]
+
+    
+    
     this.initPage()
-    this.images = []
+
+    
     this.profile_photo = []
+
+    }else{
+      console.log("Error al cargar la pagina")
+    }
   }
 
   async initPage(){
-    await this.getPhoto()
+    // await this.getPhoto()
     await this.getProfilePhoto()
     await this.buscarDireccion()
 
     // await this.sleep(3000)
 
-    this.loading = false
+    // this.loading = false
   }
 
   sleep(ms: number): Promise<void> {
@@ -174,23 +262,12 @@ export class ReservaComponent {
   }
 
   async getPhoto(){
-    const imageRef = ref(this.storage, '/MaiClub-LaFlorida/Carrousel');
-
-    await listAll(imageRef)
-      .then( async (response) => {
-        this.images = []
-
-        for (let item of response.items) {
-           const url = await getDownloadURL(item)
-           await this.images.push(url)
-            
-        }
-
-      }).catch( (error) => {
-        console.log(error)
-      })
-
-    console.log(this.images)
+    if(this.dataCancha.link_image != undefined){
+      this.images = await this.dataCancha.link_image
+    }else{
+      console.log("No se han cargado las imagenes")
+    }
+    
   }
 
   getProfilePhoto(){

@@ -95,7 +95,7 @@ export class CanchasComponent {
         capacidad_equipo: new FormControl('', Validators.required),
         // precio: new FormControl('', Validators.required),
         link_image: new FormControl(''),
-        // inscritos: new FormControl('0'),
+        inscritos: new FormControl('0'),
       }
 
     )

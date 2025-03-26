@@ -19,7 +19,7 @@
 
         <div class="reserva-detail">
             <span class="horario">{{horario.hora_inicio}} hr</span>
-            <span class="fecha">{{reserva.fecha}}</span>
+            <span class="fecha">{{date}}</span>
             <div class="line"></div>
         </div>
 
@@ -44,7 +44,7 @@
             <div class="aceptacion">
                 <div class="checkbox-wrapper-12">
                     <div class="cbx">
-                      <input  type="checkbox" id="cbx-12">
+                      <input  type="checkbox" id="cbx-12" (change)="confirm = !confirm">
                       <label for="cbx-12"></label>
                       <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                         <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -65,7 +65,7 @@
                 <span class="text-aceptacion">Aceptas los terminos y condiciones</span>
             </div>
 
-            <button class="btn btn-pay">Pagar</button>
+            <button class="btn btn-pay" (click)="addReserva()">Pagar</button>
 
 
         </div>

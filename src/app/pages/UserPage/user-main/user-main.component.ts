@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router, RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Perfil } from '../../../interfaces/perfil';
 import { PerfilService } from '../../../services/perfil.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'app-user-main',
@@ -46,18 +47,27 @@ export class UserMainComponent {
 
   selectedMenu: number = 0
 
-  constructor(private authService: AuthService, private router:Router, private perfilService: PerfilService){
+  constructor(private authService: AuthService, private router:Router, private perfilService: PerfilService, private lsService: LocalStorageService){
     this.id_usuario = this.getAuth()
     this.getMenu()
-    this.setIdUsuarioLocalStorage()
+
+    lsService.setItem('idPerfil', this.idPerfil)
+
+
+    this.setIdUsuarioLocalStorage()   
+
+    // localStorage.setItem('idPerfil', this.idPerfil)
+
+
   }
 
   async setIdUsuarioLocalStorage(){
-    await localStorage.setItem('idPerfil',this.idPerfil);
+    // await localStorage.setItem('idPerfil',this.idPerfil);
+    
 
     await this.perfilService.getPerfilById(this.idPerfil).subscribe(
       response => {
-        localStorage.setItem('perfil', JSON.stringify(response))
+        this.lsService.setItem('perfil', JSON.stringify(response))
       }
     )
   }

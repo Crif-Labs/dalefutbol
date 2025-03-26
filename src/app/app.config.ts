@@ -1,4 +1,5 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig,
+   provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -13,5 +14,28 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(withEventReplay()), provideFirebaseApp(() => initializeApp({ projectId: "dale-futbol", appId: "1:259286345543:web:1e7f1fe628480f6fe14e62", databaseURL: "https://dale-futbol-default-rtdb.firebaseio.com", storageBucket: "dale-futbol.firebasestorage.app", apiKey: "AIzaSyAKPbzFospdPnLWEHmlw4lQg6ZKWghdwEE", authDomain: "dale-futbol.firebaseapp.com", messagingSenderId: "259286345543", measurementId: "G-XVDWBT7J3L" })), provideAuth(() => getAuth()), provideAnalytics(() => getAnalytics()), ScreenTrackingService, UserTrackingService, provideFirestore(() => getFirestore()), provideDatabase(() => getDatabase()), provideMessaging(() => getMessaging()), provideStorage(() => getStorage()), provideAnimationsAsync()]
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }), 
+    provideRouter(routes), 
+    provideClientHydration(withEventReplay()),
+    provideFirebaseApp(() => initializeApp(
+      { 
+        projectId: "dale-futbol",
+        appId: "1:259286345543:web:1e7f1fe628480f6fe14e62",
+        databaseURL: "https://dale-futbol-default-rtdb.firebaseio.com",
+        storageBucket: "dale-futbol.firebasestorage.app",
+        apiKey: "AIzaSyAKPbzFospdPnLWEHmlw4lQg6ZKWghdwEE",
+        authDomain: "dale-futbol.firebaseapp.com",
+        messagingSenderId: "259286345543",
+        measurementId: "G-XVDWBT7J3L" 
+      })),
+     provideAuth(() => getAuth()),
+     provideAnalytics(() => getAnalytics()),
+     ScreenTrackingService,
+     UserTrackingService,
+     provideFirestore(() => getFirestore()),
+     provideDatabase(() => getDatabase()),
+     provideMessaging(() => getMessaging()),
+     provideStorage(() => getStorage()),
+     provideAnimationsAsync()]
 };

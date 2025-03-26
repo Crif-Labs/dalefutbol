@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore, getDocs, query, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, doc, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Horario } from '../interfaces/horario';
 import { Observable } from 'rxjs';
 import { Cancha } from '../interfaces/cancha';
@@ -20,9 +20,11 @@ export class HorarioService {
   }
 
   addCanchaToHorario(cancha: Cancha, id: string){
-    const ref = collection(this.firestore, `${this.collectionName}/${id}/cancha`)
+    // console.log(`${this.collectionName}/${id}/cancha/${cancha.id}`)
 
-    return addDoc(ref, cancha)
+    const ref = doc(this.firestore, `${this.collectionName}/${id}/cancha/${cancha.id}`)
+
+    return setDoc(ref, cancha)
   }
 
   async getHorariosHoy(dia: string){

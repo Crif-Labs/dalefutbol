@@ -1,12 +1,18 @@
+import { Cancha } from "./cancha";
+import { Equipo } from "./equipo";
+import { Horario } from "./horario";
+import { Perfil } from "./perfil";
+
 export interface Reserva {
     id?: string;
     fecha: string;
-    estado: 'pendiente' | 'confirmada' | 'cancelada';
-    reservadoPor: {
-      tipo: 'jugador' | 'equipo';
-      id: string;
-      jugadores?: string[]; // Solo si es un equipo
-    };
-    id_cancha: string;
-    id_horario: string;
+    hora_inicio: string;
+    reservadoPor: [
+      {
+        responsable: Perfil | Equipo | 'admin',
+        estado: 'pendiente' | 'confirmada' | 'cancelada';
+      }
+    ];
+    cancha: Cancha;
+    horario: Horario;
 }

@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { HorarioService } from '../../../services/horario.service';
 import { Cancha } from '../../../interfaces/cancha';
 import { Horario } from '../../../interfaces/horario';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { SessionStorageService } from '../../../services/session-storage.service';
 
 registerLocaleData(localeEs, 'es-ES');
 
@@ -25,8 +27,7 @@ registerLocaleData(localeEs, 'es-ES');
 })
 export class PartidosComponent {
 
-  // today: Date;
-  today: string = '2025-03-15'
+  today: Date;
   comuna: string | any = 'comuna'
   loading: boolean;
   comunaSelected: string = "Comuna";
@@ -35,9 +36,11 @@ export class PartidosComponent {
   constructor(private route: Router, 
     private perfilService: PerfilService, 
     private comunaService: ComunaService,
-    private horarioService: HorarioService
+    private horarioService: HorarioService,
+    private localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService
   ){
-    // this.today = new Date('02-03-2025')
+    this.today = new Date()
 
     this.loading = true
 
@@ -60,12 +63,14 @@ export class PartidosComponent {
 
   async getComuna(){
 
-    const perfilFb = await localStorage.getItem('perfil');
+    const perfilFb = this.localStorageService.getItem('perfil')//await localStorage.getItem('perfil');
 
-    if(perfilFb){
+    if(perfilFb != null){
       const perfilObj = await JSON.parse(perfilFb)
 
-      this.comuna = perfilObj.comuna
+      // recordemos que lo comentado es lo original
+      // this.comuna = perfilObj.comuna
+      this.comuna = 'La Florida' //eliminar linea y descomentar linea anterior
       this.comunaSelected = this.comuna
     }
   }
@@ -81,13 +86,14 @@ export class PartidosComponent {
   listHorarioCancha: Horario[] = []
 
   async getHorarios(){
-    const date = formatDate(this.today, 'dd-MM-yyyy', 'en-US')
+    const date = formatDate(this.today, 'yyyy-MM-dd', 'en-US')
     let cancha_list: Cancha[] | any = []
     let horario_final: Horario;
     this.listHorarioCancha = []
 
+
     await this.horarioService.getHorariosHoy(date)
-      .then( async res => {        
+      .then( async res => {   
         
         if(res != null){       
           
@@ -97,6 +103,7 @@ export class PartidosComponent {
 
               this.horarioService.getCanchaHorario(horario.id)
                 .subscribe((res) => {
+
                   cancha_list = []
                   for(let cancha of res){
                     
@@ -125,11 +132,14 @@ export class PartidosComponent {
   }
 
 
-  redirecToReserva(horario: Horario, cancha: Cancha){ 
-    sessionStorage.setItem('horario', JSON.stringify(horario))
-    sessionStorage.setItem('cancha', JSON.stringify(cancha))
+  async redirecToReserva(horario: Horario, cancha: Cancha){ 
+    await this.sessionStorageService.setItem('horario', JSON.stringify(horario))
+    await this.sessionStorageService.setItem('cancha', JSON.stringify(cancha))
 
-    this.route.navigate(['/reservas-check-in/'])
+
+    // console.log(this.sessionStorageService.getItem('cancha'))
+
+    this.route.navigate(['/reservas-check-in'])
   }
 
   async getComunasList(){

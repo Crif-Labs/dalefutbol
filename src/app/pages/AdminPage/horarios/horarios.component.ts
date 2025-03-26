@@ -105,6 +105,7 @@ export class HorariosComponent {
       dia: this.formHorario.value.dia,
     }
 
+    console.log(horario)
     if(this.formHorario.valid && this.selectedCanchas.length != 0){
 
       this.horarioService.addHorario(horario)
