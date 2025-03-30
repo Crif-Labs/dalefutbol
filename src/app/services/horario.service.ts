@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, doc, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Horario } from '../interfaces/horario';
-import { Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { Cancha } from '../interfaces/cancha';
 
 @Injectable({
@@ -25,6 +25,23 @@ export class HorarioService {
     const ref = doc(this.firestore, `${this.collectionName}/${id}/cancha/${cancha.id}`)
 
     return setDoc(ref, cancha)
+  }
+
+  getHorarioDiaHora(dia: string, hora_i: string, hora_f: string): Observable<Horario[]>{
+    const ref = collection(this.firestore, this.collectionName)
+
+    const q = query(ref,
+      where('dia','==',dia),
+      where('hora_inicio','==',hora_i),
+      where('hora_fin','==',hora_f),
+    )
+    
+    return from(getDocs(q)).pipe(
+      map(snapshot => snapshot.docs.map( doc => ({
+        id: doc.id,
+        ...doc.data() as Horario
+      })))
+    )
   }
 
   async getHorariosHoy(dia: string){
@@ -51,6 +68,20 @@ export class HorarioService {
       console.log('Error getHorarioHoy (horario.service): ',error)
       return null
     }
+  }
+
+  getHorario(dia: string): Observable<Horario[]>{
+    const ref = collection(this.firestore, this.collectionName)
+
+    const q = query(ref, where('dia', '==', dia))
+    // const element = getDocs(q);
+
+    return from(getDocs(q)).pipe(
+      map(snapshot => snapshot.docs.map( doc => ({
+        id: doc.id,
+        ...doc.data() as Horario
+      })))
+    )
   }
 
   getCanchaHorario(horario: string): Observable<Cancha[]>{

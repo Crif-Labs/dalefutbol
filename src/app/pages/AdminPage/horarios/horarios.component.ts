@@ -106,40 +106,59 @@ export class HorariosComponent {
     }
 
     console.log(horario)
+
     if(this.formHorario.valid && this.selectedCanchas.length != 0){
 
-      this.horarioService.addHorario(horario)
-      .then( res => {
-        console.log("Ingresado el horario: ",res.id)
-
-        for(let i =0;this.selectedCanchas.length; i++){
-          this.horarioService.addCanchaToHorario(this.selectedCanchas[i], res.id)
-            .then(res => console.log("Cancha ingresada a horario"))
-            .catch(error => this.messageModal = {
-              title: 'Error!',
-              message: "Cancha no ingresada: "+error,
-              button: 'alert'
-            }
-          
-          )
-        }
-        
-      }).catch(
-        error => this.messageModal = {
-            title: 'Error!',
-            message: "No se ha ingresado el horario: "+error,
-            button: 'alert'
+      /** CONFIRMAMOS SI EXISTEN HORARIOS REGISTRADOS */
+      this.horarioService.getHorarioDiaHora(horario.dia, horario.hora_inicio, horario.hora_fin)
+      .subscribe(res => {
+        if(res.length){
+          for(let i =0;this.selectedCanchas.length; i++){
+            this.horarioService.addCanchaToHorario(this.selectedCanchas[i], String(res[0].id))
+              .then(res => console.log("Cancha ingresada a horario"))
+              .catch(error => this.messageModal = {
+                title: 'Error!',
+                message: "TRUE: (addCanchaToHorario) Cancha no ingresada: "+error,
+                button: 'alert'
+              }
+            
+            )
           }
-        
-      )
 
-    }else{
-      this.messageModal = {
-        title: 'Error!',
-        message: "El formulario no esta completado.\n Por favor, reviselo",
-        button: 'alert'
-      }
+          console.log("Hay datos: "+res[0].id)
+        }else{
+
+          /** SI NO EXISTEN DATOS, CREAMOS UNA NUEVA COLECCION CON LAS CANCHAS SELECCIONDAS */
+          this.horarioService.addHorario(horario)
+            .then( res => {
+              console.log("Ingresado el horario: ",res.id)
+
+              for(let i =0;this.selectedCanchas.length; i++){
+                this.horarioService.addCanchaToHorario(this.selectedCanchas[i], String(res.id))
+                  .then(res => console.log("Cancha ingresada a horario"))
+                  .catch(error => this.messageModal = {
+                    title: 'Error!',
+                    message: "FALSE: (addCanchaToHorario) Cancha no ingresada: "+error,
+                    button: 'alert'
+                  }
+                
+                )
+              }
+              
+            }).catch(
+              error => this.messageModal = {
+                  title: 'Error!',
+                  message: "(addHorario) No se ha ingresado el horario: "+error,
+                  button: 'alert'
+                }
+              
+            )
+              }
+            })
+
     }
+
+
   }
 
 

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, Firestore, getDocs, query, where, doc, runTransaction } from '@angular/fire/firestore';
+import { addDoc, collection, Firestore, getDocs, query, where, doc, runTransaction, collectionData, updateDoc } from '@angular/fire/firestore';
 import { Reserva } from '../interfaces/reserva';
 import { Reserva2 } from '../interfaces/reserva-2';
+import { Observable } from 'rxjs';
+import { update } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
@@ -43,42 +45,22 @@ export class ReservaService {
     }catch(error){
       console.error("❌ Error en la transacción:", error);
     }
-
-    // return addDoc(reservaRef, reserva)
   }
 
-  // updateCanchaReserva()
+  getListReserva(horario: string, cancha: string): Observable<Reserva2[]>{
+    const ref = collection(this.firestore, `horario/${horario}/cancha/${cancha}/${this.collectionName}`)
 
-  // addReserva(reserva: Reserva){
-  //   const ref = collection(this.firestore, this.collectionName)
+    return collectionData(ref, {idField: 'id'}) as Observable<Reserva2[]>
+  }
 
-  //   return addDoc(ref, reserva)
-  // }
+  updateEstado(horarioID: string, canchaID: string, reservaID: string, estado: string){
+    const path = `horario/${horarioID}/cancha/${canchaID}/reserva`
 
-  // async getReservaPorCHFH(reserva: Reserva){//(id_cancha: string, id_horario: string, fecha: string, hora_inicio: string){
-  //   try{
-  //     const ref = collection(this.firestore, this.collectionName)
+    const ref = doc(this.firestore, path, reservaID)
 
-  //     const q = query(ref, 
-  //       where('fecha','==',reserva.fecha),
-  //       where('hora_inicio','==',reserva.hora_inicio),
-  //       where('cancha.id','==',reserva.cancha.id),
-  //       where('horario.id','==',reserva.horario.id)
-  //     )
-
-  //     const querySnapshot = await getDocs(q);
-  //     const reservas: any[] = []
-
-  //     querySnapshot.forEach( doc => {
-  //       reservas.push({id: doc.id, ...doc.data()})
-  //     })
-
-  //     return reservas;
-
-  //   }catch(error){
-  //     console.error("No se ha podido obtenr las reservas:, ",error)
-  //     return []
-  //   }
-  // }
+    updateDoc(ref, { estado: estado})
+      .then(() => console.log("✅ Estado actualizado correctamente"))
+      .catch(error => console.error("❌ Error al actualizar:", error));
+  }
 
 }

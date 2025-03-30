@@ -11,6 +11,7 @@ import { MensajesComponent } from './pages/UserPage/mensajes/mensajes.component'
 import { PerfilComponent } from './pages/UserPage/perfil/perfil.component';
 import { TorneoComponent } from './pages/UserPage/torneo/torneo.component';
 import { CheckOutComponent } from './pages/UserPage/check-out/check-out.component';
+import { ReservasComponent } from './pages/AdminPage/reservas/reservas.component';
 
 export const routes: Routes = [
     {
@@ -34,6 +35,10 @@ export const routes: Routes = [
         path: 'admin-main',
         component: AdminMainComponent,
         // ...canActivate( () => redirectUnauthorizedTo(['login']))
+        children: [
+            {path: 'reservas', component: ReservasComponent},
+            {path: '**', redirectTo: 'admin-main'}
+        ]
     },
     {path: 'reservas-check-in', component: ReservaComponent},
     {path: 'check-out', component: CheckOutComponent},

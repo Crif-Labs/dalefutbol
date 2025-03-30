@@ -1,0 +1,163 @@
+<div class="container-reservas">
+    <div class="head-reservas">
+        <h2 class="title-reservas" style="color: white;">Reservas</h2>
+    </div>
+
+
+    <div class="body-reservas">
+        <!-- <input type="date"  class="select-fecha" [(ngModel)]="dateHorario" (change)="getHorarioForDate()" > -->
+
+        <div class="group-input">
+          <input type="date" class="input" [(ngModel)]="dateHorario" (change)="getHorarioForDate()">
+          <span class="highlight"></span>
+          <span class="bar"></span>
+          <label>Fecha</label>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table caption-top table-primary">  
+            <caption style="color: white;">Lista de Horario</caption>
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Fecha:</th>
+                <th scope="col">Hora Inicio:</th>
+                <th scope="col">Hora Fin:</th>
+                <!-- <th scope="col">Cantidad de Canchas:</th> -->
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let list of listHorarioCanchaToday" class="table-group-divider tbody-primary">
+              <tr>
+                <td class="icon">
+                  <i class="fa-regular fa-futbol"></i>
+                </td>
+                <td>{{list.horario.dia | date: 'dd-MM-yyyy'}}</td>
+                <td>{{list.horario.hora_inicio}}</td>
+                <td>{{list.horario.hora_fin}}</td>
+                <td><b>Cantidad de Canchas:</b>  {{list.canchaList.length}}</td>
+              </tr>
+              <tr>
+                <td colspan="1"></td>
+                <td colspan="4">
+                  <table class="table table-hover caption-top table-nest">  
+                    <thead class="thead-nest">
+                      <tr>
+                        <th scope="col">Info</th>
+                        <th scope="col">Cancha</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">Comuna</th>
+                        <th scope="col">Capacidad</th>
+                        <th scope="col">Inscritos</th>
+                        <th scope="col">Jugadores</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody-nest">
+                      <tr *ngFor="let cancha of list.canchaList">
+                        <th scope="row">
+                          <i class="fa-solid fa-circle-info"></i>
+                        </th>
+                        <td>{{cancha.nombre}}</td>
+                        <td>{{cancha.direccion}}</td>
+                        <td>{{cancha.comuna}}</td>
+                        <td>{{cancha.capacidad}}</td>
+                        <td>{{cancha.inscritos}}</td>
+                        <td>
+                            <button (click)="getListReserva(list.horario.id,cancha.id)" class="btn btn-primary px-2" style="width: fit-content;" data-bs-toggle="modal" data-bs-target="#listReservaModal">
+                              <i class="fa-solid fa-people-group"></i>
+                            </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="listReservaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="listReservaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="listReservaModalLabel">Lista de Jugadores</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table caption-top table-primary">  
+            <caption>Jugadores</caption>
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col">Jugador:</th>
+                <th scope="col">Celular:</th>
+                <th scope="col">Fecha Reserva:</th>
+                <th scope="col">Hora Reserva:</th>
+                <th scope="col">Estado:</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let list of listReserva" class="table-group-divider tbody-primary">
+              <tr>
+                <td>{{list.responsable.nombre}} {{list.responsable.apellido}}</td>
+                <td>{{list.responsable.celular}}</td>
+                <td>{{list.fecha_reserva | date: 'dd-MM-yyyy'}}</td>
+                <td>{{list.hora_reserva}}</td>
+                <td (click)="setReservaID(list.id)" data-bs-target="#selectStatus" data-bs-toggle="modal">
+                  {{list.estado}}&nbsp;&nbsp;
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </td>
+                <!-- <td>{{list.horario.hora_inicio}}</td>
+                <td>{{list.horario.hora_fin}}</td>
+                <td><b>Cantidad de Canchas:</b>  {{list.canchaList.length}}</td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal" style="width: fit-content;">Cerrar</button>
+        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="selectStatus" aria-hidden="true" aria-labelledby="selectStatusLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="selectStatusLabel">Seleccione un Estado:</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div (click)="updateEstadoReserva('Confirmado')" class="form-check" data-bs-target="#listReservaModal" data-bs-toggle="modal">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="confirmado">
+          <label class="form-check-label" for="confirmado">
+            ✅ Confirmado
+          </label>
+        </div>
+        <div (click)="updateEstadoReserva('Pendiente')" class="form-check" data-bs-target="#listReservaModal" data-bs-toggle="modal">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="pendiente">
+          <label class="form-check-label" for="pendiente">
+            🟡 Pendiente
+          </label>
+        </div>
+        <div (click)="updateEstadoReserva('Cancelado')" class="form-check" data-bs-target="#listReservaModal" data-bs-toggle="modal">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="cancelado">
+          <label class="form-check-label" for="cancelado">
+            ❌ Cancelado
+          </label>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#listReservaModal" data-bs-toggle="modal">Volver al listado</button>
+      </div>
+    </div>
+  </div>
+</div>

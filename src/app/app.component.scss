@@ -20,6 +20,17 @@ $teamGreen: #398f28;
 
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
+.form-check-input:checked {
+    background-color: $rojo;
+    border-color: $rojo;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 .25rem rgba($color: $rojo, $alpha: .25);
+}
+
+
+
 
 .container-principal{
     // background-color: green;
@@ -130,4 +141,176 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 ::-webkit-scrollbar-thumb{
     background: $rojo;
+}
+
+.table-primary{
+
+    .thead-primary{
+        tr{
+            th{
+                background-color: #0f0f0fb7;
+                color: white;
+            }
+        }
+    }
+
+    .tbody-primary{
+        border-bottom: 2px solid $darkGray;
+
+        tr{
+            &:last-child{
+                border-bottom: 2px solid $lightGray;
+            }   
+            
+            .icon{
+                text-align: center;
+            }
+
+            th{
+                background-color: $darkGray;
+                color: white;
+            }
+            td{
+                background-color: $darkGray;
+                color: white;
+
+                .table-nest{
+                    border: 2px solid $gray;
+                
+                    .thead-nest{
+                        tr{ 
+                            border-bottom: 2px solid $darkGray;
+
+                            text-align: left;
+
+                            th{
+                                background-color: #0f0f0fb7;
+                                color: white;
+                                
+                                &:last-child, &:first-child{
+                                    text-align: center;
+                                }
+                            }
+                        }                        
+                    }
+
+                    .tbody-nest{
+                        tr{
+                            border-bottom: 2px solid $gray;
+                            th, td{
+                                background-color: $gray;
+                            }
+
+                            th{
+                                text-align: center;
+                            }
+
+                            td{
+                                &:last-child{
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+}
+
+.group-input{
+    position: relative;
+    margin-top: 50px;
+   
+    .input {
+        font-size: 16px;
+        padding: 10px 10px 10px 5px;
+        display: block;
+        width: 200px;
+        border: none;
+        border-bottom: 1px solid #515151;
+        background: transparent;
+
+        color: white;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    label {
+        color: #999;
+        font-size: 18px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 5px;
+        top: 10px;
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+       }
+       
+       .input:focus ~ label, .input:valid ~ label {
+        top: -20px;
+        font-size: 18px;
+        color: white;
+       }
+       
+       .bar {
+        position: relative;
+        display: block;
+        width: 200px;
+       }
+       
+       .bar:before, .bar:after {
+        content: '';
+        height: 2px;
+        width: 0;
+        bottom: 1px;
+        position: absolute;
+        background: $rojo;
+        transition: 0.2s ease all;
+        -moz-transition: 0.5s ease all;
+        -webkit-transition: 0.5s ease all;
+       }
+       
+       .bar:before {
+        left: 50%;
+       }
+       
+       .bar:after {
+        right: 50%;
+       }
+       
+       .input:focus ~ .bar:before, .input:focus ~ .bar:after {
+        width: 50%;
+       }
+       
+       .highlight {
+        position: absolute;
+        height: 60%;
+        width: 100px;
+        top: 25%;
+        left: 0;
+        pointer-events: none;
+        opacity: 0.5;
+       }
+       
+       .input:focus ~ .highlight {
+        animation: inputHighlighter 0.3s ease;
+       }
+       
+       @keyframes inputHighlighter {
+        from {
+         background: $rojo;
+        }
+       
+        to {
+         width: 0;
+         background: transparent;
+        }
+       }
 }
