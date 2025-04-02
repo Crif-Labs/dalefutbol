@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, Firestore, getDocs, query, where, doc, runTransaction, collectionData, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, Firestore, getDocs, query, where, doc, runTransaction, collectionData, updateDoc, getDoc, deleteDoc } from '@angular/fire/firestore';
 import { Reserva } from '../interfaces/reserva';
 import { Reserva2 } from '../interfaces/reserva-2';
 import { Observable } from 'rxjs';
@@ -16,14 +16,14 @@ export class ReservaService {
 
   constructor(private firestore: Firestore) { }
 
-  async addReserva(cancha: string, horario: string, reserva: Reserva2){
+  async addReserva(cancha: string, horario: string, reserva: Reserva2): Promise<Reserva2 | null>{
 
     const reservaRef = collection(this.firestore, `horario/${horario}/cancha/${cancha}/${this.collectionName}`)
     const canchaRef = doc(this.firestore, `horario/${horario}/cancha/${cancha}`)
 
     try{
-      await runTransaction(this.firestore, async (transaction) => {
-        await addDoc(reservaRef, reserva)
+      const reservaDocRef = await runTransaction(this.firestore, async (transaction) => {
+        const newReservaRef = await addDoc(reservaRef, reserva)
 
         const canchaSnap = await transaction.get(canchaRef)
 
@@ -39,12 +39,32 @@ export class ReservaService {
         }
 
         transaction.update(canchaRef, { inscritos: String(currentInscritos + 1) })
+
+        return newReservaRef;
       })
 
-      console.log("✅ Reserva añadida y campo 'inscritos' actualizado con transacción.");
+      const reservaSnapshot = await getDoc(reservaDocRef)
+
+      if (reservaSnapshot.exists()) {
+        // console.log("✅ Reserva añadida y campo 'inscritos' actualizado");
+        const reservaData = reservaSnapshot.data() as Reserva2;
+
+        return {id: reservaSnapshot.id, ...reservaData}
+
+      } else {
+        console.error("❌ La reserva no se pudo recuperar.");
+        return null;
+      }
     }catch(error){
       console.error("❌ Error en la transacción:", error);
+      return null
     }
+  }
+
+  deleteReserva(horarioID: string, canchaID: string, reservaID: string){
+    const ref = doc(this.firestore, `horario/${horarioID}/cancha/${canchaID}/${this.collectionName}/${reservaID}`)
+
+    return deleteDoc(ref)
   }
 
   getListReserva(horario: string, cancha: string): Observable<Reserva2[]>{
@@ -53,14 +73,32 @@ export class ReservaService {
     return collectionData(ref, {idField: 'id'}) as Observable<Reserva2[]>
   }
 
-  updateEstado(horarioID: string, canchaID: string, reservaID: string, estado: string){
-    const path = `horario/${horarioID}/cancha/${canchaID}/reserva`
+  async updateEstado(horarioID: string, canchaID: string, reservaID: string, perfilID: string, estado: string){
+    const pathHorario = `horario/${horarioID}/cancha/${canchaID}/reserva`
+    const pathPerfil = `perfil/${perfilID}/reserva`
 
-    const ref = doc(this.firestore, path, reservaID)
+    // console.log(pathHorario)
+    // console.log(pathPerfil)
 
-    updateDoc(ref, { estado: estado})
-      .then(() => console.log("✅ Estado actualizado correctamente"))
-      .catch(error => console.error("❌ Error al actualizar:", error));
+    const refHorario = doc(this.firestore, pathHorario, reservaID)
+    const refPerfil = doc(this.firestore, pathPerfil, reservaID)
+
+    try {
+      await runTransaction(this.firestore, async (transaction) => {
+        const horarioSnap = await transaction.get(refHorario);
+        const perfilSnap = await transaction.get(refPerfil)
+
+        if(!horarioSnap.exists() || !perfilSnap.exists())
+          throw new Error("❌ Uno de los documentos no existe.");
+
+        transaction.update(refHorario, {estado: estado})
+        transaction.update(refPerfil, {estado: estado})
+      });
+
+      console.log("✅ Estado actualizado correctamente en ambas rutas.");
+    } catch (error) {
+      console.error("❌ Error en la actualización:", error);
+    }
   }
 
 }

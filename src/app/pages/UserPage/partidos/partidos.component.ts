@@ -13,6 +13,9 @@ import { Cancha } from '../../../interfaces/cancha';
 import { Horario } from '../../../interfaces/horario';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { SessionStorageService } from '../../../services/session-storage.service';
+import { ReservaService } from '../../../services/reserva.service';
+import { Perfil } from '../../../interfaces/perfil';
+import { Reserva2 } from '../../../interfaces/reserva-2';
 
 registerLocaleData(localeEs, 'es-ES');
 
@@ -32,13 +35,15 @@ export class PartidosComponent {
   loading: boolean;
   comunaSelected: string = "Comuna";
   comunaList: Comuna[] = []
+  listReservaFromPerfil: Reserva2[] = []
 
   constructor(private route: Router, 
     private perfilService: PerfilService, 
     private comunaService: ComunaService,
     private horarioService: HorarioService,
     private localStorageService: LocalStorageService,
-    private sessionStorageService: SessionStorageService
+    private sessionStorageService: SessionStorageService,
+    private reservaService: ReservaService
   ){
     this.today = new Date()
 
@@ -53,6 +58,12 @@ export class PartidosComponent {
     await this.getHorarios()
 
     this.loading = await false
+
+    const idPerfil = String(this.localStorageService.getItem('idPerfil'))
+    console.log(idPerfil)
+
+    this.perfilService.getReservaFromPerfil(String(this.localStorageService.getItem('idPerfil')))
+    .subscribe(res => this.listReservaFromPerfil = res)
   }
 
   changeComuna(event: any){
@@ -69,8 +80,8 @@ export class PartidosComponent {
       const perfilObj = await JSON.parse(perfilFb)
 
       // recordemos que lo comentado es lo original
-      // this.comuna = perfilObj.comuna
-      this.comuna = 'La Florida' //eliminar linea y descomentar linea anterior
+      this.comuna = perfilObj.comuna
+      // this.comuna = 'La Florida' //eliminar linea y descomentar linea anterior
       this.comunaSelected = this.comuna
     }
   }
@@ -90,7 +101,7 @@ export class PartidosComponent {
     let cancha_list: Cancha[] | any = []
     let horario_final: Horario;
     this.listHorarioCancha = []
-
+    const perfilFb = JSON.parse(String(this.localStorageService.getItem('perfil')))//await localStorage.getItem('perfil');
 
     await this.horarioService.getHorariosHoy(date)
       .then( async res => {   
@@ -107,8 +118,25 @@ export class PartidosComponent {
                   cancha_list = []
                   for(let cancha of res){
                     
-                    if(cancha.comuna == this.comuna){
-                      cancha_list.push(cancha)
+                    if(cancha.comuna == this.comuna){                      
+                      
+                      this.reservaService.getListReserva(String(horario.id), String(cancha.id))
+                        .subscribe(res => {  
+                          if(res.length == 0){
+                            cancha_list.push(cancha)
+                          }else{                          
+                            for(let reserva of res){
+                              const responsable: Perfil | any = reserva.responsable
+                              
+                              if(responsable.id == perfilFb.id){
+                                console.log("Ya esta reservado")
+                              }else{
+                                cancha_list.push(cancha)
+                              }
+                            }
+                          }
+                        })
+                      
                     }
                   }
 
@@ -124,7 +152,7 @@ export class PartidosComponent {
 
                 })
             }
-          }
+          }          
         }
       }).catch(error => {
         console.log(error)
@@ -136,8 +164,6 @@ export class PartidosComponent {
     await this.sessionStorageService.setItem('horario', JSON.stringify(horario))
     await this.sessionStorageService.setItem('cancha', JSON.stringify(cancha))
 
-
-    // console.log(this.sessionStorageService.getItem('cancha'))
 
     this.route.navigate(['/reservas-check-in'])
   }

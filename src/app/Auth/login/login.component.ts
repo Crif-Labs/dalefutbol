@@ -45,9 +45,15 @@ export class LoginComponent {
   UID: string | any
   async getAuth(){
 
-    await this.authService.getAuth().subscribe( user => {
-      this.UID = user?.uid
-    })
+    try{
+      await this.authService.getAuth().subscribe( user => {
+        this.UID = user?.uid
+      })
+    }catch(error){
+      console.log(error)
+    }
+
+    
   }
 
   onLogin(usuario: Usuario){

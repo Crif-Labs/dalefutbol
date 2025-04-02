@@ -32,6 +32,8 @@
 </div>
 
 <div *ngIf="!loading" class="cancha-list">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listReservaFromPerfil">Ver mis Reservas</button>
+
     <div *ngFor="let horario of listHorarioCancha">
         <div *ngFor="let cancha of horario.cancha_list" class="cancha-card" style="background-image: url('{{cancha.link_image}}');">
             <div class="detail-cancha">
@@ -51,4 +53,48 @@
     <!-- <button class="btn" *ngFor="let horario of horarios" (click)="getCanchasPorHorarios(horario.id)">{{horario.hora_inicio}} - {{horario.dia}}</button> -->
 
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="listReservaFromPerfil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="listReservaFromPerfilLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="listReservaFromPerfilLabel">Lista de Jugadores</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table caption-top table-primary">  
+              <caption>Jugadores</caption>
+              <thead class="thead-primary">
+                <tr>
+                  <th scope="col">Fecha:</th>
+                  <th scope="col">Hora:</th>
+                  <th scope="col">Estado:</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let list of listReservaFromPerfil" class="table-group-divider tbody-primary">
+                <tr>
+                  <td>{{list.fecha_reserva}}</td>
+                  <td>{{list.hora_reserva}}</td>
+                  <td>{{list.estado}}</td>
+                  <!-- <td>{{list.horario.hora_inicio}}</td>
+                  <td>{{list.horario.hora_fin}}</td>
+                  <td><b>Cantidad de Canchas:</b>  {{list.canchaList.length}}</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal" style="width: fit-content;">Cerrar</button>
+          <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
 

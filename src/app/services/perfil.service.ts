@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Perfil } from '../interfaces/perfil';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, getDoc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, getDoc, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Reserva2 } from '../interfaces/reserva-2';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,30 @@ export class PerfilService {
     const ref = doc(this.firestore, `${this.collectionName}/${id}`)
 
     return docData(ref, {idField: 'id'}) as Observable<Perfil>
+  }
+
+  async getPerfilByUID(uid: string): Promise<Perfil | null>{
+
+    try{
+      const ref = collection(this.firestore, `${this.collectionName}`)
+
+      const q = query(ref, where('id_usuario','==',uid))
+      const element = await getDocs(q)
+
+      if(!element.empty){
+        const data: Perfil | any = element.docs.map(
+          doc => ({
+            id: doc.id,
+            ...doc.data() as Perfil
+          })
+        )[0]
+        return data
+      }
+
+      return null;
+    }catch(error){
+      return null
+    }
   }
 
   async getRolPerfil(id_usuario:string){
@@ -73,24 +98,29 @@ export class PerfilService {
       console.error('Error al obtener la comuna: ', error)
       return null
     }
-
-    // console.log(id)
-
-    // const docRef = doc(this.firestore, 'Perfil',id);
-    // const docSanp = await getDoc(docRef)
-
-    // console.log(docSanp)
-
-    // if(docSanp.exists()){
-
-
-    //   return docSanp.data()['comuna'];
-    // } else {
-    //   console.log("No se encontro nada")
-    //   return null
-    // }
-
   }
+
+
+  async addReservaToPerfil(perfilID: string, reserva: Reserva2): Promise<boolean>{
+    try{
+      const ref = doc(this.firestore, `${this.collectionName}/${perfilID}/reserva/${reserva.id}`)
+
+      await setDoc(ref, reserva)
+      return true;
+    }catch{
+      return false;
+    }    
+  }
+
+  getReservaFromPerfil(perfilID: string): Observable<Reserva2[]>{
+      const ref = collection(this.firestore, `perfil/${perfilID}/reserva`)
+      
+      return collectionData(ref, {idField: 'id'}) as Observable<Reserva2[]>
+  }
+
+  // getReservaFromPerfil(perfilID: string): Observable<any>{
+
+  // }
 
   updatePerfil(id: string, perfil: Partial<Perfil>){
     const ref = doc(this.firestore, `${this.collectionName}/${id}`)

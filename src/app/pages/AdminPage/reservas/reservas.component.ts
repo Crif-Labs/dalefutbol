@@ -5,6 +5,7 @@ import { Cancha } from '../../../interfaces/cancha';
 import { FormsModule } from '@angular/forms';
 import { ReservaService } from '../../../services/reserva.service';
 import { Reserva2 } from '../../../interfaces/reserva-2';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 
 
@@ -25,11 +26,14 @@ export class ReservasComponent implements OnInit {
 
   listReserva: Reserva2[] | any
 
-  constructor(private horarioService: HorarioService, private reservaService: ReservaService){
+  idPerfil: string | null = ''
+
+  constructor(private horarioService: HorarioService, private reservaService: ReservaService, private lsService: LocalStorageService){
 
   }
 
   ngOnInit(): void {
+    this.idPerfil = this.lsService.getItem('idPerfil')
 
     this.dateHorario = formatDate(this.today, 'yyyy-MM-dd', 'en-US')
 
@@ -121,7 +125,12 @@ export class ReservasComponent implements OnInit {
   }
 
   updateEstadoReserva(status: string){
-    this.reservaService.updateEstado(this.horario, this.cancha, this.reserva, status)
+
+    if(this.idPerfil){
+      this.reservaService.updateEstado(this.horario, this.cancha, this.reserva, this.idPerfil, status)
+    }else{
+      console.log("No se realizo la acutalizacion, intente nuevamente")
+    }
   }
 
 }

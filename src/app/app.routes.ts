@@ -22,7 +22,7 @@ export const routes: Routes = [
     {
         path: 'user-main',
         component: UserMainComponent,
-        // ...canActivate( () => redirectUnauthorizedTo(['login'])),
+        ...canActivate( () => redirectUnauthorizedTo(['login'])),
         children: [
             {path: 'partidos', component: PartidosComponent},
             {path: 'chat', component: MensajesComponent},

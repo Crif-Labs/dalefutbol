@@ -19,7 +19,7 @@ export class UserMainComponent {
    * con el id_usuario obtenido de Auth
    * sacar el id de la coleccion Perfil
    */
-  id_usuario: string | any //= "hcJa0nlFOBaC9Zbi9zNoxbmFo1i2"
+  id_usuario: string | any = 'prueba'//= "hcJa0nlFOBaC9Zbi9zNoxbmFo1i2"
   idPerfil: string = "LDLekObQQxllfp1u3O9U"
 
 
@@ -48,28 +48,30 @@ export class UserMainComponent {
   selectedMenu: number = 0
 
   constructor(private authService: AuthService, private router:Router, private perfilService: PerfilService, private lsService: LocalStorageService){
-    this.id_usuario = this.getAuth()
-    this.getMenu()
-
-    lsService.setItem('idPerfil', this.idPerfil)
 
 
-    this.setIdUsuarioLocalStorage()   
-
-    // localStorage.setItem('idPerfil', this.idPerfil)
+    this.initPage()
 
 
   }
 
-  async setIdUsuarioLocalStorage(){
-    // await localStorage.setItem('idPerfil',this.idPerfil);
-    
+  async initPage(){
+    try{
+      await this.authService.getAuth().subscribe(
+        res => {
+          this.perfilService.getPerfilByUID(String(res?.uid))
+            .then(res => {
+              this.lsService.setItem('idPerfil',String(res?.id))
+              this.lsService.setItem('perfil',JSON.stringify(res))
+            })
+        }
+      )
 
-    await this.perfilService.getPerfilById(this.idPerfil).subscribe(
-      response => {
-        this.lsService.setItem('perfil', JSON.stringify(response))
-      }
-    )
+    }catch(error){
+      console.log(error)
+    }
+
+
   }
 
   getMenu(){
@@ -116,15 +118,6 @@ export class UserMainComponent {
         break;
     }
     // this.selectedMenu = menu
-  }
-
-  async getAuth(){
-
-    return "hcJa0nlFOBaC9Zbi9zNoxbmFo1i2"
-
-    // await this.authService.getAuth().subscribe( user => {
-    //   this.correo = user?.email
-    // })
   }
 
 
