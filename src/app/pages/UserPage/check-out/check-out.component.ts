@@ -49,8 +49,8 @@ export class CheckOutComponent {
   reserva: Reserva2 = {
     fecha_reserva: '',
     hora_reserva: '',
-    responsable: 'admin',
-    estado: 'pendiente'
+    responsable: this.perfil,//'admin',
+    estado: 'Pendiente'
   }
 
 
@@ -73,21 +73,18 @@ export class CheckOutComponent {
 
       this.horario.cancha_list = []
 
-      const datePipe = new DatePipe('en-US')
+      const datePipe = new DatePipe('es-CL')
 
       this.date = String(datePipe.transform(this.horario.dia, 'dd/MM'))
 
       const localDate = new Date()
 
       this.reserva = {
-        fecha_reserva: localDate.toISOString().split('T')[0].replace(/-/g,'/'),//String(),
+        fecha_reserva: String(datePipe.transform(localDate, 'yyyy/MM/dd')),//localDate.toISOString().split('T')[0].replace(/-/g,'/'),//String(),
         hora_reserva: localDate.toTimeString().split(' ')[0].slice(0, 5),
         responsable: this.perfil,
-        estado: 'pendiente'
+        estado: 'Pendiente'
       }
-
-
-
 
     }else{
       console.log("Problemas en la lectura de datos")
@@ -95,34 +92,22 @@ export class CheckOutComponent {
   }
 
   async addReserva(){
-
-    try{
-      const reservaAgregada = await this.reservaService.addReserva(String(this.cancha.id), String(this.horario.id), this.reserva);
-
-      if(!reservaAgregada){
-        console.log("❌ No se pudo agregar la reserva.");
+    try {
+      const newReserva = await this.reservaService.addReserva(String(this.cancha.id), String(this.horario.id), String(this.perfil.id), this.reserva)
+      
+      if(!newReserva){
+        console.log("❌ No se pudo realizar la reserva.");
         return;
       }
 
-      const perfilActualizado = await this.perfilService.addReservaToPerfil(String(this.perfil.id), reservaAgregada)
-
-
-      if(!perfilActualizado){
-        console.log("❌ No se pudo agregar la reserva al perfil. Eliminando la reserva...");
-        await this.reservaService.deleteReserva(
-          String(this.cancha.id),
-          String(this.horario.id),
-          String(reservaAgregada.id) // 🔥 Necesitamos que `addReserva` retorne el ID
-        );
-        return;
-      }
-
+      console.log("✅ Reserva completada con éxito:", newReserva);
       this.router.navigate(['/user-main/partidos']);
 
     } catch (error) {
       console.log("❌ Error en el proceso de reserva:", error);
     }
   }
+
 
   buttonBack(){
     this.router.navigate(['reservas-check-in'])

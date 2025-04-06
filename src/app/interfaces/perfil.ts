@@ -7,4 +7,5 @@ export interface Perfil {
     comuna?: string;
     rol: 'admin' | 'jugador'; // Asegura que el rol solo pueda ser 'admin' o 'jugador'
     id_usuario: string;
+    descuento?: string;
 }

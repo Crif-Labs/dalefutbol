@@ -5,6 +5,6 @@ export interface Reserva2 {
     id?: string;
     fecha_reserva: string;
     hora_reserva: string;
-    responsable: Perfil | Equipo | 'admin',
-    estado: 'pendiente' | 'confirmada' | 'cancelada';
+    responsable: Perfil | Equipo, //| 'admin',
+    estado: 'Pendiente' | 'Confirmado' | 'Cancelado';
 }

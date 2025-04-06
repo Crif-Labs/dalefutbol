@@ -75,7 +75,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         flex-direction: column;
         width: 90%;
         margin: 0px auto 0px auto;
-        // border: 1px solid red;
         height: 80px;
 
         .label-input{
@@ -137,6 +136,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
 ::-webkit-scrollbar{
     width: 2px;
+    height: 1px;
     border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb{

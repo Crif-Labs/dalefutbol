@@ -36,6 +36,8 @@ export class PartidosComponent {
   comunaSelected: string = "Comuna";
   comunaList: Comuna[] = []
   listReservaFromPerfil: Reserva2[] = []
+  listHoras: String[] = []
+  hora_selected: string = ''
 
   constructor(private route: Router, 
     private perfilService: PerfilService, 
@@ -59,11 +61,13 @@ export class PartidosComponent {
 
     this.loading = await false
 
-    const idPerfil = String(this.localStorageService.getItem('idPerfil'))
-    console.log(idPerfil)
+    // const idPerfil = String(this.localStorageService.getItem('idPerfil'))
+    // console.log(idPerfil)
 
     this.perfilService.getReservaFromPerfil(String(this.localStorageService.getItem('idPerfil')))
     .subscribe(res => this.listReservaFromPerfil = res)
+
+    // console.log(this.listHorarioCancha)
   }
 
   changeComuna(event: any){
@@ -105,42 +109,76 @@ export class PartidosComponent {
 
     await this.horarioService.getHorariosHoy(date)
       .then( async res => {   
-        
+        // console.log("Listado de horarios de hoy: ",res)
         if(res != null){       
           
+          this.listHoras = []
           for(let horario of res){
 
-            if(horario.id != undefined){
+            if(horario.id !== undefined){
 
-              this.horarioService.getCanchaHorario(horario.id)
+              const horarioCopia = { ...horario}
+
+              // this.horarioService.getCanchaHorario(horario.id)
+              this.horarioService.getCanchaHorario(String(horarioCopia.id))
                 .subscribe((res) => {
 
-                  cancha_list = []
+                  let cancha_list: Cancha[] = []
+
                   for(let cancha of res){
                     
-                    if(cancha.comuna == this.comuna){                      
+                    if(cancha.comuna === this.comuna){  
+
+                      if(!this.listHoras.includes(horarioCopia.hora_inicio)){
+                        this.listHoras.push(horarioCopia.hora_inicio)
+                        this.listHoras.sort()
+                      }
+                      
+                      // if(this.listHoras.length == 0 ){
+                      //   this.listHoras.push(horario.hora_inicio)
+                      // }else{
+                      //   for(let hora of this.listHoras){
+                      //     if(hora != horario.hora_inicio){
+                      //       this.listHoras.push(horario.hora_inicio)
+                      //       this.listHoras.sort() 
+                      //     }
+                      //   }
+                      // }       
                       
                       this.reservaService.getListReserva(String(horario.id), String(cancha.id))
                         .subscribe(res => {  
                           if(res.length == 0){
                             cancha_list.push(cancha)
-                          }else{                          
-                            for(let reserva of res){
-                              const responsable: Perfil | any = reserva.responsable
-                              
-                              if(responsable.id == perfilFb.id){
-                                console.log("Ya esta reservado")
-                              }else{
-                                cancha_list.push(cancha)
-                              }
+                          }else{                      
+                            // const reserv: Reserva2 | any = res
+                            // let respon: Perfil | any = reserv.reserv
+
+                            // if(respon.rol != 'admin'){
+
+                            // }
+                            const yaReservado = res.some(reserva => reserva.responsable?.id === perfilFb.id)
+                            if(!yaReservado){
+                              cancha_list.push(cancha)
                             }
+                            
+                            // for(let reserva of res){
+                            //   const responsable: Perfil | any = reserva.responsable
+                              
+                            //   if(responsable.id == perfilFb.id){
+                            //     console.log("Ya esta reservado")
+                            //   }else{
+                            //     cancha_list.push(cancha)
+                            //   }
+                            // }
                           }
                         })
                       
                     }
                   }
 
-                  horario_final = {
+                  
+
+                  const horario_final = {
                     id: horario.id,
                     hora_inicio: horario.hora_inicio,
                     hora_fin: horario.hora_fin,
@@ -148,12 +186,18 @@ export class PartidosComponent {
                     cancha_list: cancha_list
                   }
 
+                  // console.log(horario_final)
+                  // this.listHoras = []
+
                   this.listHorarioCancha.push(horario_final)
+                  // this.listHoras = this.listHorarioCancha.map(hora => hora.hora_inicio).sort()
 
                 })
             }
           }          
         }
+
+        // this.listHoras = this.listHorarioCancha.map(hora => hora.hora_inicio).sort()
       }).catch(error => {
         console.log(error)
       })
@@ -178,6 +222,14 @@ export class PartidosComponent {
       
     }catch(error){
       console.log(error)
+    }
+  }
+
+  getHorarioPorHora(hora: String){
+    if(hora == this.hora_selected)
+      this.hora_selected = ''
+    else{
+      this.hora_selected = `${hora}`
     }
   }
 

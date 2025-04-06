@@ -33,7 +33,7 @@ export class ReservasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.idPerfil = this.lsService.getItem('idPerfil')
+    // this.idPerfil = this.lsService.getItem('idPerfil')
 
     this.dateHorario = formatDate(this.today, 'yyyy-MM-dd', 'en-US')
 
@@ -120,11 +120,14 @@ export class ReservasComponent implements OnInit {
 
   reserva: string = ''
 
-  setReservaID(reservaID: string){
+  setReservaID(reservaID: string, perfilID: string){
     this.reserva = reservaID
+    this.idPerfil = perfilID
   }
 
   updateEstadoReserva(status: string){
+
+    console.log("ID que envia el componente: ",this.idPerfil)
 
     if(this.idPerfil){
       this.reservaService.updateEstado(this.horario, this.cancha, this.reserva, this.idPerfil, status)

@@ -7,5 +7,6 @@ export interface Cancha {
     capacidad_equipo: string;
     precio: number;
     link_image?: string[],
-    inscritos?: string
+    inscritos?: string,
+    confirmados?: string,
 }

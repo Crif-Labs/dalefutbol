@@ -49,6 +49,7 @@
                         <th scope="col">Comuna</th>
                         <th scope="col">Capacidad</th>
                         <th scope="col">Inscritos</th>
+                        <th scope="col">Confirmados</th>
                         <th scope="col">Jugadores</th>
                       </tr>
                     </thead>
@@ -62,6 +63,7 @@
                         <td>{{cancha.comuna}}</td>
                         <td>{{cancha.capacidad}}</td>
                         <td>{{cancha.inscritos}}</td>
+                        <td>{{cancha.confirmados}}</td>
                         <td>
                             <button (click)="getListReserva(list.horario.id,cancha.id)" class="btn btn-primary px-2" style="width: fit-content;" data-bs-toggle="modal" data-bs-target="#listReservaModal">
                               <i class="fa-solid fa-people-group"></i>
@@ -107,7 +109,7 @@
                 <td>{{list.responsable.celular}}</td>
                 <td>{{list.fecha_reserva | date: 'dd-MM-yyyy'}}</td>
                 <td>{{list.hora_reserva}}</td>
-                <td (click)="setReservaID(list.id)" data-bs-target="#selectStatus" data-bs-toggle="modal">
+                <td (click)="setReservaID(list.id, list.responsable.id)" data-bs-target="#selectStatus" data-bs-toggle="modal">
                   {{list.estado}}&nbsp;&nbsp;
                   <i class="fa-regular fa-pen-to-square"></i>
                 </td>
