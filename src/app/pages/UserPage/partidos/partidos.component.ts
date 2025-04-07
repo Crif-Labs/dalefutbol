@@ -233,6 +233,10 @@ export class PartidosComponent {
     }
   }
 
+  redirectToMisReservas(){
+    console.log("Estamos yendo a Mis Reservas?")
+    this.route.navigate(['/mis-reservas'])
+  }
 
 
 }

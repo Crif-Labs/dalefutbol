@@ -1,0 +1,119 @@
+@import '../../../app.component.scss';
+
+.container-mis-reservas{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+    .header-mis-reservas{
+        color: whitesmoke;
+        // border: 1px solid red;
+        
+        padding: 10px 20px;
+        // border-bottom: 2px solid $gray;
+        // margin-bottom: 10px;
+
+        .arrow-back{
+            color: white;
+            font-size: 24px;
+        }
+
+        .title-header{
+            font-size: 24px;
+            margin-left: 20px;
+        }
+    }
+
+    .body-mis-reservas{
+        // border: 1px solid blue;
+        height: 100%;
+        overflow-y: auto;
+
+        .card-reserva{
+            // background-color: $gray;
+            width: 90%;
+            margin: auto;
+            margin-top: 10px;
+            color: whitesmoke;
+            
+            border-left: 2px solid $gray;
+            border-right: 2px solid $gray;
+            border-bottom: 2px solid $rojo;
+            
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+
+            .detail-card{
+                display: flex;
+                flex-direction: column;
+
+                .header-detail-card{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    text-align: center;
+                    background-color: $gray;
+                    padding: 5px;
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+
+                    .cancha-reserva{
+                        font-size: 26px;
+                        font-weight: bold;
+                    }
+
+                    .estatus{
+                        width: 120px;
+                        border-radius: 5px;
+                        padding: 3px 0;
+
+                        &.confirmado{
+                            background-color: #248f20;
+                        }
+
+                        &.pendiente{
+                            background-color: #ccb119d7;
+                        }
+
+                        &.cancelado{
+                            background-color: #a82d2d;
+                        }
+                    }
+                }
+
+                .horario, .reserva{
+                    margin-top: 5px;
+                    padding: 0px 10px;
+                    .title{
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
+
+                    .detail{
+                        display: flex;
+                        justify-content: space-between;
+                        width: 70%;
+                        margin: auto;
+                    }
+                }
+
+
+            }
+
+            .btn-primary{
+                height: fit-content;
+                margin: 10px auto;
+            }
+
+            .line{
+                background-color: $rojo;
+                height: 2px;
+                // width: 80%;
+            }
+        }
+    }
+}

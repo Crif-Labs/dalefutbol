@@ -34,7 +34,8 @@
 <div *ngIf="!loading" class="cancha-list">
 
     <div class="options-date">
-      <button class="option" data-bs-toggle="modal" data-bs-target="#listReservaFromPerfil" >Mis&nbsp;Reservas</button>
+      <!-- <button class="option" data-bs-toggle="modal" data-bs-target="#listReservaFromPerfil" >Mis&nbsp;Reservas</button> -->
+      <button class="option" (click)="redirectToMisReservas()">Mis&nbsp;Reservas</button>
       <span *ngFor="let hora of listHoras" class="option" [ngClass]="{'selected': hora == hora_selected}" (click)="getHorarioPorHora(hora)" >{{hora}}</span>
     </div>
 

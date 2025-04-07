@@ -12,6 +12,7 @@ import { PerfilComponent } from './pages/UserPage/perfil/perfil.component';
 import { TorneoComponent } from './pages/UserPage/torneo/torneo.component';
 import { CheckOutComponent } from './pages/UserPage/check-out/check-out.component';
 import { ReservasComponent } from './pages/AdminPage/reservas/reservas.component';
+import { MisReservasComponent } from './pages/UserPage/mis-reservas/mis-reservas.component';
 
 export const routes: Routes = [
     {
@@ -41,6 +42,7 @@ export const routes: Routes = [
         ]
     },
     {path: 'reservas-check-in', component: ReservaComponent},
+    {path: 'mis-reservas', component: MisReservasComponent},
     {path: 'check-out', component: CheckOutComponent},
     {
         path: 'login',
