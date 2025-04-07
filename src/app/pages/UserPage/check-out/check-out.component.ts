@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Cancha } from '../../../interfaces/cancha';
 import { Reserva } from '../../../interfaces/reserva';
 import { Horario } from '../../../interfaces/horario';
@@ -50,7 +50,8 @@ export class CheckOutComponent {
     fecha_reserva: '',
     hora_reserva: '',
     responsable: this.perfil,//'admin',
-    estado: 'Pendiente'
+    estado: 'Pendiente',
+    color: ''
   }
 
 
@@ -59,9 +60,15 @@ export class CheckOutComponent {
 
   confirm: boolean = false
 
+  colorTeam: string = ''
 
-  constructor(private router: Router, private perfilService: PerfilService, private reservaService: ReservaService, private localStorageService: LocalStorageService, private sessionStorageService: SessionStorageService){
+
+  constructor(private router: Router, private dataRoute: ActivatedRoute, private perfilService: PerfilService, private reservaService: ReservaService, private localStorageService: LocalStorageService, private sessionStorageService: SessionStorageService){
     if(localStorageService.getItem('perfil') != null || sessionStorageService.getItem('cancha') != null || sessionStorageService.getItem('horario')){
+
+      dataRoute.queryParams.subscribe( params => {
+        this.colorTeam = params['color']
+      })
 
       this.cancha = JSON.parse(String(sessionStorageService.getItem('cancha')))
 
@@ -83,6 +90,7 @@ export class CheckOutComponent {
         fecha_reserva: String(datePipe.transform(localDate, 'yyyy/MM/dd')),//localDate.toISOString().split('T')[0].replace(/-/g,'/'),//String(),
         hora_reserva: localDate.toTimeString().split(' ')[0].slice(0, 5),
         responsable: this.perfil,
+        color: this.colorTeam,
         estado: 'Pendiente'
       }
 

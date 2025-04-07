@@ -127,8 +127,6 @@ export class ReservasComponent implements OnInit {
 
   updateEstadoReserva(status: string){
 
-    console.log("ID que envia el componente: ",this.idPerfil)
-
     if(this.idPerfil){
       this.reservaService.updateEstado(this.horario, this.cancha, this.reserva, this.idPerfil, status)
     }else{

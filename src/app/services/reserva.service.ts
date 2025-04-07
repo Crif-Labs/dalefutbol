@@ -3,6 +3,7 @@ import { addDoc, collection, Firestore, getDocs, query, where, doc, runTransacti
 import { Reserva } from '../interfaces/reserva';
 import { Reserva2 } from '../interfaces/reserva-2';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { update } from '@angular/fire/database';
 import { PerfilService } from './perfil.service';
 import { CanchaService } from './cancha.service';
@@ -48,8 +49,6 @@ export class ReservaService {
       console.error("❌ Error en la transacción:", error);
       return null;
     }
-
-
   }
 
   deleteReserva(horarioID: string, canchaID: string, reservaID: string){
@@ -64,12 +63,29 @@ export class ReservaService {
     return collectionData(ref, {idField: 'id'}) as Observable<Reserva2[]>
   }
 
+  getPerfilesPorColorReserva(horarioID: string, canchaID: string, color1: string, color2: string): Observable<{color1: any[], color2: any[]}>{
+    const reservaPath = `horario/${horarioID}/cancha/${canchaID}/${this.collectionName}`;
+    const reservaRef = collection(this.firestore, reservaPath)
+    const q = query(reservaRef, where('estado','==','Confirmado'))
+
+    return collectionData(q, {idField: 'id'}).pipe(
+      map((reservas: any[]) => {
+        return {
+          color1: reservas
+            .filter(r => r.color === color1)
+            .map(r => ({ nombre: r.responsable.nombre, apellido: r.responsable.apellido})),
+          color2: reservas
+            .filter(r => r.color === color2)
+            .map(r => ({ nombre: r.responsable.nombre, apellido: r.responsable.apellido}))
+        }
+      })
+    )
+  }
+
   async updateEstado(horarioID: string, canchaID: string, reservaID: string, perfilID: string, estado: string){
     const pathHorario = `horario/${horarioID}/cancha/${canchaID}/reserva`
     const pathPerfil = `perfil/${perfilID}/reserva`
     const pathCancha = `horario/${horarioID}/cancha`
-
-    console.log("ID que recibe desde el componente: ",perfilID)
 
     const refHorario = doc(this.firestore, pathHorario, reservaID)
     const refPerfil = doc(this.firestore, pathPerfil, reservaID)
@@ -82,12 +98,6 @@ export class ReservaService {
         const perfilSnap = await transaction.get(refPerfil)
         const canchaSnap = await transaction.get(refCancha)
 
-        console.log("Path referencia: ",refHorario.path)
-
-        /// perfil/I6LLbwKDdCNDs8B7i2aT/reserva/hnvMTNex9WFhTgb6uRNq
-        console.log("Path referencia: ",refPerfil.path)
-        console.log("Path Firebase: perfil/I6LLbwKDdCNDs8B7i2aT/reserva/hnvMTNex9WFhTgb6uRNq")
-        console.log("Path referencia: ",refCancha.path)
 
         if(!horarioSnap.exists()){
           throw new Error("❌ Uno de los documentos no existe: (pathHorario)");

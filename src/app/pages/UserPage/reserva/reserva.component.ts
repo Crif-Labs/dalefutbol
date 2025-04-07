@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { LoadingPageComponent } from "../../../shared/loading-page/loading-page.component";
 import { Horario } from '../../../interfaces/horario';
 import { SessionStorageService } from '../../../services/session-storage.service';
+import { ReservaService } from '../../../services/reserva.service';
 
 
 @Component({
@@ -29,26 +30,27 @@ export class ReservaComponent implements OnInit, AfterViewInit {
   images: string[] = [];
   profile_photo: string[] = [];
 
+  TeamsColor: {nombre: string, color: string}[] = [
+    {
+      nombre: 'Blanco',
+      color: 'blanco'
+    },
+    {
+      nombre: 'Azul',
+      color: 'azul'
+    }
+  ]
+
+  colorTeam = ''
+
   teams = [
     {
       name: 'Equipo 1',
       color: 'white',
       players: [
         {
-          name: 'Carlo Magno',
-          url_photo_profile: ''
-        },
-        {
-          name: 'Atila el Huno',
-          url_photo_profile: ''
-        },
-        {
-          name: 'Ragnar Lothbrok',
-          url_photo_profile: ''
-        },
-        {
-          name: 'William Wallace',
-          url_photo_profile: ''
+          nombre: '',
+          apellido: ''
         }
       ]
     },
@@ -57,16 +59,8 @@ export class ReservaComponent implements OnInit, AfterViewInit {
       color: 'blue',
       players: [
         {
-          name: 'Carlo V',
-          url_photo_profile: 'gs://dale-futbol.firebasestorage.app/profile-photos/Profile-2.webp'
-        },
-        {
-          name: 'Napoleon Bonaparte',
-          url_photo_profile: 'gs://dale-futbol.firebasestorage.app/profile-photos/Profile-2.webp'
-        },
-        {
-          name: 'Juana de Arco',
-          url_photo_profile: 'gs://dale-futbol.firebasestorage.app/profile-photos/Profile-2.webp'
+          nombre: '',
+          apellido: ''
         }
       ]
     }
@@ -109,74 +103,40 @@ export class ReservaComponent implements OnInit, AfterViewInit {
 
   isBroser: boolean = false
 
-  constructor(private storage: Storage, private router: Router, private googleMapsServices: GoogleMapsService, 
+  constructor(
+    private reservaService: ReservaService, 
+    private storage: Storage, private router: Router, private googleMapsServices: GoogleMapsService, 
     private ssService: SessionStorageService,
     @Inject(PLATFORM_ID) private platformId: object
   ){
-    console.log("Constructor ejecutado.-")
 
     this.isBroser = isPlatformBrowser(platformId)
 
-    console.log("Constructor finalizado.-")
 
   }
 
   ngOnInit(): void {
-    console.log("ngOnInit ejecutado.-") 
-    
-    // if (this.isBroser) {
-    //   console.log("🔴 Angular está en modo SSR, no se puede acceder a sessionStorage aún.");
-    //   return;
-    // }
 
-    // console.log("✅ Estamos en el navegador, podemos usar sessionStorage.");
-
-    // // Llamamos a cargarDatos() solo si estamos en el navegador
-    // this.cargarDatos();
-
-    // setTimeout(() => {
-    //   console.log("✅ Estamos en el navegador, podemos usar sessionStorage.");
-    //   const cancha = this.ssService.getItem('cancha');
-    //   console.log("🎯 Cancha obtenida después de la redirección:", cancha);
-    // }, 500);
-
-    const cancha = this.ssService?.getItem('cancha')
-    // console.log(cancha)
+    const cancha = this.ssService?.getItem('cancha')    
 
     if(!cancha){
-      console.log("Cancha es undefined")
       location.reload()    
     }else{
       this.cargarDatos()
     }    
-    console.log("ngOnInit finalizado.-") 
   }
 
 
   ngAfterViewInit(): void {
 
-    console.log("ngAfterViewInit ejecutado.-") 
-    console.log("Loading: ",this.loading)
     this.loading = false
-    console.log("Loading: ",this.loading)
-    console.log("ngAfterViewInit Finalizado.-") 
       
   }
 
 
   cargarDatos(){
-    console.log("Cargar Datos ejecutado.-")  
-    // this.ssService.setItem('prueba','alguna wea')
-
-  //   console.log("sessionStorageService:", this.ssService);
-  // console.log("sessionStorageService.getItem('cancha'):", this.ssService?.getItem('cancha'));
-
-
-
-    const ssCancha =  this.ssService.getItem('cancha')
-    // console.log("paso por ssCancha ",ssCancha)
-    const ssHorario =  this.ssService.getItem('horario')
-    // console.log("paso por ssHorario ", ssHorario)
+    const ssCancha =  this.ssService.getItem('cancha')    
+    const ssHorario =  this.ssService.getItem('horario')    
 
     if(ssCancha != null || ssHorario != null){
       this.dataCancha = JSON.parse(String(ssCancha))
@@ -207,8 +167,24 @@ export class ReservaComponent implements OnInit, AfterViewInit {
           detail: ((this.dataCancha.precio/(this.dataCancha.capacidad))+1500)*1.19
         }
       ]
-
     
+
+    this.reservaService.getPerfilesPorColorReserva(String(horario.id), String(this.dataCancha.id),'blanco','azul')
+      .subscribe(res => {
+        console.log(res)
+        this.teams = [
+          {
+            name: 'Equipo 1',
+            color: 'blanco',
+            players: res.color1
+          }, 
+          {
+            name: 'Equipo 2',
+            color: 'azul',
+            players: res.color2
+          }
+        ]
+      })
     
     this.initPage()
 
@@ -216,18 +192,23 @@ export class ReservaComponent implements OnInit, AfterViewInit {
     this.profile_photo = []
 
     }else{
-      console.log("Error al cargar la pagina")
     }
   }
 
   async initPage(){
-    // await this.getPhoto()
-    await this.getProfilePhoto()
+    // await this.getProfilePhoto()
     await this.buscarDireccion()
+  }
 
-    // await this.sleep(3000)
 
-    // this.loading = false
+
+  pickColorTeam(color: string){
+
+    if(this.colorTeam == color){
+      this.colorTeam = ''
+    }else{
+      this.colorTeam = color
+    }    
   }
 
   sleep(ms: number): Promise<void> {
@@ -265,41 +246,44 @@ export class ReservaComponent implements OnInit, AfterViewInit {
     if(this.dataCancha.link_image != undefined){
       this.images = await this.dataCancha.link_image
     }else{
-      console.log("No se han cargado las imagenes")
     }
     
   }
 
-  getProfilePhoto(){
-    const photoProfileRef = ref(this.storage, '/profile-photos')
+  // getProfilePhoto(){
+  //   const photoProfileRef = ref(this.storage, '/profile-photos')
 
-    listAll(photoProfileRef)
-      .then( async (response) => {
-        this.profile_photo = []
+  //   listAll(photoProfileRef)
+  //     .then( async (response) => {
+  //       this.profile_photo = []
 
-        for(let item of response.items){
-          const url = await getDownloadURL(item)
-          this.profile_photo.push(url)
-        }
+  //       for(let item of response.items){
+  //         const url = await getDownloadURL(item)
+  //         this.profile_photo.push(url)
+  //       }
 
 
-        let i = 0
-        for(let team of this.teams){
+  //       let i = 0
+  //       for(let team of this.teams){
 
-          for(let player of team.players){
-            player.url_photo_profile = this.profile_photo[i]
-          }
+  //         for(let player of team.players){
+  //           player.url_photo_profile = this.profile_photo[i]
+  //         }
 
-          i++
-        }
-      }).catch( (error) => {
-        console.log(error)
-      })
-  }
+  //         i++
+  //       }
+  //     }).catch( (error) => {
+  //     })
+  // }
 
 
   redirecToCheckOut(){
-    this.router.navigate(['check-out'])
+    if(this.colorTeam == ''){
+      console.log("Debes seleccionar un equipo")
+    }else{
+      this.router.navigate(['check-out'], {queryParams : {color: this.colorTeam}})
+    }
+    
   }
 
 }

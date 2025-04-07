@@ -7,6 +7,7 @@ export interface Reserva {
     id?: string;
     fecha: string;
     hora_inicio: string;
+    color: string;
     reservadoPor: [
       {
         responsable: Perfil | Equipo | 'admin',

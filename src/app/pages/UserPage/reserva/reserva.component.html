@@ -28,7 +28,7 @@
 
      
 
-        <div class="info-cancha">
+        <!-- <div class="info-cancha">
           <label class="detail-cancha">
             Cancha {{dataCancha.capacidad_equipo}} vs {{dataCancha.capacidad_equipo}}, {{dataCancha.direccion}}
           </label>
@@ -49,26 +49,44 @@
           </p>
 
           <div class="line"></div>
+        </div> -->
+
+        <div class="seleccionar-equipo">
+          <label class="title-se">Selecciona tu Equipo</label>
+
+          <div class="equipos-opciones">
+            <span 
+              *ngFor="let team of TeamsColor" 
+              [class]="'equipo ' + team.color" 
+              [ngClass]="{'selected': colorTeam == team.color}"
+              (click)="pickColorTeam(team.color)"
+            >
+              {{team.nombre}}
+            </span>
+          </div>
         </div>
 
 
         <div class="accordion" id="accordionExample">
-          <div class="accordion-item">
+          <div class="accordion-item ">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                 Jugadores
                 <span>{{dataCancha.confirmados}}/{{dataCancha.capacidad}} inscritos</span>
               </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
               <div class="accordion-body"> 
                 <div class="teams-match">
                   <div class="team" [ngClass]="team.color" *ngFor="let team of teams">
                     <span class="team-name">{{team.name}}</span>
                     
                     <div class="player-match-team" *ngFor="let player of team.players">
-                      <img src="{{player.url_photo_profile}}" alt="profile-photo" class="photo-profile">
-                      <span class="player-name">{{player.name}}</span>
+                      <!-- <img src="{{player.url_photo_profile}}" alt="profile-photo" class="photo-profile"> -->
+                      <!-- <i class="photo-profile" class="fa-solid fa-person-running"></i> -->
+                      <i class="fa-solid fa-chess-king icon-profile" *ngIf="team.color == TeamsColor[0].color"></i>
+                      <i class="fa-regular fa-chess-king icon-profile" *ngIf="team.color == TeamsColor[1].color"></i>
+                      <span class="player-name">{{player.nombre.charAt(0)+'. '+player.apellido}}</span>
                     </div>
       
                   </div>

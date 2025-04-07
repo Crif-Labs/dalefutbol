@@ -116,6 +116,55 @@
             }
         }
 
+        .seleccionar-equipo{
+            background-color: $gray;
+            border-radius: 10px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 10px;
+            text-align: center;
+
+            .title-se{
+                color: whitesmoke;
+                font-size: 21px;
+                margin-bottom: 10px;
+            }
+
+            .equipos-opciones{
+                display: flex;
+                justify-content: space-around;
+
+                .equipo{
+                    border: 1px solid $rojo;
+                    border-radius: 5px;
+                    width: 40%;
+                    padding: 3px 0px;
+                    color: whitesmoke;
+
+                    &.blanco{
+                        background-color: rgba($color: whitesmoke, $alpha: 0.2);
+
+                        &.selected{
+                            background-color: whitesmoke;
+                            color: $darkGray;
+                            box-shadow: 4px 4px 4px 2px $darkGray;
+                        }
+                    }
+
+                    &.azul{
+                        background-color: rgba($color: $teamBlue, $alpha: 0.3);
+
+                        &.selected{
+                            background-color: $teamBlue;
+                            color: whitesmoke;
+                            box-shadow: 4px 4px 4px 2px $darkGray;
+                        }
+                    }
+
+                }
+            }
+        }
+
         .accordion{
             background-color: transparent;
             width: 95%;
@@ -211,7 +260,7 @@
                                 align-items: center;
                                 width: 100%;
             
-                                &.blue{
+                                &.azul{
                                     border: 2px solid $teamBlue;
             
                                     .team-name{
@@ -223,7 +272,7 @@
                                     }
                                 }
             
-                                &.white{
+                                &.blanco{
                                     border: 2px solid white;
             
                                     .team-name{
@@ -272,6 +321,14 @@
                                         height: 80px;
                                         width: 80px;
                                         border-radius: 50px;
+                                    }
+
+                                    .icon-profile{
+                                        background-color: $gray;
+                                        font-size: 32px;
+                                        padding: 10px;
+                                        border-radius: 10px;
+                                        // border: 1px solid white;
                                     }
             
                                     .player-name{

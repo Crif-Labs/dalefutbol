@@ -7,4 +7,5 @@ export interface Reserva2 {
     hora_reserva: string;
     responsable: Perfil | Equipo, //| 'admin',
     estado: 'Pendiente' | 'Confirmado' | 'Cancelado';
+    color: string;
 }
