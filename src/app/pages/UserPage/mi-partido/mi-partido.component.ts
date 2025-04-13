@@ -66,7 +66,6 @@ export class MiPartidoComponent implements OnInit{
   ){}
 
   async ngOnInit() {
-    this.loading = true
 
     this.data = await this.reservaTransferSrevice.getDatos()
 
@@ -82,7 +81,7 @@ export class MiPartidoComponent implements OnInit{
       })
     await this.buscarDireccion()
 
-    this.loading = false
+    // this.loading = false
 
   }
 
