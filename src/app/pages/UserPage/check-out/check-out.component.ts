@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Cancha } from '../../../interfaces/cancha';
 import { Reserva } from '../../../interfaces/reserva';
 import { Horario } from '../../../interfaces/horario';
 import { Perfil } from '../../../interfaces/perfil';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, isPlatformBrowser } from '@angular/common';
 import { ReservaService } from '../../../services/reserva.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { SessionStorageService } from '../../../services/session-storage.service';
@@ -60,8 +60,32 @@ export class CheckOutComponent {
 
   loading: boolean = false
 
+  cuentaBancaria: {
+    rut: string,
+    nombre:string,
+    correo: string,
+    banco: string,
+    tipoCuenta: string,
+    numeroCuenta: string
+  } = {
+    rut: '19280532-5',
+    nombre: 'Felipe Jara',
+    correo: 'fjara9613@gmail.com',
+    banco: 'Banco Estado',
+    tipoCuenta: 'Cuenta vista',
+    numeroCuenta: '19280532'
+  }
 
-  constructor(private router: Router, private dataRoute: ActivatedRoute, private perfilService: PerfilService, private reservaService: ReservaService, private localStorageService: LocalStorageService, private sessionStorageService: SessionStorageService){
+  whatsapp = '56933021601'
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformID: any,
+    private router: Router, 
+    private dataRoute: ActivatedRoute, 
+    private perfilService: PerfilService, 
+    private reservaService: ReservaService, 
+    private localStorageService: LocalStorageService, 
+    private sessionStorageService: SessionStorageService){
     if(localStorageService.getItem('perfil') != null || sessionStorageService.getItem('cancha') != null || sessionStorageService.getItem('horario')){
 
       dataRoute.queryParams.subscribe( params => {
@@ -70,7 +94,7 @@ export class CheckOutComponent {
 
       this.cancha = JSON.parse(String(sessionStorageService.getItem('cancha')))
 
-      this.cancha.precio = ((this.cancha.precio/(this.cancha.capacidad))+1500)*1.19
+      this.cancha.precio = Math.ceil(((this.cancha.precio/this.cancha.capacidad)+1500)*1.19 / 100)*100
 
       this.perfil = JSON.parse(String(localStorageService.getItem('perfil')))
 
@@ -84,11 +108,8 @@ export class CheckOutComponent {
 
       const localDate = new Date()
 
-      console.log(Timestamp.fromDate(localDate))
-      console.log(localDate)
-
       this.reserva = {
-        fecha_reserva: Timestamp.fromDate(localDate),//String(datePipe.transform(localDate, 'yyyy/MM/dd')),//localDate.toISOString().split('T')[0].replace(/-/g,'/'),//String(),
+        fecha_reserva: Timestamp.fromDate(localDate),
         hora_reserva: localDate.toTimeString().split(' ')[0].slice(0, 5),
         responsable: this.perfil,
         color: this.colorTeam,
@@ -104,8 +125,9 @@ export class CheckOutComponent {
 
   async addReserva(){
     this.loading = true
+    this.clearStatusCopiedText()
 
-    console.log(this.reserva)
+    
 
     try {
       const newReserva = await this.reservaService.addReserva(String(this.cancha.id), String(this.horario.id), String(this.perfil.id), this.reserva)
@@ -115,7 +137,19 @@ export class CheckOutComponent {
         return;
       }
 
-      console.log("✅ Reserva completada con éxito:", newReserva);
+      const text =
+      `*ID:* ${this.perfil.id}\n`+
+      `*Usuario:* ${this.perfil.nombre} ${this.perfil.apellido}\n`+
+      `*Reserva:* ${newReserva.id}\n`+
+      `*Monto:* ${this.cancha.precio}\n\n`+
+      `* *Recuerda subir tu voucher para confirmar la reserva*`
+
+      const url = `https://wa.me/${this.whatsapp}?text=${encodeURIComponent(text)}`;
+
+      // console.log("✅ Reserva completada con éxito:", newReserva);
+
+      window.open(url, '_blanck')
+
       this.loading = false
 
       this.router.navigate(['/user-main/partidos']);
@@ -123,6 +157,20 @@ export class CheckOutComponent {
     } catch (error) {
       console.log("❌ Error en el proceso de reserva:", error);
     }
+  }
+
+  statusCopiedText = ''
+  copiarText(text: string){
+    if(isPlatformBrowser(this.platformID)){
+      navigator.clipboard.writeText(text).then( async () => {
+        this.statusCopiedText = await `Dato Copiado!`
+      }).catch( err => {
+        console.log('text no cpiado: ',err)
+      })
+    }
+  }
+  clearStatusCopiedText(){
+    this.statusCopiedText = ''
   }
 
 

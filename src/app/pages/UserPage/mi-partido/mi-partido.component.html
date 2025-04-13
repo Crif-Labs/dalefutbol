@@ -134,7 +134,7 @@
     <div class="reserva-footer">
         <button *ngIf="data?.reserva?.estado === 'Confirmado'" class="btn btn-reservar" [ngClass]="data?.reserva?.estado" (click)="buttonBack()">{{data?.reserva?.estado}}</button>
 
-        <button *ngIf="data?.reserva?.estado != 'Confirmado'" class="btn btn-reservar" [ngClass]="data?.reserva?.estado" (click)="atencionClienteWSP()">
+        <button *ngIf="data?.reserva?.estado != 'Confirmado'" class="btn btn-reservar" [ngClass]="data?.reserva?.estado" (click)="atencionClienteWSP(data?.reserva?.estado)">
             {{data?.reserva?.estado}}
             <br>
             <i class="fa-brands fa-whatsapp"></i>

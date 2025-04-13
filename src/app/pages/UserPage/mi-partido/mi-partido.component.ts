@@ -113,8 +113,30 @@ export class MiPartidoComponent implements OnInit{
     this.router.navigate(['mis-reservas'])
   }
 
-  atencionClienteWSP(){
-    console.log("Ver el tema de wtsp")
+  atencionClienteWSP(estado: 'Pendiente' | 'Cancelado' | 'Confirmado' | undefined){
+    const numero = '56933021601'
+    let message
+
+    switch(estado){
+      case 'Pendiente':
+        message = 'Mi Reserva aun sale como pendiente, por favor mayor informacion';
+        break;
+      case 'Cancelado':
+        message = 'Mi Reserva fue rechazada, me gustaria saber la informacion'
+        break;
+      case undefined:
+        message = 'Error al ver partido en reserva'
+        break;
+    }
+    
+    const text = 
+      `*Reserva:* ${this.data?.reserva?.id} \n` +
+      `*ID:* ${this.data?.reserva?.responsable.id} \n\n` +
+      `*Mensaje:* ${message}`
+
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
+
+    window.open(url, '_blanck')
   }
 
 }

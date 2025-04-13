@@ -73,11 +73,75 @@
                 <span class="text-aceptacion">Aceptas los terminos y condiciones</span>
             </div>
 
-            <button class="btn btn-pay" (click)="addReserva()">Pagar</button>
+            <button class="btn btn-pay mb-5" data-bs-toggle="modal" data-bs-target="#dataTransfer">Confirmar</button>
 
 
         </div>
 
 
     </div>
+</div>
+
+
+<!-- Modal Datos de Transferencia -->
+<div class="modal fade" id="dataTransfer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="dataTransferLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="dataTransferLabel">Confirmar Reserva:</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="intructions">
+            <p>Al momento de Confirmar Reserva, tu registro sera guardado</p>
+            <p>Serás redirigido a tu Whatsapp, donde notificarás la reserva</p>
+            <p>Al momento de hacer el pago, puedes compartir tu voucher por Whatsapp</p>
+            <p>A travás de Whatsapp, serás notificado si la reserva se ha confirmado o ha sido rechazada</p>
+            <p>** Por la aplicación también podrás verificar aquello</p>
+            <p>** Siempre estaremos atentos a tus dudas. Puedes comunicarte via Whatsapp con nosotros</p>
+            <p>** Los datos de transferencias se pueden visualizar más abajo, a través de tu perfil y vía Whatsapp</p>
+          </div>
+
+          <div class="title-data-transfer">
+            <p>Datos de Transferencia</p>
+          </div>
+
+          <div class="datos-transferencia">
+              <div class="dato">
+                <strong>RUT:</strong> {{ cuentaBancaria.rut }}
+                <button (click)="copiarText(cuentaBancaria.rut)"><i class="fa-solid fa-copy"></i></button>
+              </div>
+              <div class="dato">
+                <strong>Nombre:</strong> {{ cuentaBancaria.nombre }}
+                <button (click)="copiarText(cuentaBancaria.nombre)"><i class="fa-solid fa-copy"></i></button>
+              </div>
+              <div class="dato">
+                <strong>Banco:</strong> {{ cuentaBancaria.banco }}
+                <button (click)="copiarText(cuentaBancaria.banco)"><i class="fa-solid fa-copy"></i></button>
+              </div>
+              <div class="dato">
+                <strong>Tipo de cuenta:</strong> {{ cuentaBancaria.tipoCuenta }}
+                <button (click)="copiarText(cuentaBancaria.tipoCuenta)"><i class="fa-solid fa-copy"></i></button>
+              </div>
+              <div class="dato">
+                <strong>N° Cuenta:</strong> {{ cuentaBancaria.numeroCuenta }}
+                <button (click)="copiarText(cuentaBancaria.numeroCuenta)" ><i class="fa-solid fa-copy"></i></button>
+              </div>
+              <div class="dato">
+                <strong>Correo:</strong> {{ cuentaBancaria.correo }}
+                <button (click)="copiarText(cuentaBancaria.correo)"><i class="fa-solid fa-copy"></i></button>
+              </div>
+
+              <span class="confirm-copied " style="color: black;">{{statusCopiedText}}</span>
+          </div>
+
+          
+
+          <!-- <button type="button" class="btn btn-primary mt-4" (click)="copiarTotalText(cuentaBancaria)">Copiar todos los datos</button>   -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addReserva()">Confirmar Reserva</button>
+      </div>
+    </div>
+  </div>
 </div>

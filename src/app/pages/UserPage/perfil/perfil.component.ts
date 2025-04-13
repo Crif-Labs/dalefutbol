@@ -30,6 +30,8 @@ export class PerfilComponent implements OnInit{
 
   formPerfil!: FormGroup
 
+  formWhatsapp!: FormGroup
+
   loadingPerfil: boolean = false
 
   cuentaBancaria: {
@@ -81,6 +83,11 @@ export class PerfilComponent implements OnInit{
       posicion: new FormControl(this.perfil.posicion, [Validators.required]),
       comuna: new FormControl(this.perfil.comuna, [Validators.required])
     })
+
+
+    this.formWhatsapp = new FormGroup({
+      message: new FormControl('', [Validators.required])
+    })
   }
 
   statusCopiedText = ''
@@ -114,6 +121,20 @@ export class PerfilComponent implements OnInit{
       throw new Error('No se ha actualizado el perfil.')
     }
 
+  }
+
+  enviarWhatsapp(){
+    const numero = '56933021601'
+    const message = this.formWhatsapp.controls['message'].value
+    
+    const text = 
+      `*Usuario:* ${this.perfil.nombre} ${this.perfil.apellido} \n` +
+      `*ID:* ${this.perfil.id} \n\n` +
+      `*Mensaje:* ${message}`
+
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
+
+    window.open(url, '_blanck')
   }
 
   clearStatusCopiedText(){

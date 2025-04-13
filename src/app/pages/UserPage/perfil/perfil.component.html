@@ -56,7 +56,7 @@
             </div>
             <i class="fa-solid fa-caret-right"></i>
         </button>
-        <button class="btn btn-option">
+        <button class="btn btn-option disabled">
             <div class="content">
                 <i class="fa-solid fa-shield-halved"></i>
                 Seguridad y Contraseña
@@ -77,7 +77,7 @@
             </div>
             <i class="fa-solid fa-caret-right"></i>
         </button>
-        <button class="btn btn-option">
+        <button class="btn btn-option" data-bs-toggle="modal" data-bs-target="#whatsappModal">
             <div class="content">
                 <i class="fa-brands fa-whatsapp"></i>
                 Atencion al Cliente
@@ -230,4 +230,29 @@
         </div>
       </div>
     </div>
+</div>
+
+<!-- Modal Whatsapp -->
+<div class="modal fade" id="whatsappModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="whatsappModalLabel">Atencion al Cliente:</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="form-whatsapp" [formGroup]="formWhatsapp"> 
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea formControlName="message" class="form-control" id="message-text"></textarea>
+          </div>
+
+          <button class="btn btn-primary" (click)="enviarWhatsapp()">Enviar</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clearStatusCopiedText()">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </div>

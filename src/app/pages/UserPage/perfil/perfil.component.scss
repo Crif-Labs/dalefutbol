@@ -203,27 +203,5 @@
 }
 
 
-.datos-transferencia{
-    .dato{
-        display: grid;
-        grid-template-columns: .6fr 1fr .1fr;
-        margin-bottom: 8px;
 
-        button{
-            border-radius: 5px;
-            border: 1px solid $lightGray;
-            background-color: white;
-            color: $rojo;
-        }
-    }
-
-
-    .confirm-copied{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-top: 1px solid $lightGray;
-    }
-}
 

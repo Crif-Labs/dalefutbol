@@ -164,14 +164,14 @@ export class ReservaComponent implements OnInit, AfterViewInit {
         },
         {
           icon: 'fa-solid fa-dollar-sign',
-          detail: ((this.dataCancha.precio/(this.dataCancha.capacidad))+1500)*1.19
+          detail: Math.ceil(((this.dataCancha.precio/(this.dataCancha.capacidad))+1500)*1.19 /100) *100
         }
       ]
     
 
     this.reservaService.getPerfilesPorColorReserva(String(horario.id), String(this.dataCancha.id),'blanco','azul')
       .subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.teams = [
           {
             name: 'Equipo 1',
