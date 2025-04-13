@@ -1,3 +1,233 @@
-<app-working-page [namePage]="'Perfil'"></app-working-page>
+<!-- <app-working-page [namePage]="'Perfil'"></app-working-page>
 
-<button class="btn btn-primary w-3" (click)="onLogout()">Cerrar Sesion</button>
+<button class="btn btn-primary w-3" (click)="onLogout()">Cerrar Sesion</button> -->
+
+
+<div class="container-perfil">
+
+    
+
+    <div class="data-perfil" >
+
+        <div class="photo-name">
+            <span class="photo"><i class="fa-solid fa-circle-user"></i></span>
+            <span class="name">{{perfil.nombre}}&nbsp;&nbsp;{{perfil.apellido}}</span>
+        </div>
+
+        <div class="algo" *ngIf="loadingPerfil">
+            <app-loading-page ></app-loading-page>
+        </div>
+        
+
+        <div class="data" *ngIf="!loadingPerfil">
+            <div class="icon-data">
+                <span><i class="fa-solid fa-phone"></i></span>
+                <span><b>+56</b> {{perfil.celular}}</span>
+            </div>
+            <div class="icon-data">
+                <span><i class="fa-solid fa-city"></i></span>
+                <span>{{perfil.comuna}}</span>
+            </div>
+            <div class="icon-data">
+                <span><i class="fa-solid fa-futbol"></i></span>
+                <span>{{perfil.posicion}}</span>
+            </div>
+            <div class="icon-data">
+                <span><i class="fa-solid fa-piggy-bank"></i></span>
+                <span><b>$</b> {{perfil.descuento ? perfil.descuento : 0}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-perfil">
+        <span class="stats"><b><i class="fa-solid fa-futbol"></i>&nbsp;&nbsp;Partidos Jugados:</b>&nbsp;&nbsp;{{2}}</span>
+        <span class="stats"><b><i class="fa-solid fa-trophy"></i>&nbsp;&nbsp;Partidos Ganados:</b>&nbsp;&nbsp;{{2}}</span>
+        <span class="stats"><b><i class="fa-solid fa-ranking-star"></i>&nbsp;&nbsp;Goles/Asistencias:</b>&nbsp;&nbsp;{{2+' / '+1}}</span>
+        <span class="stats"><b><i class="fa-solid fa-chart-line"></i>&nbsp;&nbsp;Tasa %:</b>&nbsp;&nbsp;{{(2/2)*100}}%</span>
+    </div>
+
+
+
+    <div class="options-buttons">
+        <button class="btn btn-option" data-bs-toggle="modal" data-bs-target="#updateProfile">
+            <div class="content">
+                <i class="fa-regular fa-pen-to-square"></i>
+                Datos personales
+            </div>
+            <i class="fa-solid fa-caret-right"></i>
+        </button>
+        <button class="btn btn-option">
+            <div class="content">
+                <i class="fa-solid fa-shield-halved"></i>
+                Seguridad y Contraseña
+            </div>
+            <i class="fa-solid fa-caret-right"></i>
+        </button>
+        <button class="btn btn-option disabled" >
+            <div class="content">
+                <i class="fa-solid fa-wallet"></i>
+                Billetera
+            </div>
+            <i class="fa-solid fa-caret-right"></i>
+        </button>
+        <button class="btn btn-option" data-bs-toggle="modal" data-bs-target="#dataTransfer">
+            <div class="content">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                Datos de Transferencia
+            </div>
+            <i class="fa-solid fa-caret-right"></i>
+        </button>
+        <button class="btn btn-option">
+            <div class="content">
+                <i class="fa-brands fa-whatsapp"></i>
+                Atencion al Cliente
+            </div>
+            <i class="fa-solid fa-caret-right"></i>
+        </button>
+        <button class="btn btn-option mb-5" (click)="onLogout()">
+            <div class="content">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Cerrar Sesion
+            </div>
+            <i class="fa-solid fa-caret-right"></i>
+        </button>
+    </div>
+</div>
+
+
+<!-- Modal Editar Perfil -->
+<div class="modal fade" id="updateSeguridad" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateSeguridadLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="updateSeguridadLabel">Editar Perfil:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="form-update-perfil" [formGroup]="formPerfil">
+            <div class="form__group field">
+                <input type="input" class="form__field" [value]="perfil.nombre" disabled>
+                <label for="nombre" class="form__label"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Nombre:</label>
+            </div>
+            <div class="form__group field">
+                <input type="input" class="form__field" [value]="perfil.apellido" disabled>
+                <label for="apellido" class="form__label"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Apellido:</label>
+            </div>
+            <div class="form__group field">
+                <input formControlName="celular" type="input" class="form__field" [value]="perfil.celular">
+                <label for="nombre" class="form__label">Celular:</label>
+            </div>
+            <div class="form__group field">
+                <input formControlName="posicion" type="input" class="form__field" [value]="perfil.posicion">
+                <label for="nombre" class="form__label">Posicion:</label>
+            </div>
+            <div class="form-floating">
+                <select formControlName="comuna" class="form-select" id="comunaSelect" aria-label="Floating label select example">
+                  <option *ngFor="let comuna of comunaList" value="{{comuna.nombre}}" [selected]="comuna.nombre === perfil.comuna">{{comuna.nombre}}</option>
+                </select>
+                <label for="comunaSelect">Comuna:</label>
+            </div>
+
+            <button type="button" class="btn btn-primary mt-3" (click)="updatePerfil()" data-bs-dismiss="modal">Editar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!-- Modal Editar Seguridad -->
+<div class="modal fade" id="updateProfile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateProfileLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="updateProfileLabel">Editar Perfil:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="form-update-perfil" [formGroup]="formPerfil">
+            <div class="form__group field">
+                <input type="input" class="form__field" [value]="perfil.nombre" disabled>
+                <label for="nombre" class="form__label"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Nombre:</label>
+            </div>
+            <div class="form__group field">
+                <input type="input" class="form__field" [value]="perfil.apellido" disabled>
+                <label for="apellido" class="form__label"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Apellido:</label>
+            </div>
+            <div class="form__group field">
+                <input formControlName="celular" type="input" class="form__field" [value]="perfil.celular">
+                <label for="nombre" class="form__label">Celular:</label>
+            </div>
+            <div class="form__group field">
+                <input formControlName="posicion" type="input" class="form__field" [value]="perfil.posicion">
+                <label for="nombre" class="form__label">Posicion:</label>
+            </div>
+            <div class="form-floating">
+                <select formControlName="comuna" class="form-select" id="comunaSelect" aria-label="Floating label select example">
+                  <option *ngFor="let comuna of comunaList" value="{{comuna.nombre}}" [selected]="comuna.nombre === perfil.comuna">{{comuna.nombre}}</option>
+                </select>
+                <label for="comunaSelect">Comuna:</label>
+            </div>
+
+            <button type="button" class="btn btn-primary mt-3" (click)="updatePerfil()" data-bs-dismiss="modal">Editar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!-- Modal Datos de Transferencia -->
+<div class="modal fade" id="dataTransfer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="dataTransferLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="dataTransferLabel">Datos de Transferencia:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="datos-transferencia">
+                <div class="dato">
+                  <strong>RUT:</strong> {{ cuentaBancaria.rut }}
+                  <button (click)="copiarText(cuentaBancaria.rut)"><i class="fa-solid fa-copy"></i></button>
+                </div>
+                <div class="dato">
+                  <strong>Nombre:</strong> {{ cuentaBancaria.nombre }}
+                  <button (click)="copiarText(cuentaBancaria.nombre)"><i class="fa-solid fa-copy"></i></button>
+                </div>
+                <div class="dato">
+                  <strong>Banco:</strong> {{ cuentaBancaria.banco }}
+                  <button (click)="copiarText(cuentaBancaria.banco)"><i class="fa-solid fa-copy"></i></button>
+                </div>
+                <div class="dato">
+                  <strong>Tipo de cuenta:</strong> {{ cuentaBancaria.tipoCuenta }}
+                  <button (click)="copiarText(cuentaBancaria.tipoCuenta)"><i class="fa-solid fa-copy"></i></button>
+                </div>
+                <div class="dato">
+                  <strong>N° Cuenta:</strong> {{ cuentaBancaria.numeroCuenta }}
+                  <button (click)="copiarText(cuentaBancaria.numeroCuenta)" ><i class="fa-solid fa-copy"></i></button>
+                </div>
+                <div class="dato">
+                  <strong>Correo:</strong> {{ cuentaBancaria.correo }}
+                  <button (click)="copiarText(cuentaBancaria.correo)"><i class="fa-solid fa-copy"></i></button>
+                </div>
+
+                <span class="confirm-copied " style="color: black;">{{statusCopiedText}}</span>
+            </div>
+
+            
+
+            <!-- <button type="button" class="btn btn-primary mt-4" (click)="copiarTotalText(cuentaBancaria)">Copiar todos los datos</button>   -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clearStatusCopiedText()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+</div>

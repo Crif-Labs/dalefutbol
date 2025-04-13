@@ -1,0 +1,229 @@
+@import '../../../app.component.scss';
+
+.container-perfil{
+    display: flex;
+    flex-direction: column;
+
+    .data-perfil{
+        color: white;
+
+        .algo{
+            height: 100px;
+            // border: 1px solid red;
+        }
+
+        .photo-name{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .photo{
+                font-size: 100px;
+            }
+
+            .name{
+                font-size: 24px;
+            }
+        }
+
+        .data{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 90%;
+            margin: 10px auto;
+            gap: 10px;
+
+            .icon-data{
+                display: flex;
+                justify-content: space-between;
+                padding: 5px 15px;
+                border-right: 1px solid $rojo;
+                border-bottom: 1px solid $gray;
+            }
+        }
+    }
+
+    .stats-perfil{
+        // border: 1px solid red;
+        display: flex;
+        flex-direction: column;
+        color: whitesmoke;
+        width: 90%;
+        margin: auto;
+
+        .stats{
+            display: grid;
+            grid-template-columns: 1fr .5fr;
+            border-right: 1px solid $rojo;
+            border-bottom: 1px solid $gray;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .options-buttons{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+
+        .btn-option{
+            color: white !important;
+            text-align: left;
+            border: none;
+            border-radius: 0px;
+            border-bottom: 1px solid $rojo;
+            font-size: 19px;
+            width: 95%;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+
+            .fa-caret-right{
+                color: $rojo;
+            }
+
+            &.disabled{
+                color: $lightGray !important;
+                text-decoration: line-through;
+            }
+        }
+    }
+}
+
+.prueba{
+    background-color: white;
+
+    height: 200px;
+    padding-top: 50px;
+
+
+    .form-select{
+        border: none;
+        border-radius: 0px;
+        border-bottom: 2px solid $darkGray;
+        
+        &:focus{
+            border: none;
+
+            border-bottom: 2px solid $rojo;
+            box-shadow: none;
+        }
+    }
+}
+
+.form-update-perfil{
+
+    .form-floating{
+        .form-select{
+            border: none;
+            border-radius: 0px;
+            border-bottom: 2px solid $darkGray;
+            
+            &:focus{
+                border: none;
+    
+                border-bottom: 2px solid $rojo;
+                box-shadow: none;
+            }
+        }
+
+        label{
+            padding: .5rem .01rem;
+        }
+    }
+
+
+    
+
+    .form__group {
+        position: relative;
+        padding: 20px 0 0;
+        width: 100%;
+        // max-width: 180px;
+    }
+      
+      .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: none;
+        border-bottom: 2px solid $darkGray;
+        outline: 0;
+        font-size: 17px;
+        color: $darkGray;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+        padding-left: 10px;
+      }
+      
+      .form__field::placeholder {
+        color: transparent;
+      }
+      
+      .form__field:placeholder-shown ~ .form__label {
+        font-size: 17px;
+        cursor: text;
+        top: 20px;
+      }
+      
+      .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 17px;
+        color: $lightGray;
+        pointer-events: none;
+      }
+      
+      .form__field:focus {
+        padding-bottom: 6px;
+        font-weight: 700;
+        border-width: 3px;
+        border-image: linear-gradient(to right, $rojo, $rojo);
+        border-image-slice: 1;
+      }
+      
+      .form__field:focus ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 17px;
+        color: $rojo;
+        font-weight: 700;
+      }
+      
+      /* reset input */
+      .form__field:required, .form__field:invalid {
+        box-shadow: none;
+      }
+}
+
+
+.datos-transferencia{
+    .dato{
+        display: grid;
+        grid-template-columns: .6fr 1fr .1fr;
+        margin-bottom: 8px;
+
+        button{
+            border-radius: 5px;
+            border: 1px solid $lightGray;
+            background-color: white;
+            color: $rojo;
+        }
+    }
+
+
+    .confirm-copied{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-top: 1px solid $lightGray;
+    }
+}
+
