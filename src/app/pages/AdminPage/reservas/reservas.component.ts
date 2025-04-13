@@ -37,7 +37,7 @@ export class ReservasComponent implements OnInit {
 
     this.dateHorario = formatDate(this.today, 'yyyy-MM-dd', 'en-US')
 
-    this.horarioService.getHorario(this.dateHorario)
+    this.horarioService.getHorarioPorDia(this.dateHorario)
       .subscribe(listHorario => {
         if (!listHorario || listHorario.length === 0) {
           console.log("❌ No Hay Horarios para hoy");
@@ -81,7 +81,7 @@ export class ReservasComponent implements OnInit {
   getHorarioForDate(){
     console.log(this.dateHorario)
 
-    this.horarioService.getHorario(this.dateHorario)
+    this.horarioService.getHorarioPorDia(this.dateHorario)
     .subscribe(listHorario => {
       if (!listHorario || listHorario.length === 0) {
         console.log("❌ No Hay Horarios para hoy");

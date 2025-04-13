@@ -13,12 +13,18 @@ import { TorneoComponent } from './pages/UserPage/torneo/torneo.component';
 import { CheckOutComponent } from './pages/UserPage/check-out/check-out.component';
 import { ReservasComponent } from './pages/AdminPage/reservas/reservas.component';
 import { MisReservasComponent } from './pages/UserPage/mis-reservas/mis-reservas.component';
+import { ConvetirFechasComponent } from './temporales/convetir-fechas/convetir-fechas.component';
+import { MiPartidoComponent } from './pages/UserPage/mi-partido/mi-partido.component';
 
 export const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
         redirectTo: '/user-main'
+    },
+    {
+        path: 'convertir-fechas',
+        component: ConvetirFechasComponent
     },
     {
         path: 'user-main',
@@ -43,6 +49,7 @@ export const routes: Routes = [
     },
     {path: 'reservas-check-in', component: ReservaComponent},
     {path: 'mis-reservas', component: MisReservasComponent},
+    {path: 'mi-partido', component: MiPartidoComponent},
     {path: 'check-out', component: CheckOutComponent},
     {
         path: 'login',

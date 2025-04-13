@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, doc, Firestore, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, doc, Firestore, getDoc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
 import { Cancha } from '../interfaces/cancha';
 import { Observable } from 'rxjs';
 
@@ -40,6 +40,20 @@ export class CanchaService {
       const q = query(ref, where('comuna','==',comuna))
 
       return collectionData(q, { idField: 'id'}) as Observable<Cancha[]>
+    }
+
+    async getCanchaFromHorario(horarioID: string, canchaID: string): Promise<Cancha | null>{
+      const ref = doc(this.firestore, `horario/${horarioID}/cancha/${canchaID}`)
+      const snap = await getDoc(ref)
+
+      if(snap.exists()){
+        return {
+          id: snap.id,
+          ...snap.data() as Cancha
+        }
+      }else{
+        return null
+      }
     }
 
 

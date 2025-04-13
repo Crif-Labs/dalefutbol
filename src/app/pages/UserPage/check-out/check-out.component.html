@@ -1,9 +1,16 @@
-<div class="check-out-component">
-    <div class="header-check-out">
+
+
+<div  class="check-out-component">
+
+    <div *ngIf="loading" class="loader-container">
+      <app-loading-page></app-loading-page>
+    </div>
+
+    <div *ngIf="!loading" class="header-check-out">
         <a (click)="buttonBack()" class="arrow-back"><i class="fa-solid fa-arrow-left"></i></a>
     </div>
 
-    <div class="body-check-out">
+    <div *ngIf="!loading" class="body-check-out">
         <div class="cancha-detail">
             <span class="nombre">{{cancha.nombre}}</span>
             <span class="capacidad">{{cancha.capacidad_equipo}} vs {{cancha.capacidad_equipo}}</span>

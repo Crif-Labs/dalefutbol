@@ -1,0 +1,146 @@
+<div class="container-mi-partido">
+    <div class="header-mi-partido">
+        <a (click)="buttonBack()" class="arrow-back"><i class="fa-solid fa-arrow-left"></i></a>
+
+        <label class="title-header">Mi Partido</label>
+    </div>
+
+    <div class="body-mi-partido" *ngIf="loading">
+        <app-loading-page></app-loading-page>
+    </div>
+
+    <div class="body-mi-partido" *ngIf="!loading">
+        <h2 class="cancha-name">{{data?.cancha?.nombre}}</h2>
+
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+
+              <div class="carousel-item" [ngClass]="{'active': first}" *ngFor="let image of data?.cancha?.link_image; let first = first">
+                <img [src]="image" class="d-block w-100" alt="...">
+              </div>
+
+            </div>
+            <button class="carousel-control-prev btn-carousel" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next btn-carousel" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <div class="info-cancha">
+            <label class="detail-cancha">
+              Cancha {{data?.cancha?.capacidad_equipo}} vs {{data?.cancha?.capacidad_equipo}}, {{data?.cancha?.direccion}}
+            </label>
+  
+            <div class="data-reserva">
+                <span class="data">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    {{data?.horario?.hora_inicio}}
+                </span>
+                <span class="data">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    {{data?.horario?.dia | date: 'dd/MM'}}
+                </span>
+                <span class="data">
+                    <i class="fa-regular fa-hourglass-half"></i>
+                    60 min
+                </span>
+                <span class="data">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                    {{ precioCancha}}
+                </span>
+            </div>
+        </div>
+  
+        <div class="format-match">
+            <h4 class="title-format">Formato:</h4>
+  
+            <p class="text-format" [ngClass]="{'important': format.category == 'important'}" *ngFor="let format of formatMatch">
+              {{format.text}}
+            </p>
+  
+            <div class="line"></div>
+        </div>
+
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item ">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Jugadores
+                  <span>{{data?.cancha?.confirmados}}/{{data?.cancha?.capacidad}} inscritos</span>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body"> 
+                  <div class="teams-match">
+                    <div class="team" [ngClass]="'azul'">
+                      <span class="team-name">{{'Equipo 1'}}</span>
+                      
+                      <div class="player-match-team" *ngFor="let player of colorTeams.color1">
+                        <!-- <img src="{{player.url_photo_profile}}" alt="profile-photo" class="photo-profile"> -->
+                        <!-- <i class="photo-profile" class="fa-solid fa-person-running"></i> -->
+
+                        <i class="fa-regular fa-chess-king icon-profile" ></i>
+                        <span class="player-name">{{player.nombre.charAt(0)+'. '+player.apellido}}</span>
+                      </div>
+        
+                    </div>
+
+                    <div class="team" [ngClass]="'blanco'">
+                        <span class="team-name">{{'Equipo 2'}}</span>
+                        
+                        <div class="player-match-team" *ngFor="let player of colorTeams.color2">
+                          <!-- <img src="{{player.url_photo_profile}}" alt="profile-photo" class="photo-profile"> -->
+                          <!-- <i class="photo-profile" class="fa-solid fa-person-running"></i> -->
+                          <i class="fa-solid fa-chess-king icon-profile" ></i>
+
+                          <span class="player-name">{{player.nombre.charAt(0)+'. '+player.apellido}}</span>
+                        </div>
+          
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Tu lugar de juego
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body body-maps">
+  
+                  <a class="btn-redirecTo" (click)="abrirGoogleMaps()">Ver en GoogleMaps&nbsp;&nbsp;<i class="fa-solid fa-map-location-dot"></i></a>
+                  <div class="maps">
+                    <google-map height="400px" width="100%" [center]="center" [zoom]="zoom">
+                      <map-marker [position]="markerPosition"></map-marker>
+                    </google-map>
+                  </div>
+                  <label class="adress-cancha"><i class="fa-regular fa-circle-dot"></i>&nbsp;&nbsp;{{adress}}</label>
+  
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+    </div>
+
+    <div class="reserva-footer">
+        <button *ngIf="data?.reserva?.estado === 'Confirmado'" class="btn btn-reservar" [ngClass]="data?.reserva?.estado" (click)="buttonBack()">{{data?.reserva?.estado}}</button>
+
+        <button *ngIf="data?.reserva?.estado != 'Confirmado'" class="btn btn-reservar" [ngClass]="data?.reserva?.estado" (click)="atencionClienteWSP()">
+            {{data?.reserva?.estado}}
+            <br>
+            <i class="fa-brands fa-whatsapp"></i>
+            Ir al Whatsapp
+            <i class="fa-solid fa-angle-right"></i>
+        </button>
+    </div>
+</div>
+<!-- </div> -->

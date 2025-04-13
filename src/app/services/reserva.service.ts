@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, Firestore, getDocs, query, where, doc, runTransaction, collectionData, updateDoc, getDoc, deleteDoc } from '@angular/fire/firestore';
+import { addDoc, collection, Firestore, getDocs, query, where, doc, runTransaction, collectionData, updateDoc, getDoc, deleteDoc, orderBy } from '@angular/fire/firestore';
 import { Reserva } from '../interfaces/reserva';
 import { Reserva2 } from '../interfaces/reserva-2';
 import { Observable } from 'rxjs';
@@ -55,6 +55,32 @@ export class ReservaService {
     const ref = doc(this.firestore, `horario/${horarioID}/cancha/${canchaID}/${this.collectionName}/${reservaID}`)
 
     return deleteDoc(ref)
+  }
+
+  async getReservaFromHorario(horarioID: string, canchaID: string, reservaID: string): Promise<Reserva2 | null>{
+    const ref = doc(this.firestore, `horario/${horarioID}/cancha/${canchaID}/reserva/${reservaID}`)
+    const snap = await getDoc(ref)
+
+    if(snap.exists()){
+      return {
+        id: snap.id,
+        ...snap.data() as Reserva2
+      }
+    }else{
+      return null
+    }
+  }
+
+  async getReservaFromPerfil(perfilID: string): Promise<Reserva2[]>{
+    const ref = collection(this.firestore, `perfil/${perfilID}/${this.collectionName}`)
+    const q = query(ref, orderBy('fecha_reserva','desc'))
+
+    const snapshot = await getDocs(q)
+    return snapshot.docs.map( doc => ({
+      id: doc.id,
+      ...doc.data()
+    } as Reserva2))
+
   }
 
   getListReserva(horario: string, cancha: string): Observable<Reserva2[]>{

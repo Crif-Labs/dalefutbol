@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, doc, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, doc, Firestore, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Horario } from '../interfaces/horario';
 import { from, map, Observable } from 'rxjs';
 import { Cancha } from '../interfaces/cancha';
@@ -70,7 +70,8 @@ export class HorarioService {
     }
   }
 
-  getHorario(dia: string): Observable<Horario[]>{
+
+  getHorarioPorDia(dia: string): Observable<Horario[]>{
     const ref = collection(this.firestore, this.collectionName)
 
     const q = query(ref, where('dia', '==', dia))
@@ -90,6 +91,22 @@ export class HorarioService {
     const ref = collection(this.firestore, collectionRoute)
 
     return collectionData(ref) as Observable<Cancha[]>
+  }
+
+  async getHorario(horaioID: string): Promise<Horario | null>{
+    const ref = doc(this.firestore, `${this.collectionName}/${horaioID}`)
+    const snap = await getDoc(ref)
+
+    if(snap.exists()){
+      return {
+        id: snap.id,
+        ...snap.data() as Horario
+      }
+    }else{
+      return null
+    }
 
   }
+
+
 }

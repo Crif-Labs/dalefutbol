@@ -5,88 +5,37 @@
         <label class="title-header">Mis Reservas</label>
     </div>
 
-    <div class="body-mis-reservas">
+    <div class="body-mis-reservas" *ngIf="loading">
+        <app-loading-page></app-loading-page>
+    </div>
 
-        <div class="card-reserva" >
+    <div class="body-mis-reservas" *ngIf="!loading">
+
+        <div class="card-reserva" *ngFor="let data of listPro">
             <div class="detail-card">
                 <div class="header-detail-card">
-                    <span class="cancha-reserva">CORDEP</span>
-                    <span class="estatus confirmado"><b>Confirmado</b></span>
+                    <span class="cancha-reserva">{{data.cancha.nombre}}</span>
+                    <span class="estatus" [ngClass]="data.reserva.estado"><b>{{data.reserva.estado}}</b></span>
                 </div>
                 <div class="horario">
                     <span class="title">Horario:</span>
                     <div class="detail">
-                        <span class="fecha-horario">06/04/2025</span>
-                        <span class="hora-horario">19:00 - 20:00</span>
+                        <span class="fecha-horario">{{data.horario.dia | date:'dd-MM-yyyy' }}</span>
+                        <span class="hora-horario">{{data.horario.hora_inicio}} - {{data.horario.hora_fin}}</span>
                     </div>
                 </div>
                 <div class="reserva">
                     <span class="title">Reserva:</span>
                     <div class="detail">
-                        <div class="fecha-reserva">05/04/2025</div>
-                        <span class="hora-reserva">14:35</span>
+                        <div class="fecha-reserva">{{data.reserva.fecha_reserva | timestamp }}</div>
+                        <span class="hora-reserva">{{data.reserva.hora_reserva}}</span>
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-primary">Ver mas</button>
+            <button class="btn btn-primary" (click)="redirecToMisPartidos(data)">Ver mas</button>
 
-            <!-- <div class="line"></div> -->
+            
         </div>
-
-        <div class="card-reserva" >
-            <div class="detail-card">
-                <div class="header-detail-card">
-                    <span class="cancha-reserva">CORDEP</span>
-                    <span class="estatus pendiente"><b>Pendiente</b></span>
-                </div>
-                <div class="horario">
-                    <span class="title">Horario:</span>
-                    <div class="detail">
-                        <span class="fecha-horario">06/04/2025</span>
-                        <span class="hora-horario">19:00 - 20:00</span>
-                    </div>
-                </div>
-                <div class="reserva">
-                    <span class="title">Reserva:</span>
-                    <div class="detail">
-                        <div class="fecha-reserva">05/04/2025</div>
-                        <span class="hora-reserva">14:35</span>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn btn-primary">Ver mas</button>
-
-            <!-- <div class="line"></div> -->
-        </div>
-
-        <div class="card-reserva" >
-            <div class="detail-card">
-                <div class="header-detail-card">
-                    <span class="cancha-reserva">CORDEP</span>
-                    <span class="estatus cancelado"><b>Cancelado</b></span>
-                </div>
-                <div class="horario">
-                    <span class="title">Horario:</span>
-                    <div class="detail">
-                        <span class="fecha-horario">06/04/2025</span>
-                        <span class="hora-horario">19:00 - 20:00</span>
-                    </div>
-                </div>
-                <div class="reserva">
-                    <span class="title">Reserva:</span>
-                    <div class="detail">
-                        <div class="fecha-reserva">05/04/2025</div>
-                        <span class="hora-reserva">14:35</span>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn btn-primary">Ver mas</button>
-
-            <!-- <div class="line"></div> -->
-        </div>
-
     </div>
 </div>

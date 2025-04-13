@@ -1,0 +1,336 @@
+@import '../../../app.component.scss';
+
+.container-mi-partido{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+
+    .header-mi-partido{
+        color: whitesmoke;
+        
+        padding: 10px 20px;
+
+        .arrow-back{
+            color: white;
+            font-size: 24px;
+        }
+
+        .title-header{
+            font-size: 24px;
+            margin-left: 20px;
+        }
+    }
+
+    .body-mi-partido{
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+
+        .cancha-name{
+            color: whitesmoke;
+            padding-left: 30px;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .carousel{
+            .carousel-item img{
+                height: 25vh;
+                object-fit: cover;
+
+            }
+
+            .btn-carousel{
+                width: 30px;
+                box-shadow: 0px 0px 4px $darkGray;
+            }
+    
+            .carousel-control-prev{
+                border-top-right-radius: 20px;
+                border-bottom-right-radius: 20px;
+            }
+    
+            .carousel-control-next{
+                border-top-left-radius: 20px;
+                border-bottom-left-radius: 20px;
+            }
+        }
+
+        .info-cancha{
+            display: flex;
+            flex-direction: column;
+            color: whitesmoke;
+            padding: 10px;
+
+
+            .detail-cancha{
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .data-reserva{
+                display: grid;
+                grid-template-rows: 1fr 1fr;
+                grid-template-columns: 1fr 1fr;
+
+                .data{
+                    background-color: $azul;
+                    // width: 90%;
+                    max-width: 90%;
+                    min-width: 85%;
+                    font-size: 21px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 10px 20px;
+                    margin: 5px auto;
+                }
+
+            }
+
+
+        }
+
+        .format-match{
+            padding: 10px 20px;
+
+            .title-format{
+                color: whitesmoke;
+                font-size: 21px;
+                font-weight: bold;
+            }
+
+            .text-format{
+                color: whitesmoke;
+                padding-left: 20px;
+                padding-right: 5px;
+
+                &.important{
+                    font-weight: bold;
+                }
+            }
+
+            .line{
+                height: 2px;
+                width: 60%;
+                background-color: $rojo;
+                margin: auto;
+            }
+        }
+
+        .accordion{
+            background-color: transparent;
+            width: 95%;
+            margin: 10px auto 20px auto;
+
+            .accordion-item{
+                background-color: transparent;
+
+                .accordion-header{
+                    background-color: transparent;
+
+                    .accordion-button{
+                        background-color: $darkGray;
+                        color: white;
+                        font-family: $titleFont;
+                        font-size: 21px;
+                        align-items: baseline;
+                        font-weight: bold;
+                        border-bottom: 1.5px solid $rojo;
+
+
+                        &:focus{
+                            box-shadow: none;                            
+                        }
+
+                        span{
+                            font-size: 14px;
+                            font-weight: lighter;
+                            margin-left: auto;
+                            margin-right: 0px;
+                        }
+
+                    }
+
+                    .accordion-button::after{
+                        color: red;
+                        background-color: whitesmoke;
+                        padding: 5px;
+                        border-radius: 5px;
+                    }
+
+
+                }
+
+                .accordion-collapse{
+
+                    .body-maps{
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+
+                        .btn-redirecTo{
+                            color: whitesmoke;
+                            margin-bottom: 10px;
+                            text-decoration: none;
+                            border-bottom: 2px solid $rojo;
+                            width: fit-content;
+                            padding-right: 20px;
+
+                            &:hover{
+                                color: $rojo;
+
+                                .fa-solid{
+                                    color: $rojo;
+                                }
+                            }
+
+                            .fa-solid{
+                                color: $teamGreen;
+                            }
+                        }
+
+                        .adress-cancha{
+                            text-overflow: ellipsis;
+                            width: 100%;
+                            margin-top: 5px;
+                        }
+                    }
+
+                    .accordion-body{                
+                        color: whitesmoke;
+                        padding: 10px;
+
+
+                        .teams-match{
+                            display: flex;
+                            justify-content: space-between;
+                            gap: 30px;
+            
+                            .team{
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                width: 100%;
+            
+                                &.azul{
+                                    border: 2px solid $teamBlue;
+            
+                                    .team-name{
+                                        background-color: $teamBlue;
+                                        width: 100%;
+                                        text-align: center;
+                                        color: whitesmoke;
+                                        font-weight: bold;
+                                    }
+                                }
+            
+                                &.blanco{
+                                    border: 2px solid white;
+            
+                                    .team-name{
+                                        background-color: white;
+                                        width: 100%;
+                                        text-align: center;
+                                        color: $darkGray;
+                                        font-weight: bold;
+                                    }
+                                }
+            
+                                &.red{
+                                    border: 2px solid $rojo;
+            
+                                    .team-name{
+                                        background-color: $rojo;
+                                        width: 100%;
+                                        text-align: center;
+                                        color: whitesmoke;
+                                        font-weight: bold;
+                                    }
+                                }
+                                &.gold{
+                                    border: 2px solid $gold;
+            
+                                    .team-name{
+                                        background-color: $gold;
+                                        width: 100%;
+                                        text-align: center;
+                                        color: $darkGray;
+                                        font-weight: bold;
+                                    }
+                                }
+            
+            
+                                .player-match-team{
+                                    background-color: $darkGray;
+                                    width: 99%;
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                    padding: 10px;
+            
+                                    .photo-profile{
+                                        background-color: $gray;
+                                        height: 80px;
+                                        width: 80px;
+                                        border-radius: 50px;
+                                    }
+
+                                    .icon-profile{
+                                        background-color: $gray;
+                                        font-size: 32px;
+                                        padding: 10px;
+                                        border-radius: 10px;
+                                        // border: 1px solid white;
+                                    }
+            
+                                    .player-name{
+                                        text-overflow: ellipsis;
+                                        width: 130px;
+                                        text-align: center;
+                                    }
+                                }
+                            }
+                        }
+
+
+                    }
+
+                }
+            }
+        }
+    }
+
+    .reserva-footer{
+        display: flex;
+        justify-content: center;
+        border-top: 2px solid $rojo;
+
+        .btn-reservar{
+            margin-top: 10px;
+            margin-bottom: 25px;
+            width: 60%;
+            padding: 5px 20px;
+            color: whitesmoke;
+            background-color: $rojo;
+            box-shadow: 2px 4px 4px black;
+            border: none;
+            border-radius: 10px;
+
+            &.Confirmado{
+                background-color: #248f20;
+            }
+
+            &.Pendiente{
+                background-color: #ccb119d7;
+            }
+
+            &.Cancelado{
+                background-color: #a82d2d;
+            }
+        }
+    }
+}

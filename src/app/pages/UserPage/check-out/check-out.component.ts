@@ -10,10 +10,12 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { SessionStorageService } from '../../../services/session-storage.service';
 import { Reserva2 } from '../../../interfaces/reserva-2';
 import { PerfilService } from '../../../services/perfil.service';
+import { LoadingPageComponent } from '../../../shared/loading-page/loading-page.component';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-check-out',
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingPageComponent],
   templateUrl: './check-out.component.html',
   styleUrl: './check-out.component.scss'
 })
@@ -46,13 +48,7 @@ export class CheckOutComponent {
     id_usuario: '456'
   }
 
-  reserva: Reserva2 = {
-    fecha_reserva: '',
-    hora_reserva: '',
-    responsable: this.perfil,//'admin',
-    estado: 'Pendiente',
-    color: ''
-  }
+  reserva!: Reserva2 
 
 
   date = ''
@@ -61,6 +57,8 @@ export class CheckOutComponent {
   confirm: boolean = false
 
   colorTeam: string = ''
+
+  loading: boolean = false
 
 
   constructor(private router: Router, private dataRoute: ActivatedRoute, private perfilService: PerfilService, private reservaService: ReservaService, private localStorageService: LocalStorageService, private sessionStorageService: SessionStorageService){
@@ -86,12 +84,17 @@ export class CheckOutComponent {
 
       const localDate = new Date()
 
+      console.log(Timestamp.fromDate(localDate))
+      console.log(localDate)
+
       this.reserva = {
-        fecha_reserva: String(datePipe.transform(localDate, 'yyyy/MM/dd')),//localDate.toISOString().split('T')[0].replace(/-/g,'/'),//String(),
+        fecha_reserva: Timestamp.fromDate(localDate),//String(datePipe.transform(localDate, 'yyyy/MM/dd')),//localDate.toISOString().split('T')[0].replace(/-/g,'/'),//String(),
         hora_reserva: localDate.toTimeString().split(' ')[0].slice(0, 5),
         responsable: this.perfil,
         color: this.colorTeam,
-        estado: 'Pendiente'
+        estado: 'Pendiente',
+        cancha_id: String(this.cancha.id),
+        horario_id: String(this.horario.id)
       }
 
     }else{
@@ -100,6 +103,10 @@ export class CheckOutComponent {
   }
 
   async addReserva(){
+    this.loading = true
+
+    console.log(this.reserva)
+
     try {
       const newReserva = await this.reservaService.addReserva(String(this.cancha.id), String(this.horario.id), String(this.perfil.id), this.reserva)
       
@@ -109,6 +116,8 @@ export class CheckOutComponent {
       }
 
       console.log("✅ Reserva completada con éxito:", newReserva);
+      this.loading = false
+
       this.router.navigate(['/user-main/partidos']);
 
     } catch (error) {
