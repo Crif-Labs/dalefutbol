@@ -52,6 +52,8 @@ export class UserMainComponent {
 
     this.initPage()
 
+    this.getMenu()
+
 
   }
 
