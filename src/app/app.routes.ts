@@ -22,10 +22,10 @@ export const routes: Routes = [
         pathMatch: 'full',
         redirectTo: '/user-main'
     },
-    {
-        path: 'convertir-fechas',
-        component: ConvetirFechasComponent
-    },
+    // {
+    //     path: 'convertir-fechas',
+    //     component: ConvetirFechasComponent
+    // },
     {
         path: 'user-main',
         component: UserMainComponent,
@@ -49,7 +49,7 @@ export const routes: Routes = [
     },
     {path: 'reservas-check-in', component: ReservaComponent},
     {path: 'mis-reservas', component: MisReservasComponent},
-    {path: 'mi-partido', component: MiPartidoComponent},
+    // {path: 'mi-partido', component: MiPartidoComponent},
     {path: 'check-out', component: CheckOutComponent},
     {
         path: 'login',

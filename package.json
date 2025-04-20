@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:dalefutbol": "node dist/dalefutbol/server/server.mjs"
+    "build:ssr": "ng build --configuration production && ng run dalefutbol:server:production",
+    "serve:ssr": "node dist/dalefutbol/server/main.js"
   },
   "private": true,
   "dependencies": {
