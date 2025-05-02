@@ -1,7 +1,8 @@
-@import '../../app.component.scss';
+@use 'sass:color';
+@use '../../app.component.scss' as *;
 
 .head-register{
-    background-color: darken($gray, 5);
+    background-color: color.scale($gray, $lightness: -5%);
     border-bottom-left-radius: 100px;
     display: flex;
     justify-content: space-between;
@@ -33,7 +34,7 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    background-color: darken($color: $gray, $amount: 4);
+    background-color: color.scale($gray, $lightness: -4%);
     overflow: hidden;
     height: 100%;
 

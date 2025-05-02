@@ -1,8 +1,11 @@
 // @import '../../app.component.scss';
-@import '../../../styles.scss';
+// @import '../../../styles.scss';
+@use 'sass:color';
+@use '../../app.component.scss' as *;
+// @use 'sass:color';
 
 .head-login{
-    background-color: darken($gray, 5);
+    background-color: color.scale($gray, $lightness: -5%);
     // background-color: scale($gray, 50%);
     border-bottom-right-radius: 100px;
     width: 100%;
@@ -21,7 +24,7 @@
 .container-login{
     width: 90%;
     margin: auto;
-    background-color: rgba(darken($gray, 8), .4);
+    background-color: rgba(color.scale($gray, $lightness: -8%), .4);
     // background-color: scale($gray, 80);
     color: whitesmoke;
     border-radius: 10px;

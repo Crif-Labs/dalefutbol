@@ -1,4 +1,4 @@
-@import url('../../app.component.scss');
+@use '../../app.component.scss' as *;
 
 .loading-container{
     background-color: #1F1F1F;
