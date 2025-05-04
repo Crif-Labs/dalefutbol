@@ -19,6 +19,24 @@ export class LoginComponent {
   validCorreo: boolean = true;
   validPassword: boolean = true;
 
+
+  inputForm = [
+    {
+      name: 'correo',
+      type: 'email',
+      placeholder: 'Correo',
+      required: 'true',
+      icon: 'fa-regular fa-at'
+    },
+    {
+      name: 'password',
+      type: 'password',
+      placeholder: 'Contraseña',
+      required: 'true',
+      icon: 'fa-solid fa-lock'
+    }
+  ]
+
   formLogin: FormGroup;
 
   constructor(private router: Router, private authService: AuthService, private perfilService: PerfilService){

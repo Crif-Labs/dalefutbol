@@ -1,21 +1,23 @@
-// @import '../../app.component.scss';
-// @import '../../../styles.scss';
 @use 'sass:color';
 @use '../../app.component.scss' as *;
-// @use 'sass:color';
+@use '../../shared/SCSS/input.scss' as *;
 
 .head-login{
-    background-color: color.scale($gray, $lightness: -5%);
-    // background-color: scale($gray, 50%);
+    background-color: color.scale($darkGray, $lightness: -10%);
     border-bottom-right-radius: 100px;
     width: 100%;
+    box-shadow: 2px 2px 4px rgba($color: $rojo, $alpha: .5);
 
     .logo{
         color: whitesmoke;
-        padding-left: 20px;
+        font-family: $logoFont;
+        padding: 10px 20px;
+        margin: 0;
+        font-size: 36px;
 
         span{
             color: $rojo;
+            // font-family: $textFont;
         }
     }
 }
@@ -24,8 +26,7 @@
 .container-login{
     width: 90%;
     margin: auto;
-    background-color: rgba(color.scale($gray, $lightness: -8%), .4);
-    // background-color: scale($gray, 80);
+    background-color: rgba(color.scale($gray, $lightness: -8%), .8);
     color: whitesmoke;
     border-radius: 10px;
     display: flex;
@@ -48,7 +49,7 @@
     .line{
         width: 80%;
         height: 1px;
-        background-color: $gold;
+        background-color: $rojo;
         margin: 40px auto;
     }
 

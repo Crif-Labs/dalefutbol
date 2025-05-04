@@ -8,17 +8,27 @@
         <label class="label-title">Inicia Sesión</label>
     
         <form class="form" [formGroup]="formLogin">
-            <div class="container-input">
+            <!-- <div class="container-input">
                 <label for="" class="label-input"><i class="fa-regular fa-at"></i>&nbsp;&nbsp;Correo:</label>
                 <input formControlName="correo" type="email" class="input-form">
                 <label *ngIf="!validCorreo" class="label-error">Correo electrónico no válido</label>
+            </div> -->
+
+            <div class="container-input form__group field" *ngFor="let input of inputForm">
+                <input formControlName="{{input.name}}" id="{{input.name}}" type="{{input.type}}" class="form__field" placeholder="{{input.placeholder}}" required="{{input.required}}">
+                <label for="{{input.name}}" class="form__label"><i class="{{input.icon}}"></i>&nbsp;&nbsp;{{input.placeholder}}:</label>
+            </div>
+
+            <!-- <div class="container-input form__group field ">
+                <input formControlName="correo" id="name" type="email" class="form__field" placeholder="Correo" required="">
+                <label for="name" class="form__label"><i class="fa-regular fa-at"></i>&nbsp;&nbsp;Correo</label>
             </div>
             
             <div class="container-input">
                 <label for="" class="label-input"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Contraseña:</label>
                 <input formControlName="password" type="password" class="input-form">
-                <label *ngIf="!validPassword" class="label-error">Contraseña no válida</label>
-            </div>
+                <label *ngIf="!validPassword" class="label-error">Contraseña no válida</label> -->
+            <!-- </div> -->
     
             <button class="btn btn-primary" (click)="validateForm()">Iniciar</button>
         </form>
