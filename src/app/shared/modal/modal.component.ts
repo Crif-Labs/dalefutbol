@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import { LoadingPageComponent } from "../loading-page/loading-page.component";
+import { SimpleLoadingComponent } from "../simple-loading/simple-loading.component";
 
 @Component({
   selector: 'app-modal',
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingPageComponent, SimpleLoadingComponent],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
   animations: [
@@ -32,6 +34,7 @@ import { CommonModule } from '@angular/common';
 export class ModalComponent {
   @Input() title: string = 'Titulo por defecto'
   @Input() message: string = 'Mensaje por defecto';
+  @Input() loadModal: boolean = false;
   @Input() closeButton: boolean = true;
   @Output() closed = new EventEmitter<void>();
 

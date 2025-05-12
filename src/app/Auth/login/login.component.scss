@@ -66,12 +66,13 @@
 
             .link-register{
                 border-bottom: 1px solid $rojo;
-                color: $rojo;
+                color: $gold;
+                text-decoration: none;
                 cursor: pointer;
 
                 &:hover{
-                    border-bottom: 1px solid $azul;
-                    color: $azul;
+                    border-bottom: 1px solid $lightGray;
+                    color: $lightGray;
                 }
             }
         }

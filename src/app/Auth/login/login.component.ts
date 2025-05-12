@@ -19,7 +19,13 @@ export class LoginComponent {
 
   validCorreo: boolean = true;
   validPassword: boolean = true;
-  showModal: boolean = false
+
+
+  titleModal: string = 'Title generico'
+  messageModal: string = 'Error generico'
+  closeButtonModal: boolean = true
+  loadModal: boolean = false
+  showModal: boolean = true
 
   inputForm = [
     {
@@ -50,16 +56,17 @@ export class LoginComponent {
       correo: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required])
     })
+
+    this.showModal = false;
   }
 
-  titleModal: string = 'Title generico'
-  messageModal: string = 'Error generico'
-  closeButtonModal: boolean = true
+
 
 
   showAuthErrorModal(message: string){
     this.titleModal = 'Error de Autentificación'
     this.messageModal = message;
+    this.loadModal = false
     this.closeButtonModal = true
     this.showModal = true;    
   }
@@ -67,6 +74,7 @@ export class LoginComponent {
   showAuthSuccesModal(){
     this.titleModal = 'Validando Datos...'
     this.messageModal = 'Cargando...'
+    this.loadModal = true
     this.closeButtonModal = false
     this.showModal = true
   }
@@ -109,10 +117,11 @@ export class LoginComponent {
   }
 
   onLogin(usuario: Usuario){
+    this.showAuthSuccesModal()
     this.authService.login(usuario)
       .then( async () => {
         
-      this.showAuthSuccesModal()
+
         await this.getAuth();
 
         const rol: string | any = await this.perfilService.getRolPerfil(this.UID)
@@ -147,6 +156,7 @@ export class LoginComponent {
   }
 
   closeModal() {
+    this.loadModal = false
     this.closeButtonModal = true
     this.showModal = false;
   }

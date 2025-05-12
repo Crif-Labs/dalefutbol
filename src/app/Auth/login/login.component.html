@@ -15,7 +15,6 @@
             </div>
     
             <button class="btn btn-primary" (click)="validateForm()" >Iniciar</button>
-            <!-- data-bs-toggle="modal" data-bs-target="#modalLogin">Iniciar</button> -->
         </form>
     
         <div class="line">
@@ -33,4 +32,4 @@
 
 </div>
 
-<app-modal *ngIf="showModal" [title]="titleModal" [message]="messageModal" [closeButton]="closeButtonModal" (closed)="closeModal()"></app-modal>
+<app-modal *ngIf="showModal" [title]="titleModal" [message]="messageModal" [closeButton]="closeButtonModal" [loadModal]="loadModal" (closed)="closeModal()"></app-modal>
