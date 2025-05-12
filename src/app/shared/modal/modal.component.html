@@ -1,0 +1,7 @@
+<div class="custom-modal-backdrop" @fadeBackdrop>
+    <div class="custom-modal" @fadeModal>
+      <h5>{{title}}</h5>
+      <p>{{message}}</p>
+      <button (click)="close()" *ngIf="closeButton">Cerrar</button>
+    </div>
+  </div>

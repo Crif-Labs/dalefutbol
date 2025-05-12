@@ -12,9 +12,11 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimations(),
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes), 
     provideClientHydration(withEventReplay()),
@@ -29,13 +31,13 @@ export const appConfig: ApplicationConfig = {
         messagingSenderId: "259286345543",
         measurementId: "G-XVDWBT7J3L" 
       })),
-     provideAuth(() => getAuth()),
-     provideAnalytics(() => getAnalytics()),
-     ScreenTrackingService,
-     UserTrackingService,
-     provideFirestore(() => getFirestore()),
-     provideDatabase(() => getDatabase()),
-     provideMessaging(() => getMessaging()),
-     provideStorage(() => getStorage()),
-     provideAnimationsAsync()]
+    provideAuth(() => getAuth()),
+    provideAnalytics(() => getAnalytics()),
+    ScreenTrackingService,
+    UserTrackingService,
+    provideFirestore(() => getFirestore()),
+    provideDatabase(() => getDatabase()),
+    provideMessaging(() => getMessaging()),
+    provideStorage(() => getStorage()),
+    provideAnimationsAsync()]
 };

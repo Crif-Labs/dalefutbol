@@ -8,29 +8,14 @@
         <label class="label-title">Inicia Sesión</label>
     
         <form class="form" [formGroup]="formLogin">
-            <!-- <div class="container-input">
-                <label for="" class="label-input"><i class="fa-regular fa-at"></i>&nbsp;&nbsp;Correo:</label>
-                <input formControlName="correo" type="email" class="input-form">
-                <label *ngIf="!validCorreo" class="label-error">Correo electrónico no válido</label>
-            </div> -->
 
             <div class="container-input form__group field" *ngFor="let input of inputForm">
                 <input formControlName="{{input.name}}" id="{{input.name}}" type="{{input.type}}" class="form__field" placeholder="{{input.placeholder}}" required="{{input.required}}">
                 <label for="{{input.name}}" class="form__label"><i class="{{input.icon}}"></i>&nbsp;&nbsp;{{input.placeholder}}:</label>
             </div>
-
-            <!-- <div class="container-input form__group field ">
-                <input formControlName="correo" id="name" type="email" class="form__field" placeholder="Correo" required="">
-                <label for="name" class="form__label"><i class="fa-regular fa-at"></i>&nbsp;&nbsp;Correo</label>
-            </div>
-            
-            <div class="container-input">
-                <label for="" class="label-input"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Contraseña:</label>
-                <input formControlName="password" type="password" class="input-form">
-                <label *ngIf="!validPassword" class="label-error">Contraseña no válida</label> -->
-            <!-- </div> -->
     
-            <button class="btn btn-primary" (click)="validateForm()">Iniciar</button>
+            <button class="btn btn-primary" (click)="validateForm()" >Iniciar</button>
+            <!-- data-bs-toggle="modal" data-bs-target="#modalLogin">Iniciar</button> -->
         </form>
     
         <div class="line">
@@ -41,10 +26,11 @@
             <p class="register">Si no tienes cuenta <a class="link-register" (click)="onRegister()">Regístrate acá</a> <br>o Inicia con Google+</p>
 
             <button class="btn btn-google" (click)="onLoginWithGoogle()">Iniciar con <i class="fa-brands fa-google-plus-g"></i></button>
-            <!-- <button class="btn btn-secondary" (click)="onRegister()">Registrate</button> -->
         </div>
     </div>
     
     <app-footer-app></app-footer-app>
 
 </div>
+
+<app-modal *ngIf="showModal" [title]="titleModal" [message]="messageModal" [closeButton]="closeButtonModal" (closed)="closeModal()"></app-modal>
