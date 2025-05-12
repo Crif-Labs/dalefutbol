@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import animationData from '../../../assets/balon.json'
+import { LottieComponent } from 'ngx-lottie'
 
 @Component({
   selector: 'app-modal',
-  imports: [CommonModule],
+  imports: [CommonModule, LottieComponent],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
   animations: [
@@ -34,6 +36,13 @@ export class ModalComponent {
   @Input() message: string = 'Mensaje por defecto';
   @Input() closeButton: boolean = true;
   @Output() closed = new EventEmitter<void>();
+
+
+  options = {
+    animationData,
+    loop: true,
+    autoplay: true
+  }
 
   close() {
     this.closed.emit();
