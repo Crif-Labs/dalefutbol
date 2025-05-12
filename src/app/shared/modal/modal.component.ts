@@ -6,7 +6,7 @@ import { SimpleLoadingComponent } from "../simple-loading/simple-loading.compone
 
 @Component({
   selector: 'app-modal',
-  imports: [CommonModule, LoadingPageComponent, SimpleLoadingComponent],
+  imports: [CommonModule, SimpleLoadingComponent],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
   animations: [
