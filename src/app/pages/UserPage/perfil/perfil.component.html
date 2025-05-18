@@ -84,7 +84,7 @@
             </div>
             <i class="fa-solid fa-caret-right"></i>
         </button>
-        <button class="btn btn-option mb-5" (click)="onLogout()">
+        <button class="btn btn-option mb-5" (click)="closeSession()">
             <div class="content">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Cerrar Sesion
@@ -256,3 +256,15 @@
     </div>
   </div>
 </div>
+
+
+<!-- Modal Cerrar Sesion -->
+ <app-modal-response *ngIf="showModalCloseSession" 
+  [title]="modalResponse.title" 
+  [subtitle]="modalResponse.subtitle"
+  [message]="modalResponse.message"
+  [textButtonSuccess]="modalResponse.textButtonSuccess"
+  [textButtonClose]="modalResponse.textButtonClose"
+
+  (closed)="onLogout($event)"
+></app-modal-response>

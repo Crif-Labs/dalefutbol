@@ -11,12 +11,14 @@ import { PerfilService } from '../../../services/perfil.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import * as bootstrap from 'bootstrap'
 import { LoadingPageComponent } from "../../../shared/loading-page/loading-page.component";
+import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/modal-response.component";
+import { ModalResponse } from '../../../interfaces/modal-response';
 
 
 
 @Component({
   selector: 'app-perfil',
-  imports: [CommonModule, ReactiveFormsModule, LoadingPageComponent],
+  imports: [CommonModule, ReactiveFormsModule, LoadingPageComponent, ModalResponseComponent],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })
@@ -141,10 +143,31 @@ export class PerfilComponent implements OnInit{
     this.statusCopiedText = ''
   }
 
-  async onLogout(){
-    await this.authService.logout()
+  showModalCloseSession: boolean = false
+  modalResponse!: ModalResponse
 
-    this.router.navigate(['/login'])
+  closeSession(){
+    this.modalResponse = {
+      title: 'Cerrando Sesión',
+      subtitle: '😣😣',
+      message: '¿Estás seguro de cerrar la sesión en este dispositivo?',
+      textButtonSuccess: 'Sí, cerrar sesión',
+      textButtonClose: 'No, volver'
+    }
+
+    this.showModalCloseSession = true
+  }
+
+
+  async onLogout(response: boolean){
+
+    if(response){
+      await this.authService.logout()
+
+      this.router.navigate(['/login'])
+    }else{
+      this.showModalCloseSession = false
+    }
   }
 
 }

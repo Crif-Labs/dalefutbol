@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { SimpleLoadingComponent } from "../simple-loading/simple-loading.component";
 
 @Component({
-  selector: 'app-modal',
-  imports: [CommonModule, SimpleLoadingComponent],
-  templateUrl: './modal.component.html',
-  styleUrl: './modal.component.scss',
+  selector: 'app-modal-response',
+  imports: [CommonModule],
+  templateUrl: './modal-response.component.html',
+  styleUrl: './modal-response.component.scss',
   animations: [
     trigger('fadeBackdrop', [
       transition(':enter', [
@@ -29,15 +28,19 @@ import { SimpleLoadingComponent } from "../simple-loading/simple-loading.compone
     ])
   ],
 })
+export class ModalResponseComponent {
 
-export class ModalComponent {
-  @Input() title: string = 'Titulo por defecto'
-  @Input() message: string = 'Mensaje por defecto';
-  @Input() loadModal: boolean = false;
-  @Input() closeButton: boolean = true;
-  @Output() closed = new EventEmitter<void>();
+  @Input() title: string = 'Titulo'
+  @Input() subtitle: string = 'Subtitulo'
+  @Input() message: string = 'Message...'
 
-  close() {
-    this.closed.emit();
+  @Input() textButtonSuccess: string = 'Aceptar'
+  @Input() textButtonClose: string = 'Cerrar'
+
+  @Output() closed = new EventEmitter<boolean>()
+
+  closeSuccess(response: boolean){
+    this.closed.emit(response)
   }
+
 }
