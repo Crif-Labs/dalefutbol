@@ -7,51 +7,50 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Console, log } from 'console';
 import { Perfil } from '../../interfaces/perfil';
 import { PerfilService } from '../../services/perfil.service';
+import { Comuna } from '../../interfaces/comuna';
+import { ComunaService } from '../../services/comuna.service';
+import { Modal } from '../../interfaces/modal';
+import { ModalComponent } from "../../shared/modal/modal.component";
 
 @Component({
   selector: 'app-register-profile',
-  imports: [CommonModule, FooterAppComponent, ReactiveFormsModule],
+  imports: [CommonModule, FooterAppComponent, ReactiveFormsModule, ModalComponent],
   templateUrl: './register-profile.component.html',
   styleUrl: './register-profile.component.scss'
 })
 export class RegisterProfileComponent {
 
-
-
-  comunas = [
-    { "nombre": "Cerrillos", "latitud": -33.4931, "longitud": -70.7146 },
-    { "nombre": "Cerro Navia", "latitud": -33.4169, "longitud": -70.7349 },
-    { "nombre": "Conchalí", "latitud": -33.3865, "longitud": -70.6797 },
-    { "nombre": "El Bosque", "latitud": -33.5610, "longitud": -70.6623 },
-    { "nombre": "Estación Central", "latitud": -33.4569, "longitud": -70.6990 },
-    { "nombre": "Huechuraba", "latitud": -33.3609, "longitud": -70.6643 },
-    { "nombre": "Independencia", "latitud": -33.4144, "longitud": -70.6646 },
-    { "nombre": "La Cisterna", "latitud": -33.5328, "longitud": -70.6591 },
-    { "nombre": "La Florida", "latitud": -33.5230, "longitud": -70.5697 },
-    { "nombre": "La Granja", "latitud": -33.5379, "longitud": -70.6231 },
-    { "nombre": "La Pintana", "latitud": -33.5833, "longitud": -70.6291 },
-    { "nombre": "La Reina", "latitud": -33.4498, "longitud": -70.5402 },
-    { "nombre": "Las Condes", "latitud": -33.4072, "longitud": -70.5675 },
-    { "nombre": "Lo Barnechea", "latitud": -33.3625, "longitud": -70.5183 },
-    { "nombre": "Lo Espejo", "latitud": -33.5181, "longitud": -70.6956 },
-    { "nombre": "Lo Prado", "latitud": -33.4445, "longitud": -70.7264 },
-    { "nombre": "Macul", "latitud": -33.4878, "longitud": -70.5989 },
-    { "nombre": "Maipú", "latitud": -33.4867, "longitud": -70.7617 },
-    { "nombre": "Ñuñoa", "latitud": -33.4550, "longitud": -70.6010 },
-    { "nombre": "Pedro Aguirre Cerda", "latitud": -33.4873, "longitud": -70.6733 },
-    { "nombre": "Peñalolén", "latitud": -33.4982, "longitud": -70.5454 },
-    { "nombre": "Providencia", "latitud": -33.4254, "longitud": -70.6152 },
-    { "nombre": "Pudahuel", "latitud": -33.4489, "longitud": -70.7703 },
-    { "nombre": "Quilicura", "latitud": -33.3634, "longitud": -70.7330 },
-    { "nombre": "Quinta Normal", "latitud": -33.4372, "longitud": -70.7031 },
-    { "nombre": "Recoleta", "latitud": -33.4033, "longitud": -70.6331 },
-    { "nombre": "Renca", "latitud": -33.3930, "longitud": -70.7196 },
-    { "nombre": "San Joaquín", "latitud": -33.4890, "longitud": -70.6338 },
-    { "nombre": "San Miguel", "latitud": -33.4976, "longitud": -70.6511 },
-    { "nombre": "San Ramón", "latitud": -33.5361, "longitud": -70.6401 },
-    { "nombre": "Santiago", "latitud": -33.4489, "longitud": -70.6693 },
-    { "nombre": "Vitacura", "latitud": -33.3991, "longitud": -70.5834 }
+  inputForm = [
+    {
+      name: 'nombre',
+      type: 'text',
+      placeholder: 'Nombre',
+      required: 'true',
+      icon: 'fa-solid fa-user',
+      error: 'El Nombre es necesario'
+    },
+    {
+      name: 'apellido',
+      type: 'text',
+      placeholder: 'Apellido',
+      required: 'true',
+      icon: 'fa-regular fa-user',
+      error: 'El Apellido es necesario'
+    },
+    {
+      name: 'telefono',
+      type: 'number',
+      placeholder: 'Teléfono (+56)',
+      required: 'true',
+      icon: 'fa-solid fa-mobile-screen',
+      error: 'El Teléfono es necesario (9 dígitos)'
+    }
   ]
+
+  comunas: Comuna[] = []
+
+  modalData!: Modal
+  showModal: boolean = true;
   
   comunaSeleccionada: any;
 
@@ -62,14 +61,30 @@ export class RegisterProfileComponent {
 
   formPerfil: FormGroup;
 
-  constructor(private router: Router, private authService: AuthService, private perfilService: PerfilService){
+  constructor(private router: Router, private authService: AuthService, private perfilService: PerfilService, private comunaService: ComunaService){
+    this.modalData = {
+      title: 'Cargando datos...',
+      message: '...',
+      loadModal: true,
+      closeButton: false
+    }
+
+
     this.formPerfil = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
       apellido: new FormControl('', [Validators.required]),
-      telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(9), Validators.maxLength(9)]),
       comuna: new FormControl('--Comuna--', []),
       posicion: new FormControl('--Posición--', [])
     })
+
+    comunaService.getComunas().subscribe(res => {
+      this.comunas = res.sort((a,b) => a.nombre.localeCompare(b.nombre))
+
+      this.showModal = false
+    })
+
+    
   }
 
   UID: string | any
@@ -95,7 +110,13 @@ export class RegisterProfileComponent {
     this.validTelefono = this.formPerfil.controls['telefono'].valid
 
     if(this.formPerfil.valid != true){
-      console.log("Tenemos un problema en el formulario")
+      this.modalData = {
+        title: 'Error en Formulario',
+        message: 'Los datos ingresados no son correctos',
+        loadModal: false,
+        closeButton: true
+      }
+      this.showModal = true
     }else{
       if(this.formPerfil.controls['comuna'].value == '--Comuna--' || this.formPerfil.controls['comuna'].value == 'No ingresar comuna'){
         this.formPerfil.controls['comuna'].setValue('')
@@ -122,16 +143,42 @@ export class RegisterProfileComponent {
   }
 
   addNuevoPerfil(perfil: Perfil){
-    console.log("Entramos a addNuevoPerfil")
+
+    this.modalData = {
+      title: 'Ingresando su perfil...',
+      message: 'Sus datos están siendo registrados',
+      loadModal: true,
+      closeButton: false
+    }
+    this.showModal = true
 
     this.perfilService.addPerfil(perfil)
       .then( () => {
-          console.log("Se ha ingresado un nuevo perfil")
-          this.router.navigate(['user-main'])
+
+          this.modalData = {
+            title: 'Perfil ingresado...',
+            message: 'Sus datos han sido registrados.',
+            loadModal: true,
+            closeButton: false
+          }
+
+          setTimeout(() => {
+            this.showModal = false
+            this.router.navigate(['user-main'])
+          }, 1500)          
         }
       ).catch( () => {
-        console.log("No se ha podido realizar el registro")
+        this.modalData = {
+          title: 'Error al registrar',
+          message: 'Intente nuevamente. Si el problema persiste, intente más tarde o contáctese por Whatsapp',
+          loadModal: false,
+          closeButton: true
+        }
       })
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 
 

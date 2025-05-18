@@ -1,17 +1,22 @@
 @use 'sass:color';
 @use '../../app.component.scss' as *;
+@use '../../shared/SCSS/input.scss' as *;
 
 .head-register{
-    background-color: color.scale($gray, $lightness: -5%);
+    background-color: color.scale($darkGray, $lightness: -10%);
     border-bottom-left-radius: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    box-shadow: 2px 2px 4px rgba($color: $rojo, $alpha: .5);
 
-    .logo{
+    .logo{        
         color: whitesmoke;
-        padding-right: 20px;
+        font-family: $logoFont;
+        padding: 10px 20px;
+        margin: 0;
+        font-size: 36px;
         span{
             color: $rojo;
         }
@@ -32,7 +37,7 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    background-color: color.scale($gray, $lightness: -4%);
+    background-color: color.scale($darkGray, $lightness: 0%);
 
 
     .label-title{
@@ -50,6 +55,33 @@
         .btn{
             margin: 20px auto;
         }        
+    }
+}
+
+.show-pass{
+    // border: 1px solid $rojo;
+    background-color: color.scale($darkGray, $lightness: 5%);
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin: auto 20px auto auto;
+    justify-content: end;
+    padding: 5px 10px;
+    border-radius: 5px;
+    gap: 10px;
+    
+    p{
+        padding: 0;
+        margin: 0;
+    }
+
+    &.show{
+        background-color: color.scale($darkGray, $lightness: 30%);
+        
+        i{
+            // color: $rojo;
+            // box-shadow: 2px 2px 4px rgba($color: $rojo, $alpha: .5);
+        }
     }
 }
 

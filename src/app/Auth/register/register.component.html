@@ -9,22 +9,19 @@
         <label class="label-title">Registro de Usuario</label>
      
         <form class="form" [formGroup]="formRegister">
-            <div class="container-input">
-                <label for="" class="label-input"><i class="fa-regular fa-at"></i>&nbsp;&nbsp;Ingrese Correo:</label>
-                <input formControlName="correo" type="email" class="input-form">
-                <label *ngIf="!validCorreo" class="label-error">Correo electrónico no válido</label>
-            </div>
-            
-            <div class="container-input">
-                <label for="" class="label-input"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Ingrese Contraseña:</label>
-                <input formControlName="password" type="password" class="input-form" >
-                <label *ngIf="!validPassword" class="label-error">Contraseña no válida <br><span>Minimo: 6 caracteres</span></label>
+
+            <div class="container-input form__group field" *ngFor="let input of inputForm">
+                <input formControlName="{{input.name}}" id="{{input.name}}" type="{{input.type}}" class="form__field" placeholder="{{input.placeholder}}" required="{{input.required}}">
+                <label for="{{input.name}}" class="form__label"><i class="{{input.icon}}"></i>&nbsp;&nbsp;{{input.placeholder}}:</label>
+                <label *ngIf="!formRegister.controls[input.name].untouched && formRegister.controls[input.name].invalid" class="label-error">{{input.error}}</label>
             </div>
 
-            <div class="container-input second-pass">
-                <label for="" class="label-input"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Repita Contraseña:</label>
-                <input formControlName="repPass" type="password" class="input-form" >
-                <label *ngIf="!validRepPass" class="label-error">Contraseñas no coinciden</label>
+
+            <div [ngClass]="{'show': showPass}" class="show-pass" (click)="showPassControl()">
+                <i *ngIf="!showPass" class="fa-solid fa-eye"></i>
+                <i *ngIf="showPass" class="fa-regular fa-eye"></i>
+                <p *ngIf="!showPass" >Ver Contraseñas</p>
+                <p *ngIf="showPass" >Ocultar Contraseñas</p>
             </div>
     
             <button class="btn btn-primary" (click)="validateForm()">Siguiente Paso &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-arrow-right"></i></button>
@@ -34,3 +31,14 @@
 
     <app-footer-app></app-footer-app>
 </div>
+
+<app-modal
+    *ngIf="showModal"
+
+    [title]="modalData.title"
+    [message]="modalData.message"
+    [loadModal]="modalData.loadModal"
+    [closeButton]="modalData.closeButton"
+
+    (closed)="closeModal()"
+></app-modal>

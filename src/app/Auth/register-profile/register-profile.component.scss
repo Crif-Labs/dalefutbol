@@ -1,18 +1,22 @@
 @use 'sass:color';
 @use '../../app.component.scss' as *;
+@use '../../shared/SCSS/input.scss' as *;
 
 .head-register{
-    background-color: color.scale($gray, $lightness: -5%);
+    background-color: color.scale($darkGray, $lightness: -10%);
     border-bottom-left-radius: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin: 0px auto auto auto;
+    box-shadow: 2px 2px 4px rgba($color: $rojo, $alpha: .5);
 
-    .logo{
+    .logo{        
         color: whitesmoke;
-        padding-right: 20px;
+        font-family: $logoFont;
+        padding: 10px 20px;
+        margin: 0;
+        font-size: 36px;
         span{
             color: $rojo;
         }
@@ -34,7 +38,7 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    background-color: color.scale($gray, $lightness: -4%);
+    background-color: color.scale($darkGray, $lightness: 0%);
     overflow: hidden;
     height: 100%;
 

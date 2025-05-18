@@ -9,27 +9,11 @@
         <label class="label-title">Algunos Datos Extras</label>
     
         <form class="form" [formGroup]="formPerfil">
-            <div class="container-input">
-                <label for="" class="label-input"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;Ingrese Nombre:</label>
-                <input formControlName="nombre" type="text" class="input-form">
-                <label *ngIf="!validNombre" class="label-error">El nombre es necesario</label>
-            </div>
-            
-            <div class="container-input">
-                <label for="" class="label-input"><i class="fa-regular fa-user"></i>&nbsp;&nbsp;Ingrese Apellido:</label>
-                <input formControlName="apellido" type="text" class="input-form" >
-                <label *ngIf="!validApellido" class="label-error">El apellido es necesario</label>
-            </div>
 
-            <div class="container-input">
-                <label for="" class="label-input"><i class="fa-solid fa-mobile-screen"></i>&nbsp;&nbsp;Ingrese Telefono:</label>
-
-                <div class="input-phone">
-                    <label class="label-ip">+56</label>
-                    <input formControlName="telefono" type="number" class="input-form" >    
-                </div>
-                
-                <label *ngIf="!validTelefono" class="label-error">El telefono es necesario</label>
+            <div class="container-input form__group field" *ngFor="let input of inputForm">
+                <input formControlName="{{input.name}}" id="{{input.name}}" type="{{input.type}}" class="form__field" placeholder="{{input.placeholder}}" required="{{input.required}}">
+                <label for="{{input.name}}" class="form__label"><i class="{{input.icon}}"></i>&nbsp;&nbsp;{{input.placeholder}}:</label>
+                <label *ngIf="!formPerfil.controls[input.name].untouched && formPerfil.controls[input.name].invalid" class="label-error">{{input.error}}</label>
             </div>
 
             <!-- Cambiar a Select -->
@@ -66,3 +50,14 @@
 
     <app-footer-app></app-footer-app>
 </div>
+
+<app-modal
+    *ngIf="showModal"
+
+    [title]="modalData.title"
+    [message]="modalData.message"
+    [loadModal]="modalData.loadModal"
+    [closeButton]="modalData.closeButton"
+
+    (closed)="closeModal()"
+></app-modal>
