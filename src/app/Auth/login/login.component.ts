@@ -134,8 +134,10 @@ export class LoginComponent {
           this.router.navigate(['/user-main'])
         }else{
           /** si llega aca es por que el usuario no tiene un perfil, hay que mandar a hacerselo */
-          this.showAuthErrorModal('Hemos tenido un problema con la identificación. Por favor intente de nuevo')
-          this.router.navigate(['/register-profile'])
+          this.showAuthErrorModal('Hemos tenido un problema con la identificación. Por favor termine de registrarse')
+          setTimeout(() => {            
+            this.router.navigate(['/register-profile'])
+          },2000)
         }
       }).catch( error => {
         this.showAuthErrorModal('Las credenciales son incorrectas o el usuario no existe.')
