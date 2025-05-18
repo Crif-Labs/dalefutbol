@@ -7,11 +7,12 @@ import { Usuario } from '../../interfaces/usuario';
 import { AuthService } from '../../services/auth.service';
 import { PerfilService } from '../../services/perfil.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
+import { ModalLoadingComponent } from "../../shared/ModalDir/modal-loading/modal-loading.component";
 
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FooterAppComponent, ReactiveFormsModule, ModalComponent],
+  imports: [CommonModule, FooterAppComponent, ReactiveFormsModule, ModalComponent, ModalLoadingComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
