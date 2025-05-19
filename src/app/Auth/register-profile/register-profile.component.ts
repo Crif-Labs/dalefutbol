@@ -164,7 +164,7 @@ export class RegisterProfileComponent {
 
           setTimeout(() => {
             this.showModal = false
-            this.router.navigate(['user-main'])
+            this.router.navigate(['user'])
           }, 1500)          
         }
       ).catch( () => {

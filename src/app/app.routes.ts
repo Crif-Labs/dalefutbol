@@ -15,13 +15,39 @@ import { ReservasComponent } from './pages/AdminPage/reservas/reservas.component
 import { MisReservasComponent } from './pages/UserPage/mis-reservas/mis-reservas.component';
 import { ConvetirFechasComponent } from './temporales/convetir-fechas/convetir-fechas.component';
 import { MiPartidoComponent } from './pages/UserPage/mi-partido/mi-partido.component';
+import { UserComponent } from './pages/UserPage/user/user.component';
 
 export const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/user-main'
+        redirectTo: '/user'
+        // redirectTo: '/user-main'
     },
+    {
+        path: 'user',
+        component: UserComponent,
+        ...canActivate( () => redirectUnauthorizedTo(['login'])),
+        children: [
+            {
+                path: 'main', 
+                component: UserMainComponent,
+                children: [
+                    {path: 'partidos', component: PartidosComponent},
+                    {path: 'chat', component: MensajesComponent},
+                    {path: 'perfil', component: PerfilComponent},
+                    {path: 'torneo', component: TorneoComponent},
+                    {path: '**', redirectTo: 'partidos'}
+                ]
+            },
+            {path: 'reservas-check-in', component: ReservaComponent},
+            {path: 'mis-reservas', component: MisReservasComponent},
+            {path: 'mi-partido', component: MiPartidoComponent},
+            {path: 'check-out', component: CheckOutComponent},
+            {path: '**', redirectTo: 'main'}
+        ]
+    },
+
     // {
     //     path: 'convertir-fechas',
     //     component: ConvetirFechasComponent

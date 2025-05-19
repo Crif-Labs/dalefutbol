@@ -1,0 +1,19 @@
+<app-modal-loading *ngIf="showLoadModal"></app-modal-loading>
+
+<router-outlet></router-outlet>
+
+<app-modal-response
+    *ngIf="showModalResponse"
+
+    [title]="'Faltan cositas'"
+    [subtitle]="'Error de verificación de perfil'"
+    [message]="'Tienes que completar el llenado de tu perfil'"
+
+    [textButtonSuccess]="'Terminar el perfil'"
+    [textButtonClose]="'Salir'"
+
+    (closed)="closeModal($event)"
+></app-modal-response>
+
+
+

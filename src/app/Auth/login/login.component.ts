@@ -12,7 +12,7 @@ import { ModalLoadingComponent } from "../../shared/ModalDir/modal-loading/modal
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FooterAppComponent, ReactiveFormsModule, ModalComponent, ModalLoadingComponent],
+  imports: [CommonModule, FooterAppComponent, ReactiveFormsModule, ModalComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -132,7 +132,7 @@ export class LoginComponent {
         if(rol == 'admin'){
           this.router.navigate(['/admin-main'])
         }else if(rol == 'jugador'){
-          this.router.navigate(['/user-main'])
+          this.router.navigate(['/user'])
         }else{
           /** si llega aca es por que el usuario no tiene un perfil, hay que mandar a hacerselo */
           this.showAuthErrorModal('Hemos tenido un problema con la identificación. Por favor termine de registrarse')
@@ -149,7 +149,7 @@ export class LoginComponent {
   onLoginWithGoogle(){
     this.authService.loginWithGoogle()
       .then( async () => {
-        this.router.navigate(['/user-main'])
+        this.router.navigate(['/user'])
       }).catch( () => {
         console.log("error al ingresar con google")
       })
