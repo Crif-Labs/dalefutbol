@@ -7,7 +7,7 @@
     <div class="calendar">
         <div class="info-date">
             <span class="date"><b>Hoy</b>, {{today | date: 'EEEE'}} {{today | date: 'd' }}</span>
-            <span class="comuna"> en <b>{{comuna}}</b>&nbsp;<i class="fa-solid fa-location-dot"></i></span>
+            <span class="comuna" (click)="actionModal(true)"> en <b>{{comuna}}</b>&nbsp;<i class="fa-solid fa-location-dot"></i></span>
         </div>
 
         <div class="date-picker-container">
@@ -22,82 +22,59 @@
             <button class="btn btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form> -->
 
-        <select [(ngModel)]="comunaSelected" (change)="changeComuna($event)" class="comuna-select">
+        <!-- <select [(ngModel)]="comunaSelected" (change)="changeComuna($event)" class="comuna-select">
             <option class="option-select" value="Comuna" disabled selected>Comuna</option>
             <option class="option-select" [value]="comuna.nombre" *ngFor="let comuna of comunaList">
                 {{comuna.nombre}}<i class="fa-solid fa-location-dot"></i>
             </option>
-        </select>
+        </select> -->
     </div>
 </div>
 
 <div *ngIf="!loading" class="cancha-list">
 
     <div class="options-date">
-      <!-- <button class="option" data-bs-toggle="modal" data-bs-target="#listReservaFromPerfil" >Mis&nbsp;Reservas</button> -->
       <button class="option" (click)="redirectToMisReservas()">Mis&nbsp;Reservas</button>
-      <span *ngFor="let hora of listHoras" class="option" [ngClass]="{'selected': hora == hora_selected}" (click)="getHorarioPorHora(hora)" >{{hora}}</span>
+      <span *ngFor="let hora of listHoras " class="option" [ngClass]="{'selected': hora == hora_selected}" (click)="getHorarioPorHora(hora)" >{{hora}}</span>
     </div>
 
-    <div *ngFor="let horario of listHorarioCancha">
-        <div *ngFor="let cancha of horario.cancha_list" class="cancha-card" style="background-image: url('{{cancha.link_image}}');">
+    <div class="sugest-comunas" *ngIf="showSugerenciaComuna">
+        <h3 class="title-sc">Sugerencias...</h3>
+        <p class="message-sc">Te presentamos algunas comunas que poseen canchas para arrendar:</p>
+        <ul class="list-sc">
+            <li class="item-sc" *ngFor="let comuna of listComunasSugeridas" (click)="getComunaSelect(comuna)"><span>{{comuna}}</span><i class="fa-solid fa-arrow-right"></i></li>
+        </ul>
+    </div>
+
+    <div *ngFor="let horario of listHorarioCancha | ordenarHorarios">
+        <div *ngFor="let cancha of horario.canchas" class="cancha-card" style="background-image: url('{{cancha.link_image}}');">
             <div class="detail-cancha">
                 <h3 class="cancha-name">{{cancha.nombre}}</h3>
                 <span class="cancha-detail">{{cancha.capacidad_equipo}} vs {{cancha.capacidad_equipo}}, {{cancha.direccion}}</span>
-                <span class="cancha-hours">{{horario.hora_inicio}} hr</span>
+                <span class="cancha-hours">{{horario.horario.hora_inicio}} hr</span>
             </div>
     
             <div class="bottom-card">
                 <span class="cuantity-group">{{cancha.confirmados}}/{{cancha.capacidad}}&nbsp;<i class="fa-solid fa-users"></i></span>
-                <a class="btn btn-cancha-reserva" (click)="redirecToReserva(horario, cancha)">Reservar</a>
+                <a class="btn btn-cancha-reserva" (click)="redirecToReserva(horario.horario , cancha)">Reservar</a>
             </div>
         </div>
     </div>
+
+    <app-modal-response *ngIf="showModalResponse" [title]="modalResponse.title" [subtitle]="modalResponse.subtitle" [message]="modalResponse.message" [showButtonClose]="showButtonCloseModal" (closed)="actionModalResponse($event)"></app-modal-response>
 
 
     <!-- <button class="btn" *ngFor="let horario of horarios" (click)="getCanchasPorHorarios(horario.id)">{{horario.hora_inicio}} - {{horario.dia}}</button> -->
 
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="listReservaFromPerfil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="listReservaFromPerfilLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="listReservaFromPerfilLabel">Lista de Jugadores</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="table-responsive">
-            <table class="table caption-top table-primary">  
-              <caption>Jugadores</caption>
-              <thead class="thead-primary">
-                <tr>
-                  <th scope="col">Fecha:</th>
-                  <th scope="col">Hora:</th>
-                  <th scope="col">Estado:</th>
-                </tr>
-              </thead>
-              <tbody *ngFor="let list of listReservaFromPerfil" class="table-group-divider tbody-primary">
-                <tr>
-                  <td>{{list.fecha_reserva}}</td>
-                  <td>{{list.hora_reserva}}</td>
-                  <td>{{list.estado}}</td>
-                  <!-- <td>{{list.horario.hora_inicio}}</td>
-                  <td>{{list.horario.hora_fin}}</td>
-                  <td><b>Cantidad de Canchas:</b>  {{list.canchaList.length}}</td> -->
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal" style="width: fit-content;">Cerrar</button>
-          <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-        </div>
-      </div>
-    </div>
-  </div>
+
+<!-- Modal list comunas -->
+<app-modal-select *ngIf="showModalSelect" [title]="'Comunas'" [subtitle]="'Seleccione una comuna:'" [list]="comunaSelectList" [itemSelected]="comunaSelected" (closed)="actionModal($event)" (item)="getComunaSelect($event)"></app-modal-select>
+
+<!-- Modal loading -->
+ <app-modal-loading *ngIf="showModalLoading"></app-modal-loading>
+
 
 
 

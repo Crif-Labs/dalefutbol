@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, doc, Firestore, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, CollectionReference, doc, Firestore, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Horario } from '../interfaces/horario';
 import { from, map, Observable } from 'rxjs';
 import { Cancha } from '../interfaces/cancha';
@@ -83,6 +83,66 @@ export class HorarioService {
         ...doc.data() as Horario
       })))
     )
+  }
+
+  async getCanchaPorDiaYHorario(dia: string, comuna: string): Promise<Observable<any[]>>{
+    return from(this._getCanchasAgrupadas(dia, comuna));
+  }
+
+
+  private async _getCanchasAgrupadas(dia: string, comuna: string): Promise<any[]> {
+    const horariosRef = collection(this.firestore, 'horario');
+    const q = query(horariosRef, where('dia', '==', dia));
+    const snapshot = await getDocs(q);
+    const resultado: any[] = [];
+
+    for (const docHorario of snapshot.docs) {
+      const horarioData = docHorario.data() as Horario;
+      const horarioId = docHorario.id;
+
+      const canchaRef = collection(this.firestore, `horario/${horarioId}/cancha`);
+      const canchaQuery = query(canchaRef, where('comuna', '==', comuna));
+      const canchasSnap = await getDocs(canchaQuery);
+
+      const canchas: Cancha[] = canchasSnap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Cancha));
+
+      if (canchas.length > 0) {
+        resultado.push({
+          horario: { id: horarioId, ...horarioData },
+          canchas
+        });
+      }
+    }
+
+    return resultado;
+  }
+
+
+  async getComunasConCanchasDisponible(dia: string): Promise<string[]>{
+    const horarioRef = collection(this.firestore, this.collectionName)
+    const q = query(horarioRef, where('dia', '==', dia))
+    const horarioSnap = await getDocs(q)
+
+
+    const comunasSet = new Set<string>();
+
+    for(const horarioDoc of horarioSnap.docs){
+      const canchaRef = collection(this.firestore, `horario/${horarioDoc.id}/cancha`) as CollectionReference
+      const canchaSnap = await getDocs(canchaRef)
+
+      canchaSnap.forEach(doc => {
+        const canchaData = doc.data();
+        if(canchaData['comuna']){
+          comunasSet.add(canchaData['comuna'])
+        }
+      })
+    }
+
+    return Array.from(comunasSet).sort((a,b) => a.localeCompare(b))
+
   }
 
   getCanchaHorario(horario: string): Observable<Cancha[]>{

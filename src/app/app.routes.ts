@@ -52,18 +52,18 @@ export const routes: Routes = [
     //     path: 'convertir-fechas',
     //     component: ConvetirFechasComponent
     // },
-    {
-        path: 'user-main',
-        component: UserMainComponent,
-        ...canActivate( () => redirectUnauthorizedTo(['login'])),
-        children: [
-            {path: 'partidos', component: PartidosComponent},
-            {path: 'chat', component: MensajesComponent},
-            {path: 'perfil', component: PerfilComponent},
-            {path: 'torneo', component: TorneoComponent},
-            {path: '**', redirectTo: 'partidos'}
-        ]
-    },
+    // {
+    //     path: 'user-main',
+    //     component: UserMainComponent,
+    //     ...canActivate( () => redirectUnauthorizedTo(['login'])),
+    //     children: [
+    //         {path: 'partidos', component: PartidosComponent},
+    //         {path: 'chat', component: MensajesComponent},
+    //         {path: 'perfil', component: PerfilComponent},
+    //         {path: 'torneo', component: TorneoComponent},
+    //         {path: '**', redirectTo: 'partidos'}
+    //     ]
+    // },
     {
         path: 'admin-main',
         component: AdminMainComponent,
@@ -73,10 +73,10 @@ export const routes: Routes = [
             {path: '**', redirectTo: 'admin-main'}
         ]
     },
-    {path: 'reservas-check-in', component: ReservaComponent},
-    {path: 'mis-reservas', component: MisReservasComponent},
-    // {path: 'mi-partido', component: MiPartidoComponent},
-    {path: 'check-out', component: CheckOutComponent},
+    // {path: 'reservas-check-in', component: ReservaComponent},
+    // {path: 'mis-reservas', component: MisReservasComponent},
+    // // {path: 'mi-partido', component: MiPartidoComponent},
+    // {path: 'check-out', component: CheckOutComponent},
     {
         path: 'login',
         component: LoginComponent
@@ -95,6 +95,6 @@ export const routes: Routes = [
     // },
     {
         path: '**',
-        redirectTo: '/user-main'
+        redirectTo: '/user'
     }
 ];

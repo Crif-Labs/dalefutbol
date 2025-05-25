@@ -3,10 +3,10 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-modal-response',
+  selector: 'app-modal-select',
   imports: [CommonModule],
-  templateUrl: './modal-response.component.html',
-  styleUrl: './modal-response.component.scss',
+  templateUrl: './modal-select.component.html',
+  styleUrl: './modal-select.component.scss',
   animations: [
     trigger('fadeBackdrop', [
       transition(':enter', [
@@ -28,20 +28,25 @@ import { CommonModule } from '@angular/common';
     ])
   ],
 })
-export class ModalResponseComponent {
 
+export class ModalSelectComponent {
   @Input() title: string = 'Titulo'
   @Input() subtitle: string = 'Subtitulo'
-  @Input() message: string = 'Message...'
+  @Input() list: Array<string> = [ "item1", "item2", "item3", "item4", "item5"]
+  @Input() itemSelected: string = "item1"
 
-  @Input() textButtonSuccess: string = 'Aceptar'
   @Input() textButtonClose: string = 'Cerrar'
-  @Input() showButtonClose: boolean = true
 
   @Output() closed = new EventEmitter<boolean>()
+  @Output() item = new EventEmitter<string>()
 
-  closeSuccess(response: boolean){
-    this.closed.emit(response)
+  close(){
+    this.closed.emit(false)
   }
+
+  itemSelection(item: string ){
+    this.item.emit(item)
+  }
+
 
 }

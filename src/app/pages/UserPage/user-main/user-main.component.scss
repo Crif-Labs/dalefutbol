@@ -13,7 +13,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: $darkGray;
+        // background-color: $darkGray;
+        background-color: rgba($gray, 0.5);
         width: 100%;
         height: 77px;
 
@@ -34,7 +35,7 @@
             width: 75px;
             height: 1px;
             background-color: $rojo;
-            margin-top: -5px;
+            margin-top: 0px;
         }
 
         .slogan{
@@ -47,7 +48,8 @@
     .body-user-main{
         display: flex;
         flex-direction: column;
-        background: linear-gradient(to right,$gray 10%, $darkGray 25%);
+        // background: linear-gradient(to right,$gray 10%, $darkGray 25%);
+        background-color: transparent;
         overflow-y: auto;
 
 

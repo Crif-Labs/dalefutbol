@@ -11,10 +11,13 @@ import { Horario } from '../../../interfaces/horario';
 import { Cancha } from '../../../interfaces/cancha';
 import { TimestampPipe } from '../../../pipes/timestamp.pipe';
 import { ReservaTransferServiceService } from '../../../services/reserva-transfer-service.service';
+import { ModalLoadingComponent } from "../../../shared/ModalDir/modal-loading/modal-loading.component";
+import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/modal-response.component";
+import { ModalResponse } from '../../../interfaces/modal-response';
 
 @Component({
   selector: 'app-mis-reservas',
-  imports: [LoadingPageComponent, CommonModule, TimestampPipe],
+  imports: [CommonModule, TimestampPipe, ModalLoadingComponent, ModalResponseComponent],
   templateUrl: './mis-reservas.component.html',
   styleUrl: './mis-reservas.component.scss'
 })
@@ -31,6 +34,16 @@ export class MisReservasComponent implements OnInit{
   }[] = []
 
   canchaName: string = 'cancha'
+
+  showModalResponse: boolean = false
+  showModalButtonClose: boolean = false
+  modalResponse: ModalResponse = {
+    title: '',
+    subtitle: '',
+    message: '',
+    textButtonSuccess: 'Aceptar',
+    textButtonClose: 'Cerrar'
+  }
 
   constructor(
     private router: Router, 
@@ -51,6 +64,7 @@ export class MisReservasComponent implements OnInit{
       this.listReservaFromPerfil = await this.reservaService.getReservaFromPerfil(idPerfil)
 
       if(this.listReservaFromPerfil){
+
         let cancha: Cancha | null
         let horario: Horario | null
   
@@ -65,14 +79,39 @@ export class MisReservasComponent implements OnInit{
               cancha: cancha
             })
           }else{
-            throw new Error('No se han encontrado datos');    
+            this.modalResponse = {
+              title: 'Ayayaii',
+              subtitle: 'No hay reservas para mostrar 😒',
+              message: 'Qué esperas? haz tu reserva y conviértete en el mejor del mundo!',
+              textButtonClose: 'Cerrar',
+              textButtonSuccess: 'Aceptar'
+            }
+            this.loading = false
+            this.showModalResponse = true 
           }
 
         }
       }else{
-        throw new Error('Lista Vacia');
+        this.modalResponse = {
+          title: 'Error ❌',
+          subtitle: 'CODIGO: MisReservas301',
+          message: 'Algo ha pasado, contacte con Servicio al Cliente y el codigo',
+          textButtonClose: 'Cerrar',
+          textButtonSuccess: 'Aceptar'
+        }
+        this.loading = false
+        this.showModalResponse = true
       }     
     }else{
+      this.modalResponse = {
+        title: 'Error ❌',
+        subtitle: 'CODIGO: MisReservas302',
+        message: 'Algo ha pasado, contacte con Servicio al Cliente y el codigo',
+        textButtonClose: 'Cerrar',
+        textButtonSuccess: 'Aceptar'
+      }
+      this.loading = false
+      this.showModalResponse = true
       throw new Error('Error en la lectura de idPerfil');
     }
 
@@ -106,11 +145,16 @@ export class MisReservasComponent implements OnInit{
       cancha: data.cancha
     })
 
-    this.router.navigate(['mi-partido'])
+    this.router.navigate(['/user','mi-partido'])
   }
 
   buttonBack(){
-    this.router.navigate(['user-main/partidos'])
+    this.router.navigate(['/user','main','partidos'])
+  }
+
+  closeModalResponse(){
+    this.showModalResponse = false
+    this.buttonBack()
   }
 
 }

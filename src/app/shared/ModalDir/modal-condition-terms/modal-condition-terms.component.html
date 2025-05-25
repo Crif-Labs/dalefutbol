@@ -1,0 +1,61 @@
+<div class="custom-modal-backdrop" @fadeBackdrop>
+    <div class="custom-modal" @fadeModal>
+
+        <div class="header-modal">
+            <h5>{{title}}</h5>
+
+
+            <p class="subtitle">{{subtitle}}</p>
+        </div>
+
+        <div class="body-modal">
+            <div class="intructions">
+                <p>Al momento de Confirmar Reserva, tu registro sera guardado</p>
+                <p>Serás redirigido a tu Whatsapp, donde notificarás la reserva</p>
+                <p>Al momento de hacer el pago, puedes compartir tu voucher por Whatsapp</p>
+                <p>A travás de Whatsapp, serás notificado si la reserva se ha confirmado o ha sido rechazada</p>
+                <p>** Por la aplicación también podrás verificar aquello</p>
+                <p>** Siempre estaremos atentos a tus dudas. Puedes comunicarte via Whatsapp con nosotros</p>
+                <p>** Los datos de transferencias se pueden visualizar más abajo, a través de tu perfil y vía Whatsapp</p>
+              </div>
+    
+              <div class="title-data-transfer">
+                <p>Datos de Transferencia</p>
+              </div>
+    
+              <div class="datos-transferencia">
+                  <div class="dato">
+                    <strong>RUT:</strong> {{ cuentaBancaria.rut }}
+                    <button (click)="copiarText(cuentaBancaria.rut)"><i class="fa-solid fa-copy"></i></button>
+                  </div>
+                  <div class="dato">
+                    <strong>Nombre:</strong> {{ cuentaBancaria.nombre }}
+                    <button (click)="copiarText(cuentaBancaria.nombre)"><i class="fa-solid fa-copy"></i></button>
+                  </div>
+                  <div class="dato">
+                    <strong>Banco:</strong> {{ cuentaBancaria.banco }}
+                    <button (click)="copiarText(cuentaBancaria.banco)"><i class="fa-solid fa-copy"></i></button>
+                  </div>
+                  <div class="dato">
+                    <strong>Cuenta:</strong> {{ cuentaBancaria.tipoCuenta }}
+                    <button (click)="copiarText(cuentaBancaria.tipoCuenta)"><i class="fa-solid fa-copy"></i></button>
+                  </div>
+                  <div class="dato">
+                    <strong>N° Cuenta:</strong> {{ cuentaBancaria.numeroCuenta }}
+                    <button (click)="copiarText(cuentaBancaria.numeroCuenta)" ><i class="fa-solid fa-copy"></i></button>
+                  </div>
+                  <div class="dato">
+                    <strong>Correo:</strong> {{ cuentaBancaria.correo }}
+                    <button (click)="copiarText(cuentaBancaria.correo)"><i class="fa-solid fa-copy"></i></button>
+                  </div>
+    
+                  <span class="confirm-copied " style="color: black;">{{statusCopiedText}}</span>
+              </div>
+        </div>
+
+
+        <div class="footer-modal">
+            <button class="btn-secondary" (click)="close()" >{{ textButtonClose }}</button>
+        </div>
+    </div>
+</div>

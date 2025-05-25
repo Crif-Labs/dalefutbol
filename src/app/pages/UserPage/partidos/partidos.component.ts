@@ -16,12 +16,18 @@ import { SessionStorageService } from '../../../services/session-storage.service
 import { ReservaService } from '../../../services/reserva.service';
 import { Perfil } from '../../../interfaces/perfil';
 import { Reserva2 } from '../../../interfaces/reserva-2';
+import { AuthService } from '../../../services/auth.service';
+import { ModalSelectComponent } from "../../../shared/ModalDir/modal-select/modal-select.component";
+import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/modal-response.component";
+import { ModalResponse } from '../../../interfaces/modal-response';
+import { ModalLoadingComponent } from "../../../shared/ModalDir/modal-loading/modal-loading.component";
+import { OrdenarHorariosPipe } from '../../../pipes/ordenar-horarios.pipe';
 
 registerLocaleData(localeEs, 'es-ES');
 
 @Component({
   selector: 'app-partidos',
-  imports: [DatePipe, LoadingPageComponent, CommonModule, FormsModule],
+  imports: [DatePipe, LoadingPageComponent, CommonModule, FormsModule, ModalSelectComponent, ModalResponseComponent, ModalLoadingComponent, OrdenarHorariosPipe],
   templateUrl: './partidos.component.html',
   styleUrl: './partidos.component.scss',
   providers: [
@@ -35,9 +41,13 @@ export class PartidosComponent {
   loading: boolean;
   comunaSelected: string = "Comuna";
   comunaList: Comuna[] = []
+  comunaSelectList: string[] = []
   listReservaFromPerfil: Reserva2[] = []
   listHoras: String[] = []
   hora_selected: string = ''
+
+
+  showModalLoading: boolean = false
 
   constructor(private route: Router, 
     private perfilService: PerfilService, 
@@ -45,7 +55,8 @@ export class PartidosComponent {
     private horarioService: HorarioService,
     private localStorageService: LocalStorageService,
     private sessionStorageService: SessionStorageService,
-    private reservaService: ReservaService
+    private reservaService: ReservaService,
+    private authService: AuthService
   ){
     this.today = new Date()
 
@@ -55,11 +66,17 @@ export class PartidosComponent {
   }
 
   async onInit(){
+
     await this.getComunasList()
+
     await this.getComuna()
+
     await this.getHorarios()
 
+
     this.loading = await false
+
+    // console.log(this.authService.getUid())
 
     // const idPerfil = String(this.localStorageService.getItem('idPerfil'))
     // console.log(idPerfil)
@@ -78,15 +95,17 @@ export class PartidosComponent {
 
   async getComuna(){
 
-    const perfilFb = this.localStorageService.getItem('perfil')//await localStorage.getItem('perfil');
+    const uid = this.authService.getUid()
+    let aux_comuna: any
 
-    if(perfilFb != null){
-      const perfilObj = await JSON.parse(perfilFb)
-
-      // recordemos que lo comentado es lo original
-      this.comuna = perfilObj.comuna
-      // this.comuna = 'La Florida' //eliminar linea y descomentar linea anterior
-      this.comunaSelected = this.comuna
+    if(!uid){
+      console.log('Error al encontrar uid')
+    }else{
+      await this.perfilService.getComunaOfPerfil(uid)
+      .then((res) => {
+        this.comuna = res
+        this.comunaSelected = res
+      })
     }
   }
 
@@ -98,118 +117,80 @@ export class PartidosComponent {
   }
 
 
-  listHorarioCancha: Horario[] = []
+  listHorarioCancha: {
+      horario: Horario,
+      canchas: Cancha[]
+    }[] = []
+
+  showModalResponse: boolean = false
+  modalResponse: ModalResponse = {
+      title: '',
+      subtitle: '',
+      message: '',
+      textButtonSuccess: 'Aceptar',
+      textButtonClose: 'Cerrar'
+    }
+  showButtonCloseModal: boolean = false
+
+  actionModalResponse(event: any){
+    this.showModalResponse = !event    
+  }
 
   async getHorarios(){
     const date = formatDate(this.today, 'yyyy-MM-dd', 'en-US')
     let cancha_list: Cancha[] | any = []
     let horario_final: Horario;
     this.listHorarioCancha = []
+    this.listHoras = []
     const perfilFb = JSON.parse(String(this.localStorageService.getItem('perfil')))//await localStorage.getItem('perfil');
+    this.showModalLoading=true
 
-    await this.horarioService.getHorariosHoy(date)
-      .then( async res => {   
-        // console.log("Listado de horarios de hoy: ",res)
-        if(res != null){       
+    ;(await this.horarioService.getCanchaPorDiaYHorario(date,this.comuna))
+      .subscribe(res => {
+        if(res.length === 0){
+          this.modalResponse = {
+            title: 'Ups!',
+            subtitle: 'No tenemos partidos para esta comuna hoy 😣',
+            message: 'Puedes navegar por la app, ver otras comunas, tus reservas, tus estadisticas, etc',
+            textButtonSuccess: 'Aceptar',
+            textButtonClose: 'Cerrar'
+          }
+
+          this.getComunasWithReservas(date);
+
+        }else{
+          this.showSugerenciaComuna = false
+          for(const data of res){
+            this.listHoras.push(data.horario.hora_inicio)
+          }
+          this.listHoras.sort()
+          this.listHorarioCancha = res
           
-          this.listHoras = []
-          for(let horario of res){
-
-            if(horario.id !== undefined){
-
-              const horarioCopia = { ...horario}
-
-              // this.horarioService.getCanchaHorario(horario.id)
-              this.horarioService.getCanchaHorario(String(horarioCopia.id))
-                .subscribe((res) => {
-
-                  let cancha_list: Cancha[] = []
-
-                  for(let cancha of res){
-                    
-                    if(cancha.comuna === this.comuna){  
-
-                      if(!this.listHoras.includes(horarioCopia.hora_inicio)){
-                        this.listHoras.push(horarioCopia.hora_inicio)
-                        this.listHoras.sort()
-                      }
-                      
-                      // if(this.listHoras.length == 0 ){
-                      //   this.listHoras.push(horario.hora_inicio)
-                      // }else{
-                      //   for(let hora of this.listHoras){
-                      //     if(hora != horario.hora_inicio){
-                      //       this.listHoras.push(horario.hora_inicio)
-                      //       this.listHoras.sort() 
-                      //     }
-                      //   }
-                      // }       
-                      
-                      this.reservaService.getListReserva(String(horario.id), String(cancha.id))
-                        .subscribe(res => {  
-                          if(res.length == 0){
-                            cancha_list.push(cancha)
-                          }else{                      
-                            // const reserv: Reserva2 | any = res
-                            // let respon: Perfil | any = reserv.reserv
-
-                            // if(respon.rol != 'admin'){
-
-                            // }
-                            const yaReservado = res.some(reserva => reserva.responsable?.id === perfilFb.id)
-                            if(!yaReservado){
-                              cancha_list.push(cancha)
-                            }
-                            
-                            // for(let reserva of res){
-                            //   const responsable: Perfil | any = reserva.responsable
-                              
-                            //   if(responsable.id == perfilFb.id){
-                            //     console.log("Ya esta reservado")
-                            //   }else{
-                            //     cancha_list.push(cancha)
-                            //   }
-                            // }
-                          }
-                        })
-                      
-                    }
-                  }
-
-                  
-
-                  const horario_final = {
-                    id: horario.id,
-                    hora_inicio: horario.hora_inicio,
-                    hora_fin: horario.hora_fin,
-                    dia: horario.dia,
-                    cancha_list: cancha_list
-                  }
-
-                  // console.log(horario_final)
-                  // this.listHoras = []
-
-                  this.listHorarioCancha.push(horario_final)
-                  // this.listHoras = this.listHorarioCancha.map(hora => hora.hora_inicio).sort()
-
-                })
-            }
-          }          
+          this.showModalLoading = false
         }
-
-        // this.listHoras = this.listHorarioCancha.map(hora => hora.hora_inicio).sort()
-      }).catch(error => {
-        console.log(error)
       })
+
   }
 
+  showSugerenciaComuna: boolean = false
+  listComunasSugeridas: string[] = []
+
+  async getComunasWithReservas(dia: string){
+
+    await this.horarioService.getComunasConCanchasDisponible(dia)
+      .then(res => this.listComunasSugeridas = res)
+      .catch(error => console.log(error))
+    this.showModalLoading = false
+    this.showModalResponse = true
+    this.showSugerenciaComuna = true
+  }
 
   async redirecToReserva(horario: Horario, cancha: Cancha){ 
     await this.sessionStorageService.setItem('horario', JSON.stringify(horario))
     await this.sessionStorageService.setItem('cancha', JSON.stringify(cancha))
 
 
-    this.route.navigate(['/reservas-check-in'])
+    this.route.navigate(['/user','reservas-check-in'])
   }
 
   async getComunasList(){
@@ -218,11 +199,26 @@ export class PartidosComponent {
         .subscribe( res => {
           this.comunaList = res
           this.comunaList.sort((a,b) => a.nombre.localeCompare(b.nombre))
+          this.comunaSelectList = this.comunaList.map(c => c.nombre)
         })
       
     }catch(error){
       console.log(error)
     }
+  }
+
+  showModalSelect: boolean = false
+
+
+  getComunaSelect(comuna: string){
+    this.comunaSelected = comuna;
+    this.changeComuna(comuna)
+
+    this.actionModal(false)
+  }
+
+  actionModal(action: boolean){
+    this.showModalSelect = action
   }
 
   getHorarioPorHora(hora: String){
@@ -234,8 +230,7 @@ export class PartidosComponent {
   }
 
   redirectToMisReservas(){
-    console.log("Estamos yendo a Mis Reservas?")
-    this.route.navigate(['/mis-reservas'])
+    this.route.navigate(['/user','mis-reservas'])
   }
 
 

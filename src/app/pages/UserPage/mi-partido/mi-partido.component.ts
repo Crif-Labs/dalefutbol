@@ -51,7 +51,7 @@ export class MiPartidoComponent implements OnInit{
     } 
   ]
 
-  colorTeams!: {color1: any[], color2: any[]}
+  colorTeams: {color1: any[], color2: any[]} = {color1: [], color2: []}
 
   center = { lat: 0, lng: 0 }; // Ejemplo: Santiago, Chile
   zoom = 13;
@@ -69,8 +69,9 @@ export class MiPartidoComponent implements OnInit{
 
     this.data = await this.reservaTransferSrevice.getDatos()
 
+
     if(!this.data.reserva || !this.data.horario || !this.data.cancha)
-      this.router.navigate(['mis-reservas'])
+      this.router.navigate(['/user','mis-reservas'])
 
     this.adress = await `${this.data.cancha?.direccion}, ${this.data.cancha?.comuna}`
     this.precioCancha = await Math.ceil(((Number(this.data.cancha?.precio)/Number(this.data.cancha?.capacidad))+1500)*1.19 / 100) * 100
@@ -81,7 +82,7 @@ export class MiPartidoComponent implements OnInit{
       })
     await this.buscarDireccion()
 
-    // this.loading = false
+    this.loading = false
 
   }
 
@@ -110,7 +111,7 @@ export class MiPartidoComponent implements OnInit{
   }
 
   buttonBack(){
-    this.router.navigate(['mis-reservas'])
+    this.router.navigate(['/user','mis-reservas'])
   }
 
   atencionClienteWSP(estado: 'Pendiente' | 'Cancelado' | 'Confirmado' | undefined){

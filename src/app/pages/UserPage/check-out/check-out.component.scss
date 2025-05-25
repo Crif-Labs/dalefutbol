@@ -1,6 +1,9 @@
 @use '../../../app.component.scss' as *;
 
 .check-out-component{
+    
+
+
     .header-check-out{
         display: flex;
 
@@ -13,8 +16,13 @@
 
     .body-check-out{
         color: whitesmoke;
-        padding: 0px 50px;
+        padding: 10px 15px;
+        margin: auto;
         font-size: 18px;
+        background-color: rgba($gray, 0.5);
+        width: 90%;
+        border-radius: 5px;
+        box-shadow: 1px 1px 4px whitesmoke;
 
         .cancha-detail{
             display: grid;
@@ -135,7 +143,15 @@
     .condiciones-de-pago{
         .aceptacion{
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
+
+            .text-aceptacion{
+              margin-left: 10px;
+              width: 100%;
+              font-size: 14px;
+              text-decoration: underline;
+              text-decoration-color: $gold;
+            }
     
             .checkbox-wrapper-12 {
                 position: relative;
@@ -167,25 +183,25 @@
               }
               
               .checkbox-wrapper-12 .cbx {
-                width: 24px;
-                height: 24px;
-                top: calc(100px - 12px);
-                left: calc(100px - 12px);
+                width: 20px;
+                height: 20px;
+                top: calc(100px - 3px);
+                left: calc(100px - 3px);
               }
               
               .checkbox-wrapper-12 .cbx input {
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: 24px;
-                height: 24px;
+                width: 20px;
+                height: 20px;
                 border: 2px solid #bfbfc0;
                 border-radius: 50%;
               }
               
               .checkbox-wrapper-12 .cbx label {
-                width: 24px;
-                height: 24px;
+                width: 20px;
+                height: 20px;
                 background: none;
                 border-radius: 50%;
                 position: absolute;

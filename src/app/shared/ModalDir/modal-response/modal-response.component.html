@@ -6,6 +6,6 @@
       
 
       <button class="btn-primary" (click)="closeSuccess(true)">{{ textButtonSuccess }}</button>
-      <button class="btn-secondary" (click)="closeSuccess(false)" >{{ textButtonClose }}</button>
+      <button *ngIf="showButtonClose" class="btn-secondary" (click)="closeSuccess(false)" >{{ textButtonClose }}</button>
     </div>
   </div>

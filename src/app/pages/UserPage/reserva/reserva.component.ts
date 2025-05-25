@@ -216,7 +216,7 @@ export class ReservaComponent implements OnInit, AfterViewInit {
   }
 
   buttonBack(){
-    this.router.navigate(['user-main/partidos'])
+    this.router.navigate(['/user','main','partidos'])
   }
 
   async buscarDireccion(){
@@ -281,7 +281,7 @@ export class ReservaComponent implements OnInit, AfterViewInit {
     if(this.colorTeam == ''){
       console.log("Debes seleccionar un equipo")
     }else{
-      this.router.navigate(['check-out'], {queryParams : {color: this.colorTeam}})
+      this.router.navigate(['/user','check-out'], {queryParams : {color: this.colorTeam}})
     }
     
   }

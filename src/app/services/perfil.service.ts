@@ -13,11 +13,21 @@ export class PerfilService {
 
   constructor(private firestore: Firestore) { }
 
-  addPerfil(perfil: Perfil){
+  async addPerfil(perfil: Perfil): Promise<void>{
 
-    const ref = collection(this.firestore, this.collectionName);
+    try {
+      const perfilRef = doc(this.firestore, this.collectionName, perfil.id_usuario)
+      await setDoc(perfilRef, perfil)
 
-    return addDoc(ref, perfil);
+      console.log('Perfil creado con UID como ID correctamente.');
+    } catch (error) {
+      console.error('Error al crear perfil:', error);
+      throw error;
+    }
+
+    // const ref = collection(this.firestore, this.collectionName);
+
+    // return addDoc(ref, perfil);
   }
 
   getPerfiles(): Observable<Perfil[]>{
@@ -77,6 +87,24 @@ export class PerfilService {
       return null
     }
 
+  }
+
+  async getComunaOfPerfil(id: string){
+    try {
+      const docRef = doc(this.firestore, this.collectionName, id)
+      const docSnap = await getDoc(docRef)
+
+      if(docSnap.exists()){
+        const data: Perfil | any = docSnap.data();
+        return data.comuna;
+      }else{
+        console.log('No se encontro el perfil')
+        return null
+      }
+    } catch (error) {
+      console.error("Error al obtener la comuna: ", error)
+      return null
+    }
   }
 
   async getComunaPerfil(id:string){

@@ -21,6 +21,8 @@ export class UserComponent {
 
   constructor(private authService: AuthService, private perfilService: PerfilService, private router: Router){
 
+    // console.log(this.authService.getUid())
+
     try {
       this.authService.getAuth().subscribe(res => {
         

@@ -13,8 +13,10 @@
 }
 
 .data-search{
-    background-color: $darkGray;
-    border-bottom: 2px solid $gray;
+    // background-color: $darkGray;
+    // background-color: transparent;
+    // border-bottom: 2px solid $gray;
+    background-color: rgba($gray, 0.5);
     padding-bottom: 10px;
 
     .calendar{
@@ -29,6 +31,7 @@
             color: whitesmoke;
 
             .comuna{
+                border-bottom: 1px solid $rojo;
                 .fa-solid{
                     color: $rojo;
                 }
@@ -138,6 +141,9 @@
 }
 
 .cancha-list{
+    background-color: rgba($gray, 0.2);
+    height: 100%;
+    box-shadow: 0px 2px 4px $darkGray;
 
     .options-date{
         overflow-x: auto;
@@ -153,6 +159,7 @@
             border-radius: 30px;
             padding: 5px 20px;
             text-align: left;
+            background-color: $darkGray;
 
             &:first-child{
                 background-color: $rojo;
@@ -167,6 +174,57 @@
         &::-webkit-scrollbar-thumb{
             background: transparent;
         }
+    }
+
+    .sugest-comunas{
+        display: flex;
+        flex-direction: column;
+        margin: 10px auto auto auto;
+        padding: 10px;
+        border-radius: 5px;
+        // height: 100%;
+        background-color: whitesmoke;
+        width: 90%;
+
+        .title-sc{
+            border-bottom: 2px solid $rojo;
+            width: 70%;
+        }
+
+        .list-sc{
+            width: 90%;
+            padding: 0;
+            margin-left: auto;
+            margin-right: auto;
+
+            .item-sc{
+                margin-bottom: 5px;
+                list-style: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-right: 5px;
+
+
+                &:hover{
+                    background-color: rgba($gray, 0.1);
+                    border-radius: 5px;
+                }
+                
+                span{
+                    border-bottom: 2px solid $rojo;
+                    border-bottom-left-radius: 5px;
+                    
+                    padding: 7px 0px;
+                    padding-left: 5px;
+                }
+
+                i{
+                    color: $rojo;
+                }
+            }
+        }
+
     }
 
     .cancha-card{
@@ -184,7 +242,7 @@
         background-size: cover;
         height: 200px;
         border: 1px solid $darkGray;
-        // box-shadow: 2px 2px 4px $lightGray;
+        box-shadow: 2px 2px 4px $gray;
         
 
         &::before {

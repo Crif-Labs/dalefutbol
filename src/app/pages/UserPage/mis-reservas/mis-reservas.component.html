@@ -5,9 +5,9 @@
         <label class="title-header">Mis Reservas</label>
     </div>
 
-    <div class="body-mis-reservas" *ngIf="loading">
+    <!-- <div class="body-mis-reservas" *ngIf="loading">
         <app-loading-page></app-loading-page>
-    </div>
+    </div> -->
 
     <div class="body-mis-reservas" *ngIf="!loading">
 
@@ -39,3 +39,7 @@
         </div>
     </div>
 </div>
+
+<app-modal-response *ngIf="showModalResponse" [title]="modalResponse.title" [subtitle]="modalResponse.subtitle" [message]="modalResponse.message" (closed)="closeModalResponse()" [showButtonClose]="showModalButtonClose" ></app-modal-response>
+
+<app-modal-loading *ngIf="loading"></app-modal-loading>

@@ -32,9 +32,13 @@ export class UserMainComponent {
       icon: 'fa-regular fa-futbol'
     },
     {
-      name: 'Torneo',
-      icon: 'fa-solid fa-trophy'
+      name: 'Equipo',
+      icon: 'fa-solid fa-people-group'
     },
+    // {
+    //   name: 'Torneo',
+    //   icon: 'fa-solid fa-trophy'
+    // },
     {
       name: 'Mensajes',
       icon: 'fa-regular fa-comments'
@@ -49,10 +53,10 @@ export class UserMainComponent {
 
   constructor(private authService: AuthService, private router:Router, private perfilService: PerfilService, private lsService: LocalStorageService){
 
+    this.getMenu()
 
     this.initPage()
 
-    this.getMenu()
 
 
   }
@@ -78,16 +82,16 @@ export class UserMainComponent {
 
   getMenu(){
     switch(this.router.url){
-      case '/user-main/partidos':
+      case '/user/main/partidos':
         this.selectedMenu = 0;
         break;
-      case '/user-main/torneo':
+      case '/user/main/torneo':
         this.selectedMenu = 1;
         break;
-      case '/user-main/chat':
+      case '/user/main/chat':
         this.selectedMenu = 2;
         break;
-      case '/user-main/perfil':
+      case '/user/main/perfil':
         this.selectedMenu = 3;
         break;
       default:
@@ -99,23 +103,28 @@ export class UserMainComponent {
   selectMenu(menu: number){
     switch(menu){
       case 0:
-        this.router.navigate(['user-main/partidos']);
+        // this.router.navigate(['user-main/partidos']);
+        this.router.navigate(['/user','main','partidos'])
         this.selectedMenu = menu
         break;
       case 1:
-        this.router.navigate(['user-main/torneo']);
+        // this.router.navigate(['user-main/torneo']);
+        this.router.navigate(['/user','main','torneo'])
         this.selectedMenu = menu
         break;
       case 2:
-        this.router.navigate(['user-main/chat']);
+        // this.router.navigate(['user-main/chat']);
+        this.router.navigate(['/user','main','chat'])
         this.selectedMenu = menu
         break;
       case 3:
-        this.router.navigate(['user-main/perfil']);
+        // this.router.navigate(['user-main/perfil']);
+        this.router.navigate(['/user','main','perfil'])
         this.selectedMenu = menu
         break;
       default:
-        this.router.navigate(['user-main/partidos']);
+        // this.router.navigate(['user-main/partidos']);
+        this.router.navigate(['/user','main','partidos'])
         this.selectedMenu = 0
         break;
     }

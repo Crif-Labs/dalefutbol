@@ -4,18 +4,21 @@ import { Cancha } from '../../../interfaces/cancha';
 import { Reserva } from '../../../interfaces/reserva';
 import { Horario } from '../../../interfaces/horario';
 import { Perfil } from '../../../interfaces/perfil';
-import { CommonModule, DatePipe, isPlatformBrowser } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ReservaService } from '../../../services/reserva.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { SessionStorageService } from '../../../services/session-storage.service';
 import { Reserva2 } from '../../../interfaces/reserva-2';
 import { PerfilService } from '../../../services/perfil.service';
-import { LoadingPageComponent } from '../../../shared/loading-page/loading-page.component';
 import { Timestamp } from 'firebase/firestore';
+import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/modal-response.component";
+import { ModalResponse } from '../../../interfaces/modal-response';
+import { ModalLoadingComponent } from "../../../shared/ModalDir/modal-loading/modal-loading.component";
+import { ModalConditionTermsComponent } from "../../../shared/ModalDir/modal-condition-terms/modal-condition-terms.component";
 
 @Component({
   selector: 'app-check-out',
-  imports: [CommonModule, LoadingPageComponent],
+  imports: [CommonModule, ModalResponseComponent, ModalLoadingComponent, ModalConditionTermsComponent],
   templateUrl: './check-out.component.html',
   styleUrl: './check-out.component.scss'
 })
@@ -78,8 +81,20 @@ export class CheckOutComponent {
 
   whatsapp = '56933021601'
 
+  showModalResponse: boolean = false
+  showModalButtonClose: boolean = false
+  modalResponse: ModalResponse = {
+    title: '',
+    subtitle: '',
+    message: '',
+    textButtonSuccess: 'Aceptar',
+    textButtonClose: 'Cerrar'
+  }
+
+
+  showModalConditionTerms: boolean = false
+
   constructor(
-    @Inject(PLATFORM_ID) private platformID: any,
     private router: Router, 
     private dataRoute: ActivatedRoute, 
     private perfilService: PerfilService, 
@@ -124,58 +139,73 @@ export class CheckOutComponent {
   }
 
   async addReserva(){
-    this.loading = true
-    this.clearStatusCopiedText()
+    // this.loading = true
 
-    
-
-    try {
-      const newReserva = await this.reservaService.addReserva(String(this.cancha.id), String(this.horario.id), String(this.perfil.id), this.reserva)
-      
-      if(!newReserva){
-        console.log("❌ No se pudo realizar la reserva.");
-        return;
+    if(!this.confirm){
+      this.modalResponse = {
+        title: 'Ups!',
+        subtitle: 'Leíste los términos y condiciones?',
+        message: 'Recuerda que debes aceptar los términos y condiciones. Después, deberás seguir las instrucciones',
+        textButtonSuccess: 'Aceptar',
+        textButtonClose: 'Cerrar'
       }
-
-      const text =
-      `*ID:* ${this.perfil.id}\n`+
-      `*Usuario:* ${this.perfil.nombre} ${this.perfil.apellido}\n`+
-      `*Reserva:* ${newReserva.id}\n`+
-      `*Monto:* ${this.cancha.precio}\n\n`+
-      `* *Recuerda subir tu voucher para confirmar la reserva*`
-
-      const url = `https://wa.me/${this.whatsapp}?text=${encodeURIComponent(text)}`;
-
-      // console.log("✅ Reserva completada con éxito:", newReserva);
-
-      window.open(url, '_blanck')
-
-      this.loading = false
-
-      this.router.navigate(['/user-main/partidos']);
-
-    } catch (error) {
-      console.log("❌ Error en el proceso de reserva:", error);
+      this.showModalResponse = true
+    }else{
+      this.loading = true
+      try {
+        const newReserva = await this.reservaService.addReserva(String(this.cancha.id), String(this.horario.id), String(this.perfil.id), this.reserva)
+        
+        if(!newReserva){
+          console.log("❌ No se pudo realizar la reserva.");
+          return;
+        }
+  
+        const text =
+        `*ID:* ${this.perfil.id}\n`+
+        `*Usuario:* ${this.perfil.nombre} ${this.perfil.apellido}\n`+
+        `*Reserva:* ${newReserva.id}\n`+
+        `*Monto:* ${this.cancha.precio}\n\n`+
+        `* *Recuerda subir tu voucher para confirmar la reserva*`
+  
+        const url = `https://wa.me/${this.whatsapp}?text=${encodeURIComponent(text)}`;
+  
+        // console.log("✅ Reserva completada con éxito:", newReserva);
+  
+        window.open(url, '_blanck')
+  
+        this.loading = false
+  
+        this.router.navigate(['/user','main','partidos']);
+  
+      } catch (error) {
+        this.modalResponse = {
+          title: 'Error ❌',
+          subtitle: 'CODIGO: CheckOut301',
+          message: 'Ha ocurrido un error inesperado, por favor contáctese con servico al cliente',
+          textButtonSuccess: 'Aceptar',
+          textButtonClose: 'Cerrar'
+        }
+        this.loading = false
+        this.showModalResponse = true
+        console.log("❌ Error en el proceso de reserva:", error);
+      }
     }
+
+
   }
 
-  statusCopiedText = ''
-  copiarText(text: string){
-    if(isPlatformBrowser(this.platformID)){
-      navigator.clipboard.writeText(text).then( async () => {
-        this.statusCopiedText = await `Dato Copiado!`
-      }).catch( err => {
-        console.log('text no cpiado: ',err)
-      })
-    }
+  _showModal(){
+    this.showModalConditionTerms = true
   }
-  clearStatusCopiedText(){
-    this.statusCopiedText = ''
+
+  closeModal(){
+    this.showModalResponse = false
+    this.showModalConditionTerms = false
   }
 
 
   buttonBack(){
-    this.router.navigate(['reservas-check-in'])
+    this.router.navigate(['/user','reservas-check-in'])
   }
 
 }

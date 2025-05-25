@@ -1,0 +1,26 @@
+<div class="custom-modal-backdrop" @fadeBackdrop>
+    <div class="custom-modal" @fadeModal>
+
+        <div class="header-modal">
+            <h5>{{title}}</h5>
+
+
+            <p class="subtitle">{{subtitle}}</p>
+        </div>
+
+        <div class="body-modal">
+            <ul class="list">
+                <li class="item" *ngFor="let item of list" [ngClass]="{'select': itemSelected == item }" (click)="itemSelection(item)">
+                    <i *ngIf="itemSelected != item" class="fa-regular fa-circle-dot"></i>
+                    <i *ngIf="itemSelected == item" class="fa-solid fa-circle-dot"></i>
+                    {{item}}
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="footer-modal">
+            <button class="btn-secondary" (click)="close()" >{{ textButtonClose }}</button>
+        </div>
+    </div>
+</div>
