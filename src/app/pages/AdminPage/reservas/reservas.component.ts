@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ReservaService } from '../../../services/reserva.service';
 import { Reserva2 } from '../../../interfaces/reserva-2';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { NotificacionService } from '../../../services/notificacion.service';
 
 
 
@@ -28,7 +29,7 @@ export class ReservasComponent implements OnInit {
 
   idPerfil: string | null = ''
 
-  constructor(private horarioService: HorarioService, private reservaService: ReservaService, private lsService: LocalStorageService){
+  constructor(private notificacionService: NotificacionService,private horarioService: HorarioService, private reservaService: ReservaService, private lsService: LocalStorageService){
 
   }
 
@@ -126,12 +127,47 @@ export class ReservasComponent implements OnInit {
   }
 
   updateEstadoReserva(status: string){
+    let message: string = ''
 
-    if(this.idPerfil){
-      this.reservaService.updateEstado(this.horario, this.cancha, this.reserva, this.idPerfil, status)
-    }else{
-      console.log("No se realizo la acutalizacion, intente nuevamente")
+    switch(status){
+      case 'Confirmado':
+        message = 'Reserva confirmada! ✅';
+        break;
+      case 'Pendiente':
+        message = 'Tu reserva aún está a la espera. Busca más información en Atención al cliente'
+        break;
+      case 'Cancelado':
+        message = 'Reserva cancelada. ❌'
+        break;
+      default:
+        message = 'Error 2001'
+        break;
     }
+
+    if(!this.idPerfil){
+      console.log("Error al obtener el UID")
+    }else{
+      this.reservaService.updateEstado(this.horario, this.cancha, this.reserva, this.idPerfil, status)
+        .then(() => {
+          this.notificacionService.addNotificacion(String(this.idPerfil), {
+            mensaje: message,
+            leido: false,
+            fecha: new Date(),
+            tipo: 'reserva',
+            referenciaId: this.reserva
+          }).then(() => {console.log('Notificacion agregada')})
+        })
+
+
+    }
+
+    
+
+    // if(this.idPerfil){
+    
+    // }else{
+    //   console.log("No se realizo la acutalizacion, intente nuevamente")
+    // }
   }
 
 }

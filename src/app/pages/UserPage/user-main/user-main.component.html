@@ -1,8 +1,25 @@
 <div class="user-main-component">
     <div class="header-user-main">
-        <h1 class="logo">DaleFutbol <span>+</span></h1>
-        <div class="line"></div>
-        <span class="slogan">Juega donde y cuando quieras</span>        
+        <div class="title-header">
+            <h1 class="logo">DaleFutbol <span>+</span></h1>
+            <div class="line"></div>
+            <span class="slogan">Juega donde y cuando quieras</span>
+        </div>
+        
+        <div class="notification">
+            <div class="icon-container" (click)="changeShowModalNotification()">
+                <i *ngIf="!hasNotification" class="fa-regular fa-bell"></i>
+                <i *ngIf="hasNotification" class="fa-solid fa-bell"></i>
+                <span *ngIf="hasNotification" class="dot"></span>
+            </div>
+
+            <div class="icon-container" (click)="clickNotification()">
+                <i *ngIf="!hasMessage" class="fa-regular fa-comment"></i>
+                <i *ngIf="hasMessage" class="fa-solid fa-comment"></i>
+                <span *ngIf="hasMessage" class="dot"></span>
+            </div>           
+
+        </div>
     </div>
 
     <div class="body-user-main">
@@ -20,3 +37,5 @@
         </button>
     </div>
 </div>
+
+<app-modal-notification *ngIf="showModalNotification" [list]="listNotificacion" [title]="'Notificaciones'" [textButtonClose]="'Cerrar'" (closed)="changeShowModalNotification()"></app-modal-notification>

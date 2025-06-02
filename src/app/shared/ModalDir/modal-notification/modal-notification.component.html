@@ -1,0 +1,26 @@
+<div class="custom-modal-backdrop" @fadeBackdrop>
+    <div class="custom-modal" @fadeModal>
+
+        <div class="header-modal">
+            <h5>{{title}}</h5>
+            <!-- <p class="subtitle">{{subtitle}}</p> -->
+
+            <span class="check-notification">Marcar como leídas <i class="fa-solid fa-check"></i></span>
+        </div>
+
+        <div class="body-modal">
+            <div *ngFor="let data of list" class="notification-card" [ngClass]="{'leido': data.leido}" >
+                <div class="text">
+                    <h4 class="message">{{data.mensaje}}</h4>
+                    <span>{{data.fecha | date: 'dd/MM/yyyy'}}</span>
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+
+
+        <div class="footer-modal">
+            <button class="btn-secondary" (click)="close()" >{{ textButtonClose }}</button>
+        </div>
+    </div>
+</div>
