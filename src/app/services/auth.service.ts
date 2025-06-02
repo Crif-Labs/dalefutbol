@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, authState, onAuthStateChanged, User } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, authState, onAuthStateChanged, User, signInWithCredential } from '@angular/fire/auth';
 import { Usuario } from '../interfaces/usuario';
 import { Firestore } from '@angular/fire/firestore';
+import { Capacitor } from '@capacitor/core';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +38,20 @@ export class AuthService {
     return signOut(this.auth);
   }
 
-  loginWithGoogle(){
-    return signInWithPopup(this.auth, new GoogleAuthProvider())
+  async loginWithGoogle(){
+
+    const isNative = Capacitor.getPlatform() === 'web';
+
+    if(!isNative){
+      const googleUser = await GoogleAuth.signIn()
+      const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
+
+      return signInWithCredential(this.auth, credential)
+    }else{
+      return signInWithPopup(this.auth, new GoogleAuthProvider())
+    }
+
+    
   }
 
   getAuth(){

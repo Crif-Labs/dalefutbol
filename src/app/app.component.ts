@@ -1,7 +1,9 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { Component, LOCALE_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import localeEsCL from '@angular/common/locales/es-CL'
+import localeEsCL from '@angular/common/locales/es-CL';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { Capacitor } from '@capacitor/core';
 
 registerLocaleData(localeEsCL, 'es-CL')
 
@@ -16,4 +18,8 @@ registerLocaleData(localeEsCL, 'es-CL')
 })
 export class AppComponent {
   title = 'dalefutbol';
+
+  constructor(){
+    GoogleAuth.initialize();
+  }
 }
