@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "259286345543",
+    "firebase_url": "https://dale-futbol-default-rtdb.firebaseio.com",
+    "project_id": "dale-futbol",
+    "storage_bucket": "dale-futbol.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259286345543:android:2ac8f1c93085676fe14e62",
+        "android_client_info": {
+          "package_name": "com.criflab.dalefutbol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259286345543-fbburcilpkp77pe3per3osareu7ijjim.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.criflab.dalefutbol",
+            "certificate_hash": "dac3f6ce7f6103d2db679a0c4c3d0df1de6a1596"
+          }
+        },
+        {
+          "client_id": "259286345543-kuj233b4dt179jnctpi8s8gsi3kj43l6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDufJogDCUN51EaD3G6quRgpJ2zEgYdik8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259286345543-kuj233b4dt179jnctpi8s8gsi3kj43l6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

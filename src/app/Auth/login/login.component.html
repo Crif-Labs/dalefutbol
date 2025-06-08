@@ -33,3 +33,5 @@
 </div>
 
 <app-modal *ngIf="showModal" [title]="titleModal" [message]="messageModal" [closeButton]="closeButtonModal" [loadModal]="loadModal" (closed)="closeModal()"></app-modal>
+
+<app-modal-response *ngIf="showError" [message]="error" [title]="'Algo esta pasando al entrar'" [subtitle]="''" (closed)="showModalError()"></app-modal-response>

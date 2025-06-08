@@ -8,11 +8,13 @@ import { AuthService } from '../../services/auth.service';
 import { PerfilService } from '../../services/perfil.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { ModalLoadingComponent } from "../../shared/ModalDir/modal-loading/modal-loading.component";
+import { ModalResponseComponent } from "../../shared/ModalDir/modal-response/modal-response.component";
+import { BlobOptions } from 'buffer';
 
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FooterAppComponent, ReactiveFormsModule, ModalComponent],
+  imports: [CommonModule, FooterAppComponent, ReactiveFormsModule, ModalComponent, ModalResponseComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -146,13 +148,20 @@ export class LoginComponent {
 
   }
 
+  error: string = ''
+  showError: boolean = false
   onLoginWithGoogle(){
     this.authService.loginWithGoogle()
-      .then( async () => {
+      .then( () => {
         this.router.navigate(['/user'])
-      }).catch( () => {
+      }).catch( error => {
+        this.error = error
         console.log("error al ingresar con google")
+        this.showModalError()
       })
+  }
+  showModalError(){
+    this.showError = !this.showError
   }
 
   redirecToPage(){
