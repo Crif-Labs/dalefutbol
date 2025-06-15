@@ -100,7 +100,7 @@ export class UserMainComponent {
 
   getMenu(){
     switch(this.router.url){
-      case '/user/main/torneo':
+      case '/user/main/equipo':
         this.selectedMenu = 0;
         break;
       case '/user/main/partidos':
@@ -118,7 +118,7 @@ export class UserMainComponent {
   selectMenu(menu: number){
     switch(menu){
       case 0:      
-        this.router.navigate(['/user','main','torneo'])
+        this.router.navigate(['/user','main','equipo'])
         this.selectedMenu = menu
         break;
       case 1:

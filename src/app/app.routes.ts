@@ -16,6 +16,7 @@ import { MisReservasComponent } from './pages/UserPage/mis-reservas/mis-reservas
 import { ConvetirFechasComponent } from './temporales/convetir-fechas/convetir-fechas.component';
 import { MiPartidoComponent } from './pages/UserPage/mi-partido/mi-partido.component';
 import { UserComponent } from './pages/UserPage/user/user.component';
+import { EquipoComponent } from './pages/UserPage/equipo/equipo.component';
 
 export const routes: Routes = [
     {
@@ -37,6 +38,7 @@ export const routes: Routes = [
                     {path: 'chat', component: MensajesComponent},
                     {path: 'perfil', component: PerfilComponent},
                     {path: 'torneo', component: TorneoComponent},
+                    {path: 'equipo', component: EquipoComponent},
                     {path: '**', redirectTo: 'partidos'}
                 ]
             },
