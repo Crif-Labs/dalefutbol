@@ -73,7 +73,7 @@ export class UserMainComponent {
     },
   ]
 
-  selectedMenu: number = 0
+  selectedMenu: number = 3
 
   uid: string | null = ''
 
@@ -124,16 +124,16 @@ export class UserMainComponent {
   getMenu(){
     switch(this.router.url){
       case '/user/main/equipo':
-        this.selectedMenu = 0;
+        this.selectedMenu = 1;
         break;
       case '/user/main/partidos':
-        this.selectedMenu = 1;
-        break;
-      case '/user/main/perfil':
         this.selectedMenu = 2;
         break;
+      case '/user/main/perfil':
+        this.selectedMenu = 23;
+        break;
       default:
-        this.selectedMenu = 1;
+        this.selectedMenu = 2;
         break;
     }
   }
