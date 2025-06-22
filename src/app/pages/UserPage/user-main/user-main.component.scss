@@ -89,12 +89,15 @@
     }
 
     .footer-user-main{
-        display: flex;
-        justify-content: space-around;
-        background-color: $darkGray;
-        width: 100%;
-        height: 75px;
-        border-top: 3px solid $rojo;
+        display: grid;
+        grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+        background-color: rgba($darkGray, .5);
+        // width: 100%;
+        // height: 75px;
+        border-top: 15px solid $rojo;
+        // padding: 0px 5px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
 
         .btn-menu{
             display: flex;
@@ -103,16 +106,15 @@
             justify-content: center;
             border: none;
             color: whitesmoke;
-            width: 55px;
             font-size: 12px;
             margin-bottom: 15px;
             border-radius: 0px;
             border-bottom-right-radius: 15px;
             border-bottom-left-radius: 15px;
-            transition: all .3s ease-in-out;
+            // transition: all .3s ease-in-out;
 
             .fa-regular, .fa-solid{
-                font-size: 26px;
+                font-size: 21px;
                 margin-bottom: 1px;
             }
 
@@ -120,9 +122,71 @@
             &.selected{
                 background-color: $rojo;
                 box-shadow: 0px 4px 4px 0px black;
-                transform: scale(1.1);
-                width: 65px;
+            }
+
+            &.centro {
+                background-color: $gold;
+                color: whitesmoke;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transform: translateY(-15px); // flota un poquito
+                font-size: 16px;
+                padding: 15px 15px;
+                clip-path: polygon(
+                    15% 0%,   /* esquina superior izquierda biselada */
+                    85% 0%,   /* esquina superior derecha biselada */
+                    100% 50%, /* punto medio derecho */
+                    85% 100%, /* esquina inferior derecha biselada */
+                    15% 100%, /* esquina inferior izquierda biselada */
+                    0% 50%    /* punto medio izquierdo */
+                );
+                filter: drop-shadow(0 4px 8px rgba($rojo, 0.4)); // ✅ sombra visible
+                // border-top: 3px solid $rojo;
+
+                i {
+                    font-size: 30px;
+                }
             }
         }
     }
+
+    // .footer-user-main{
+    //     display: flex;
+    //     justify-content: space-around;
+    //     background-color: $darkGray;
+    //     width: 100%;
+    //     height: 75px;
+    //     border-top: 3px solid $rojo;
+
+    //     .btn-menu{
+    //         display: flex;
+    //         flex-direction: column;
+    //         align-items: center;
+    //         justify-content: center;
+    //         border: none;
+    //         color: whitesmoke;
+    //         width: 55px;
+    //         font-size: 12px;
+    //         margin-bottom: 15px;
+    //         border-radius: 0px;
+    //         border-bottom-right-radius: 15px;
+    //         border-bottom-left-radius: 15px;
+    //         transition: all .3s ease-in-out;
+
+    //         .fa-regular, .fa-solid{
+    //             font-size: 26px;
+    //             margin-bottom: 1px;
+    //         }
+
+
+    //         &.selected{
+    //             background-color: $rojo;
+    //             box-shadow: 0px 4px 4px 0px black;
+    //             transform: scale(1.1);
+    //             width: 65px;
+    //         }
+    //     }
+    // }
 }

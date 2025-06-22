@@ -29,7 +29,7 @@
     <div class="footer-user-main">
         <button class="btn btn-menu" 
             *ngFor="let menu of menus; let i = index" 
-            [ngClass]="{'selected' : selectedMenu == i}"
+            [ngClass]="{'selected' : selectedMenu == i, 'centro': i == getCentroIndex()}"
             (click)="selectMenu(i)" >
 
             <i class="{{menu.icon}}"></i>

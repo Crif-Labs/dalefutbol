@@ -35,18 +35,41 @@ export class UserMainComponent {
 
   correo: string | any = ''
 
-  menus = [
+  // menus = [
+  //   {
+  //     name: 'Equipo',
+  //     icon: 'fa-solid fa-people-group'
+  //   },
+  //   {
+  //     name: 'Partidos',
+  //     icon: 'fa-regular fa-futbol'
+  //   },
+  //   {
+  //     name: 'Perfil',
+  //     icon: 'fa-regular fa-user'
+  //   },
+  // ]
+
+    menus = [
+    {
+      name: 'Rango',
+      icon: 'fa-solid fa-medal'
+    },
     {
       name: 'Equipo',
       icon: 'fa-solid fa-people-group'
     },
     {
-      name: 'Partidos',
+      name: '',
       icon: 'fa-regular fa-futbol'
     },
     {
-      name: 'Perfil',
-      icon: 'fa-regular fa-user'
+      name: 'Stats',
+      icon: 'fa-solid fa-chart-simple'
+    },
+    {
+      name: 'Soporte',
+      icon: 'fa-solid fa-circle-info'
     },
   ]
 
@@ -117,20 +140,26 @@ export class UserMainComponent {
 
   selectMenu(menu: number){
     switch(menu){
-      case 0:      
+      case 0:
+        this.selectedMenu = menu
+        break;
+      case 1:   
         this.router.navigate(['/user','main','equipo'])
         this.selectedMenu = menu
         break;
-      case 1:
-        this.router.navigate(['/user','main','partidos'])
+      case 2:
+        this.router.navigate(['/user','main','partidos'])   
+        // this.router.navigate(['/user','main','perfil'])
         this.selectedMenu = menu
         break;
-      case 2:
-        this.router.navigate(['/user','main','perfil'])
+      case 3:
+        this.selectedMenu = menu
+        break;
+      case 4:
         this.selectedMenu = menu
         break;
       default:
-        this.router.navigate(['/user','main','partidos'])
+        // this.router.navigate(['/user','main','partidos'])
         this.selectedMenu = 1
         break;
     }
@@ -155,7 +184,9 @@ export class UserMainComponent {
     this.showModalNotification = !this.showModalNotification
   }
 
-
+  getCentroIndex(): number {
+    return Math.floor(this.menus.length / 2);
+  }
 
 }
 
