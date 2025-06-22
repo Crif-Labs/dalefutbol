@@ -11,71 +11,89 @@
     .header-user-main{
         
         display: flex;
-        align-items: center;
+        align-items:last baseline;
+        justify-content: center;
         background-color: rgba($gray, 0.5);
         padding-top: 30px;
+        border-bottom: 2px solid #f5f5f5;
 
-        .title-header{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100%;
-            height: 77px;
-            padding-left: 10px;
-            
-            .logo{
-                color: whitesmoke;
-                padding-right: 20px;
-                font-family: $logoFont;
-                font-weight: 500;
-                padding: 0;
-                margin: 0;
+        .btn-header{
+            border: 0px;
+            // border-bottom: 2px solid rgba($lightGray, .5);
+            background-color: rgba($lightGray, .5);
+            color: white;
+            font-size: 16px;
+            padding: 3px 20px;
+            margin-bottom: 0px;
+            transform: translateY(2px);
 
-                span{
-                    color: $rojo;
+            i{
+                filter: drop-shadow(0px 0px 4px $darkGray);                
+            }
+
+            &.btn-uno{
+                border-top-left-radius: 10px;
+            }
+
+            &.btn-notification{                
+                border-top-right-radius: 10px;
+
+                .icon-container{
+                    position: relative;
+                    display: inline-block;
+
+
+                    .dot{
+                        position: absolute;
+                        top: 2px;
+                        right: -7px;
+                        width: 7px;
+                        height: 7px;
+                        background-color: red;
+                        border-radius: 50%;
+                        box-shadow: 0px 0px 2px 1px whitesmoke;
+                    }
                 }
+
             }
 
-            .line{
-                width: 75px;
-                height: 1px;
-                background-color: $rojo;
-                margin-top: 0px;
-            }
-
-            .slogan{
-                color: whitesmoke;
-                font-weight: 300;
-                font-family: $titleFont;
-            }
         }
+        
 
-
-        .notification{
-            color: whitesmoke;
+        .btn-perfil{
             display: flex;
-            align-self: first baseline;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(13px);
+            border: none !important;
+            border-bottom: 3px solid $rojo !important;
+            background-color: whitesmoke !important;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-radius: 5px;
+            color: $darkGray !important;
             gap: 10px;
-            padding-right: 10px;
-
-            .icon-container{
-                position: relative;
-                display: inline-block;
-                padding: 7px;
+            box-shadow: 0px 2px 2px 0px whitesmoke;
+            padding: 3px 10px;
 
 
-                .dot{
-                    position: absolute;
-                    top: 5px;
-                    right: 0;
-                    width: 9px;
-                    height: 9px;
-                    background-color: red;
-                    border-radius: 50%;
-                    box-shadow: 0px 0px 2px 1px whitesmoke;
-                }
+            .img-perfil{
+                border: 1px solid red;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 22px;
+                height: 35px;
+                width: 35px;
+                border-radius: 100%;
             }
 
+            .data-perfil{
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                font-size: 14px;
+            }
         }
     }
 
@@ -84,7 +102,7 @@
         flex-direction: column;
         background-color: transparent;
         overflow-y: auto;
-
+        padding-top: 10px;
 
     }
 
@@ -94,7 +112,7 @@
         background-color: rgba($darkGray, .5);
         // width: 100%;
         // height: 75px;
-        border-top: 15px solid $rojo;
+        border-top: 3px solid $rojo;
         // padding: 0px 5px;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;

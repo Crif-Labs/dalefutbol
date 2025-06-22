@@ -149,13 +149,16 @@ export class UserMainComponent {
         break;
       case 2:
         this.router.navigate(['/user','main','partidos'])   
-        // this.router.navigate(['/user','main','perfil'])
         this.selectedMenu = menu
         break;
       case 3:
         this.selectedMenu = menu
         break;
       case 4:
+        this.selectedMenu = menu
+        break;
+      case 5:   
+        this.router.navigate(['/user','main','perfil'])
         this.selectedMenu = menu
         break;
       default:
