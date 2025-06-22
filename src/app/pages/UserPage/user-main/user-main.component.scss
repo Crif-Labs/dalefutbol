@@ -7,13 +7,13 @@
     width: 100%;
     height: 100vh;
     z-index: 0;
-    padding-top: 30px;
 
     .header-user-main{
         
         display: flex;
         align-items: center;
         background-color: rgba($gray, 0.5);
+        padding-top: 30px;
 
         .title-header{
             display: flex;

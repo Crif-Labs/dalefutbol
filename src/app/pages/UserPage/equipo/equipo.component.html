@@ -1,1 +1,67 @@
-<app-working-page [namePage]="'Equipo'"></app-working-page>
+<!-- <app-working-page [namePage]="'Equipo'"></app-working-page> -->
+
+<app-modal-loading *ngIf="showModalLoading"></app-modal-loading>
+
+<div class="container-equipo">
+
+    <!-- <form class="search-equipo">
+        <label for="input-search" class="label-search"><i class="fa-solid fa-magnifying-glass"></i></label>
+        <input id="input-search" name="input-search" type="text" class="input-search" placeholder="Buscador de equipo...">
+        <button class="btn-primary btn-search">Buscar</button>
+    </form> -->
+
+    <div class="banner-option">
+        <button class="btn-primary btn-banner" [ngClass]="{'selected': selectOption == 1}" (click)="changeOption(1)"><i class="fa-solid fa-users"></i> Unirse</button>
+        <button class="btn-primary btn-banner" [ngClass]="{'selected': selectOption == 2}" (click)="changeOption(2)"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+        <button class="btn-primary btn-banner" [ngClass]="{'selected': selectOption == 3}" (click)="changeOption(3)"><i class="fa-solid fa-plus"></i> Crear</button>
+    </div>
+
+    <div class="card-list" *ngIf="selectOption == 1">
+        <div class="card-equipo">
+
+            <div class="data-equipo">
+
+                <img src="../../../../assets/Logo team.jpg" alt="equipo" class="logo-equipo">
+
+                <div class="title-equipo">
+                    <h3 class="name-equipo">Manchester City</h3>
+
+                    <div class="detail-equipo">
+                        <span><i class="fa-solid fa-users"></i>:&nbsp;&nbsp;5/15</span>
+                        <span><i class="fa-solid fa-trophy"></i>:&nbsp;&nbsp;18</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form class="search-equipo" *ngIf="selectOption == 2">
+        <label for="input-search" class="label-search"><i class="fa-solid fa-magnifying-glass"></i></label>
+        <input id="input-search" name="input-search" type="text" class="input-search" placeholder="Buscador de equipo...">
+        <button class="btn-primary btn-search">Buscar</button>
+    </form>
+
+
+
+    <div class="create-equipo" *ngIf="selectOption == 3">
+        <form class="form" [formGroup]="formCreateEquipo">
+
+            <div class="box-equipo"></div>
+
+            <div class="container-input form__group field" *ngFor="let input of inputFormCreateEquipo">
+                <input formControlName="{{input.name}}" id="{{input.name}}" type="{{input.type}}" class="form__field" placeholder="{{input.placeholder}}" required="{{input.required}}">
+                <label for="{{input.name}}" class="form__label"><i class="{{input.icon}}"></i>&nbsp;&nbsp;{{input.placeholder}}:</label>
+                <label *ngIf="!formCreateEquipo.controls[input.name].untouched && formCreateEquipo.controls[input.name].invalid" class="label-error">{{input.error}}</label>
+            </div>
+
+            <button class="btn btn-primary" >Crear Equipo</button>
+        </form>
+    </div>
+
+
+
+        
+
+
+</div>
