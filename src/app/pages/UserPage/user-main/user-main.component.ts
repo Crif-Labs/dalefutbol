@@ -52,12 +52,12 @@ export class UserMainComponent {
 
     menus = [
     {
-      name: 'Rango',
-      icon: 'fa-solid fa-medal'
+      name: 'Equipos',
+      icon: 'fa-solid fa-people-group'
     },
     {
-      name: 'Equipo',
-      icon: 'fa-solid fa-people-group'
+      name: 'MyTeams',
+      icon: 'fa-solid fa-shield-virus'
     },
     {
       name: '',
@@ -124,7 +124,7 @@ export class UserMainComponent {
   getMenu(){
     switch(this.router.url){
       case '/user/main/equipo':
-        this.selectedMenu = 1;
+        this.selectedMenu = 0;
         break;
       case '/user/main/partidos':
         this.selectedMenu = 2;
@@ -141,10 +141,10 @@ export class UserMainComponent {
   selectMenu(menu: number){
     switch(menu){
       case 0:
+        this.router.navigate(['/user','main','equipo'])
         this.selectedMenu = menu
         break;
       case 1:   
-        this.router.navigate(['/user','main','equipo'])
         this.selectedMenu = menu
         break;
       case 2:

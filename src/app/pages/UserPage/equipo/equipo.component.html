@@ -17,18 +17,18 @@
     </div>
 
     <div class="card-list" *ngIf="selectOption == 1">
-        <div class="card-equipo">
+        <div class="card-equipo" *ngFor="let equipo of listEquipo" (click)="redirectToPerfilEquipo(equipo.equipo.id)">
 
             <div class="data-equipo">
 
                 <img src="../../../../assets/Logo team.jpg" alt="equipo" class="logo-equipo">
 
                 <div class="title-equipo">
-                    <h3 class="name-equipo">Manchester City</h3>
+                    <h3 class="name-equipo">{{equipo.equipo.nombre}}</h3>
 
                     <div class="detail-equipo">
-                        <span><i class="fa-solid fa-users"></i>:&nbsp;&nbsp;5/15</span>
-                        <span><i class="fa-solid fa-trophy"></i>:&nbsp;&nbsp;18</span>
+                        <span><i class="fa-solid fa-users"></i>:&nbsp;&nbsp;{{equipo.countJugadores}}/15</span>
+                        <span><i class="fa-solid fa-trophy"></i>:&nbsp;&nbsp;{{equipo.stats}}</span>
                     </div>
                     
                 </div>
@@ -55,7 +55,19 @@
                 <label *ngIf="!formCreateEquipo.controls[input.name].untouched && formCreateEquipo.controls[input.name].invalid" class="label-error">{{input.error}}</label>
             </div>
 
-            <button class="btn btn-primary" >Crear Equipo</button>
+            <div class="container-input">
+                <label for="color" class="label-input"><i class="fa-solid fa-pen"></i>&nbsp;&nbsp;Color del Equipo:</label>
+                <select formControlName="color" name="color" id="color" class="select-form">
+                    <option class="option-select disabled-option" disabled selected>--Color Equipo--</option>
+                    <option class="option-select blanco" value="Blanco">Blanco</option>
+                    <option class="option-select negro" value="Negro">Negro</option>
+                    <option class="option-select azul" value="Azul">Azul</option>
+                    <option class="option-select rojo" value="Rojo">Rojo</option>
+                </select>
+                <label *ngIf="false" class="label-message">* opcional</label>
+            </div>
+
+            <button class="btn btn-primary" (click)="validateForm()">Crear Equipo</button>
         </form>
     </div>
 

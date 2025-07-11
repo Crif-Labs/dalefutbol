@@ -1,0 +1,193 @@
+@use '../../../app.component.scss' as *;
+
+.container-ep{
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-family: $textFont;
+
+    &.azul-bg{
+        background-image: radial-gradient(circle, $azul-bg, transparent 1%, $darkGray);
+        background-size: cover;
+        background-color: $azul-bg;
+    }
+    &.verde-bg{
+        background-image: radial-gradient(circle, $verde-bg, transparent 1%, $darkGray);
+        background-size: cover;
+        background-color: $verde-bg;
+    }
+    &.blanco-bg{
+        background-image: radial-gradient(circle, white, transparent 1%, $darkGray);
+        background-size: cover;
+        background-color: white;
+    }
+    &.negro-bg{
+        background-image: radial-gradient(circle, black, transparent 1%, $gray);
+        background-size: cover;
+        background-color: black;
+    }
+
+    .header-ep{
+        background-image:linear-gradient(to right, $darkGray, $rojo 150%); //radial-gradient(circle, $rojo, transparent 1%, $darkGray);
+        background-size: cover;
+        background-color: $rojo;
+        box-shadow: 0px 2px 4px $darkGray;
+
+
+        .arrow-back{
+            font-size: 28px;
+            padding: 10px 15px;
+            color: white;
+        }
+    }
+
+
+    .id-equipo{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+
+        .photo-box{
+            background-color: $lightGray;
+            height: 120px;
+            width: 120px;
+            border-radius: 10px;
+        }
+
+        .nombre-equipo{
+            color: white;
+            font-weight: bold;
+            filter: drop-shadow(0px 0px 4px black);
+            padding: 5px;
+        }
+    }
+
+    .descripcion-equipo{
+        width: 95%;
+        margin: 0px auto;
+
+        .created-at{
+            font-size: 14px;
+            text-align: end;
+            color: white;
+            filter: drop-shadow(0px 0px 2px black);
+        }
+
+        .descripcion{
+            border: 1px solid $gray;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            background-color: rgba($darkGray, 0.5);
+            color: whitesmoke;
+            padding: 3px;
+            margin: 0px;
+        }
+    }
+
+    .stats-equipo{
+
+        .table-stats{
+            margin: 0px auto;
+            width: 95%;
+
+            thead{
+                background-color: $darkGray;
+                color: whitesmoke;
+                text-align: center;
+            }
+
+            tbody{
+                background-color: rgba($darkGray, 0.5);
+
+
+                tr{
+                    text-align: center;
+                    color: whitesmoke;
+                    border-bottom: 1px solid black;
+                    td:last-child{
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+
+    .option-box{
+        margin: 10px auto 0px auto;
+        width: 90%;
+        
+        .btn-primary{
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 1px 1px 4px 1px $darkGray;
+        }
+    }
+
+
+    .list-jugadores{
+        background-color: rgba(white, 0.3);
+        width: 95%;
+        margin: 10px auto;
+
+        .card-jugadores{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid $rojo;
+            color: whitesmoke;
+            filter: drop-shadow(1px 1px 4px black);
+
+
+            &.capitan-card{
+                background-color: whitesmoke;
+            }
+
+            &.cocapitan-card{           
+                background-color: rgba(white, 0.6);
+            }
+
+            &.capitan-card, &.cocapitan-card{
+                color: $darkGray;
+                filter: none;
+
+                .data-jugador{
+                    .nombre{
+                    border-bottom: 1px solid $darkGray;
+                    }
+                }
+            }
+
+            .data-jugador{
+                display: flex;
+                flex-direction: column;
+
+                .nombre{
+                    font-size: 18px;
+                    font-weight: bold;
+                    border-bottom: 1px solid $darkGray;
+                    margin-bottom: 3px;
+                    padding-left: 5px;
+                    border-bottom-left-radius: 5px;
+                }
+
+                .extra-data{
+                    display: flex;
+                    gap: 20px;
+                    padding-left: 13px;
+
+                    .comuna, .posicion{
+                        font-size: 14px;
+                    }
+                }
+            }
+
+            .action{
+                // border: 1px solid red;
+            }
+        }
+    }
+
+}

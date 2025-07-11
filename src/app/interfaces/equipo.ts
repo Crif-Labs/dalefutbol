@@ -1,6 +1,10 @@
+import { Timestamp } from "@angular/fire/firestore";
+import { Perfil } from "./perfil";
+
 export interface Equipo {
-    id?: string;
+    id: string;
     nombre: string;
-    creador: string; // ID del perfil del creador
-    jugadores: string[]; // Array de IDs de jugadores  
+    descripcion?: string;
+    color: string;
+    creacion: Timestamp;
 }

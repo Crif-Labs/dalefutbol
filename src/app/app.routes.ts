@@ -17,6 +17,7 @@ import { ConvetirFechasComponent } from './temporales/convetir-fechas/convetir-f
 import { MiPartidoComponent } from './pages/UserPage/mi-partido/mi-partido.component';
 import { UserComponent } from './pages/UserPage/user/user.component';
 import { EquipoComponent } from './pages/UserPage/equipo/equipo.component';
+import { EquipoPerfilComponent } from './pages/UserPage/equipo-perfil/equipo-perfil.component';
 
 export const routes: Routes = [
     {
@@ -38,7 +39,13 @@ export const routes: Routes = [
                     {path: 'chat', component: MensajesComponent},
                     {path: 'perfil', component: PerfilComponent},
                     {path: 'torneo', component: TorneoComponent},
-                    {path: 'equipo', component: EquipoComponent},
+                    {
+                        path: 'equipo', 
+                        component: EquipoComponent,
+                        // children: [
+                        //     {path: 'equipo-perfil', component: EquipoPerfilComponent}
+                        // ]
+                    },
                     {path: '**', redirectTo: 'partidos'}
                 ]
             },
@@ -46,6 +53,9 @@ export const routes: Routes = [
             {path: 'mis-reservas', component: MisReservasComponent},
             {path: 'mi-partido', component: MiPartidoComponent},
             {path: 'check-out', component: CheckOutComponent},
+
+            {path: 'mi-equipo/perfil/:id', component: EquipoPerfilComponent},
+
             {path: '**', redirectTo: 'main'}
         ]
     },

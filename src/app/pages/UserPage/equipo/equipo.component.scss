@@ -132,6 +132,33 @@
                 margin-top: 20px;
                 border-radius: 10px;
             }
+
+            .container-input{
+                color: whitesmoke;
+
+                .fa-pen{
+                    color: whitesmoke !important;
+                }
+
+                .select-form{
+
+
+                    .option-select{
+                        &.blanco{
+                            background-color: whitesmoke;
+                            color: $darkGray;
+                        }
+
+                        &.azul{
+                            background-color: rgba($color: $azul, $alpha: 1.0);
+                        }                        
+                        
+                        &.rojo{
+                            background-color: rgba($color: $rojo, $alpha: .7);
+                        }
+                    }
+                }
+            }
         }
 
     }

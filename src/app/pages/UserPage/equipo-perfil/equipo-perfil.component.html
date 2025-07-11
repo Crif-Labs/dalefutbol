@@ -1,0 +1,93 @@
+<app-modal-loading *ngIf="loading"></app-modal-loading>
+
+<div *ngIf="!loading" class="container-ep">
+
+    <div class="header-ep">
+        <a (click)="buttonBack()" class="arrow-back"><i class="fa-solid fa-arrow-left"></i></a>
+    </div>
+
+    <div class="id-equipo">
+        <div class="photo-box"></div>
+        <h1 class="nombre-equipo">{{equipo.nombre}}</h1>
+    </div>
+
+    <div class="descripcion-equipo">
+        <div class="created-at">Fundación: {{equipo.creacion | timestamp}}</div>
+        <p class="descripcion">{{equipo.descripcion}}</p>
+    </div>
+
+    <div class="stats-equipo">
+        <table class="table-stats">
+            <thead>
+                <th>J</th>
+                <th>G</th>
+                <th>E</th>
+                <th>P</th>
+                <th>Pts</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{statsEquipo.partidos}}</td>
+                    <td>{{statsEquipo.victorias}}</td>
+                    <td>{{statsEquipo.empates}}</td>
+                    <td>{{statsEquipo.derrotas}}</td>
+                    <td>{{(statsEquipo.victorias*3)+(statsEquipo.empates*1)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="option-box">
+        <button class="btn-primary" *ngIf="!perteneceAlEquipo" >Solicitar Ingreso</button>
+        <button class="btn-primary" *ngIf="perteneceAlEquipo" >Invitar Personas</button>
+    </div>
+
+
+    <div class="list-jugadores">
+
+        <!-- CAPITAN -->
+        <div class="card-jugadores capitan-card">
+            <div class="data-jugador">
+                <span class="nombre"><i class="fa-solid fa-closed-captioning"></i>&nbsp;{{capitan.nombre}}&nbsp;{{capitan.apellido}}</span>
+                <div class="extra-data">
+                    <span class="comuna"><i class="fa-solid fa-location-dot"></i> {{capitan.comuna}}</span>
+                    <span class="posicion"><i class="fa-solid fa-arrows-to-dot"></i> {{capitan.posicion}}</span>
+                </div>
+            </div>
+
+            <div class="action">
+                <i class="fa-solid fa-shield"></i>
+            </div>
+        </div>
+
+        <!-- CO CAPITAN -->
+        <div class="card-jugadores cocapitan-card" *ngFor="let cocapitan of cocapitanes">
+            <div class="data-jugador">
+                <span class="nombre"><i class="fa-solid fa-user-shield"></i> {{cocapitan.nombre+' '+cocapitan.apellido}}</span>
+                <div class="extra-data">
+                    <span class="comuna"><i class="fa-solid fa-location-dot"></i> {{cocapitan.comuna}}</span>
+                    <span class="posicion"><i class="fa-solid fa-arrows-to-dot"></i> {{cocapitan.posicion}}</span>
+                </div>
+            </div>
+
+            <div class="action">
+                <i class="fa-solid fa-shield"></i>
+            </div>
+        </div>
+
+        <!-- RESTO EQUIPO -->
+        <div class="card-jugadores" *ngFor="let jugador of jugadores">
+            <div class="data-jugador">
+                <span class="nombre"><i class="fa-solid fa-user-astronaut"></i>{{' '+jugador.nombre+' '+jugador.apellido}}</span>
+                <div class="extra-data">
+                    <span class="comuna"><i class="fa-solid fa-location-dot"></i> {{jugador.comuna}}</span>
+                    <span class="posicion"><i class="fa-solid fa-arrows-to-dot"></i> {{jugador.posicion}}</span>
+                </div>
+            </div>
+
+            <div class="action">
+                <i class="fa-solid fa-shield"></i>
+            </div>
+        </div>
+    </div>
+</div>
