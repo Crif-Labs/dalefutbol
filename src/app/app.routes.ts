@@ -50,7 +50,10 @@ export const routes: Routes = [
             {path: 'mi-partido', component: MiPartidoComponent},
             {path: 'check-out', component: CheckOutComponent},
 
-            {path: 'mi-equipo/perfil/:id', component: EquipoPerfilComponent},
+            {
+                path: 'mi-equipo/perfil/:id', 
+                component: EquipoPerfilComponent
+            },
 
             {path: '**', redirectTo: 'main'}
         ]
