@@ -35,22 +35,7 @@ export class UserMainComponent {
 
   correo: string | any = ''
 
-  // menus = [
-  //   {
-  //     name: 'Equipo',
-  //     icon: 'fa-solid fa-people-group'
-  //   },
-  //   {
-  //     name: 'Partidos',
-  //     icon: 'fa-regular fa-futbol'
-  //   },
-  //   {
-  //     name: 'Perfil',
-  //     icon: 'fa-regular fa-user'
-  //   },
-  // ]
-
-    menus = [
+  menus = [
     {
       name: 'Equipos',
       icon: 'fa-solid fa-people-group'
@@ -126,6 +111,9 @@ export class UserMainComponent {
       case '/user/main/equipo':
         this.selectedMenu = 0;
         break;
+      case '/user/main/my-teams':
+        this.selectedMenu = 1;
+        break;
       case '/user/main/partidos':
         this.selectedMenu = 2;
         break;
@@ -145,6 +133,7 @@ export class UserMainComponent {
         this.selectedMenu = menu
         break;
       case 1:   
+        this.router.navigate(['/user','main','my-teams'])
         this.selectedMenu = menu
         break;
       case 2:

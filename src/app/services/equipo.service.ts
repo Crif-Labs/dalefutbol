@@ -275,17 +275,19 @@ export class EquipoService {
 
 
   /** METODO QUE TRAE TODOS LOS EQUIPOS DONDE PERTENECE EL JUGADOR */
-  async perteneceAEquipo(perfilID: string){
+  async perteneceAEquipo(perfilID: string): Promise<EquipoJugador[]>{
     const ref = collection(this.firestore, `perfil/${perfilID}/equipo`)
     const q = query(ref, where('pertenece','==',true))
     const snapShot = await getDocs(q)
 
-    const data = {
-      id: snapShot.docs[0].id,
-      ...snapShot.docs[0].data()
-    }
+    if(snapShot.empty) return []
 
-    return data
+    const equipos = snapShot.docs.map(doc => ({
+      id:doc.id,
+      ...doc.data()
+    }))
+
+    return equipos as EquipoJugador[]
   }
 
 

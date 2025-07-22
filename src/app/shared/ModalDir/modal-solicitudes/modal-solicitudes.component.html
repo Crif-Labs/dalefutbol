@@ -1,0 +1,29 @@
+<div class="custom-modal-backdrop" @fadeBackdrop>
+    <div class="custom-modal" @fadeModal>
+
+        <div class="header-modal">
+            <h5>{{title}}</h5>
+        </div>
+
+        <div class="body-modal">
+            <div *ngFor="let data of list" class="notification-card">
+                <div class="text">
+                    <h4 class="message">{{data.nombre+' '+data.apellido}}</h4>
+                    <span>{{data.posicion+', '+data.comuna}}</span>
+                    
+                </div>
+
+
+                <div class="options-button">
+                    <i class="fa-solid fa-check" (click)="validacion([{idPerfil: data.idPerfil, idEquipo: data.idEquipo, idSolicitud: data.idSolicitud}])"></i>
+                    <i class="fa-solid fa-xmark" (click)="validacion([])"></i>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footer-modal">
+            <button class="btn-secondary" (click)="close()" >{{ textButtonClose }}</button>
+        </div>
+    </div>
+</div>

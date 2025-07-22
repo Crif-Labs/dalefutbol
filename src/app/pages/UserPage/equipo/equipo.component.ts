@@ -66,13 +66,9 @@ export class EquipoComponent {
 
     this.getListEquipo();
     
-
-    
   }
 
   getListEquipo(){
-
-
     this.equipoService.getEquipos().subscribe(res => {
       const equipos: Equipo[] = res
 
@@ -89,8 +85,8 @@ export class EquipoComponent {
 
           await this.equipoService.getStatsEquipo(equipo.id)
             .then(res => {
-              if(res?.puntos)
-                puntos = res?.puntos
+              if(res)
+                puntos = (res.victorias*3)+(res.empates*1)
             })
             
             this.listEquipo.push({

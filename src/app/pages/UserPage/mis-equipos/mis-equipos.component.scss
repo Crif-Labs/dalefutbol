@@ -1,0 +1,91 @@
+@use 'sass:color';
+@use '../../../app.component.scss' as *;
+
+.container-mis-equipos{
+
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px;
+
+    .header-me{
+        h1{
+            color: white;
+            font-family: $titleFont;
+            text-align: center;
+            
+        }
+    }
+
+    .no-teams{
+        background-color: whitesmoke;
+        border-radius: 5px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 4px 4px 4px $darkGray;
+
+        h3{
+            text-align: center;
+            border-bottom: 2px solid $rojo;
+        }
+
+        .btn-primary, .btn-secondary{
+            border-radius: 5px;
+            margin: auto;
+            width: 80%;
+        }
+
+        .btn-secondary{
+            margin-top: 5px;
+        }
+
+    }
+
+    .card-list{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .card-equipo{
+            border: 1px solid red;
+            padding: 10px;
+            background-color: rgba($color: $rojo, $alpha: .5);
+            border-radius: 10px;
+            display: flex;
+
+            .data-equipo{
+                display: flex;
+
+                .logo-equipo{
+                    width: 20%;
+                    border-radius: 10px;
+                    box-shadow: 4px 4px 4px rgba($color: #000000, $alpha: 1.0);
+                }
+
+                .title-equipo{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    color: white;
+
+                    padding-left: 15px;
+
+                    .name-equipo{
+                        font-size: 18px;
+                    }
+
+                    .detail-equipo{
+                        display: flex;
+                        gap: 20px;
+
+                        .fa-trophy{
+                            color: $gold;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
