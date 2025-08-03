@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -15,7 +15,7 @@ import { Notificacion } from '../../../interfaces/notificacion';
   templateUrl: './user-main.component.html',
   styleUrl: './user-main.component.scss'
 })
-export class UserMainComponent {
+export class UserMainComponent implements OnInit{
 
 
   /**
@@ -61,49 +61,51 @@ export class UserMainComponent {
   selectedMenu: number = 3
 
   uid: string | null = ''
-
-  constructor(private notificacionService: NotificacionService,private authService: AuthService, private router:Router, private perfilService: PerfilService, private lsService: LocalStorageService){
-
-    this.getMenu()
-
-    this.initPage()
-
-    this.uid = authService.getUid()
-
-    if(this.uid){
-      notificacionService.getNotificacionesNoLeidas(this.uid)
-        .subscribe(res => {
-          this.hasNotification = res
-      })
-
-      notificacionService.getNotificacionesByUser(this.uid)
-        .subscribe(res => {
-          this.listNotificacion = res
-      })
-    }
-      
-
-
-
+  perfil: Perfil = {
+    nombre: '',
+    apellido: '',
+    celular: '',
+    rol: 'admin',
+    id_usuario: ''
   }
 
-  async initPage(){
-    try{
-      await this.authService.getAuth().subscribe(
-        res => {
-          this.perfilService.getPerfilByUID(String(res?.uid))
-            .then(res => {
-              this.lsService.setItem('idPerfil',String(res?.id))
-              this.lsService.setItem('perfil',JSON.stringify(res))
-            })
+  constructor(private notificacionService: NotificacionService,
+    private authService: AuthService, 
+    private router:Router, 
+    private perfilService: PerfilService, 
+    private lsService: LocalStorageService){
+  }
+  ngOnInit(): void {
+    this.getMenu();
+
+    this.authService.getAuth().subscribe({
+      next: (user) => {
+        if(user?.uid){
+          this.uid = user.uid
+
+          // Obtener perfil y guardarlo en LocalStorage
+          this.perfilService.getPerfilByUID(this.uid).then(perfil => {
+            if(perfil){
+              this.lsService.setItem('idPerfil', String(perfil.id));
+              this.lsService.setItem('perfil', JSON.stringify(perfil))
+              this.perfil = perfil
+            }
+          }).catch(err => console.log('Error al obtener el perfil: ', err));
+
+          // Obtener notificaciones
+          this.notificacionService.getNotificacionesNoLeidas(this.uid).subscribe({
+            next: (res) => this.hasNotification = res,
+            error: (err) => console.error('Error al obtener notificaciones no leídas:', err)
+          });
+
+          this.notificacionService.getNotificacionesByUser(this.uid).subscribe({
+            next: (res) => this.listNotificacion = res,
+            error: (err) => console.error('Error al obtener lista de notificaciones:', err)
+          });
         }
-      )
-
-    }catch(error){
-      console.log(error)
-    }
-
-
+      },
+      error: (err) => console.error('Error al obtener auth:', err)
+    })
   }
 
   getMenu(){

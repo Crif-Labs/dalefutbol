@@ -9,8 +9,8 @@
             </div>
 
             <div class="data-perfil">
-                <span class="name-perfil">C. Nabucodonosor</span>
-                <span class="posicion-perfil"><i class="fa-solid fa-shield-halved"></i> AR</span>
+                <span class="name-perfil">{{perfil.nombre+' '+perfil.apellido}}</span>
+                <span class="posicion-perfil"><i class="fa-solid fa-shield-halved"></i> {{perfil.posicion}}</span>
             </div>
         </button>
 
@@ -21,22 +21,6 @@
                 <span *ngIf="hasNotification" class="dot"></span>
             </div>
         </button>
-        <!-- <div class="title-header">
-            <h1 class="logo">DaleFutbol <span>+</span></h1>
-            <div class="line"></div>
-            <span class="slogan">Juega donde y cuando quieras</span>
-        </div>
-        
-        <div class="notification">
-
-
-            <div class="icon-container" (click)="clickNotification()">
-                <i *ngIf="!hasMessage" class="fa-regular fa-comment"></i>
-                <i *ngIf="hasMessage" class="fa-solid fa-comment"></i>
-                <span *ngIf="hasMessage" class="dot"></span>
-            </div>           
-
-        </div> -->
     </div>
 
     <div class="body-user-main">
