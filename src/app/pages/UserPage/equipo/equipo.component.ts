@@ -12,7 +12,7 @@ import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-equipo',
-  imports: [CommonModule, ModalLoadingComponent, ReactiveFormsModule],
+  imports: [CommonModule, ModalLoadingComponent, ReactiveFormsModule, WorkingPageComponent],
   templateUrl: './equipo.component.html',
   styleUrl: './equipo.component.scss'
 })

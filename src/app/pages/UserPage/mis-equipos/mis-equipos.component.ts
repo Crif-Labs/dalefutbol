@@ -9,10 +9,11 @@ import { Equipo } from '../../../interfaces/equipo';
 import { firstValueFrom } from 'rxjs';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { ModalSolicitudesComponent } from "../../../shared/ModalDir/modal-solicitudes/modal-solicitudes.component";
+import { WorkingPageComponent } from "../../../shared/working-page/working-page.component";
 
 @Component({
   selector: 'app-mis-equipos',
-  imports: [CommonModule, ModalLoadingComponent, ModalSolicitudesComponent],
+  imports: [CommonModule, ModalLoadingComponent, ModalSolicitudesComponent, WorkingPageComponent],
   templateUrl: './mis-equipos.component.html',
   styleUrl: './mis-equipos.component.scss'
 })
