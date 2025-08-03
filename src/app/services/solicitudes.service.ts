@@ -139,9 +139,6 @@ export class SolicitudesService {
     const jugadorRef = doc(this.firestore, `equipo/${idEquipo}/jugador/${idPerfil}`)
     const equipoRef = doc(this.firestore, `perfil/${idPerfil}/equipo/${idEquipo}`)
 
-    console.log(`equipo/${idEquipo}/solicitudes/${idSolicitud}`)
-    console.log(`perfil/${idPerfil}/solicitudes/${idSolicitud}`)
-
     try {
       await runTransaction(this.firestore, async(transaction) => {
         const equipoSnap = await transaction.get(equipoSolicitudRef)
@@ -165,6 +162,31 @@ export class SolicitudesService {
           pertenece: true
         })
 
+      });
+
+      return true
+    } catch (error) {
+      console.log('❌ Error: ', error)
+      return false
+    }
+  }
+
+  async rechazarSolicitud(idEquipo: string, idPerfil: string, idSolicitud: string): Promise<boolean>{
+
+    const equipoSolicitudRef = doc(this.firestore, `equipo/${idEquipo}/solicitudes/${idSolicitud}`);
+    const perfilSolicitudRef = doc(this.firestore, `perfil/${idPerfil}/solicitudes/${idSolicitud}`)
+
+    try {
+
+      await runTransaction(this.firestore, async(transaction) => {
+        const equipoSnap = await transaction.get(equipoSolicitudRef)
+        const perfilSnap = await transaction.get(perfilSolicitudRef)
+
+        if(!equipoSnap.exists() || !perfilSnap.exists())
+          throw new Error('❌ Una o ambas solicitudes no existen.')
+
+        transaction.update(equipoSolicitudRef, {estado: 'Rechazada'})
+        transaction.update(perfilSolicitudRef, {estado: 'Rechazada'})
       });
 
       return true

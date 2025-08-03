@@ -15,8 +15,8 @@
 
 
                 <div class="options-button">
-                    <i class="fa-solid fa-check" (click)="validacion([{idPerfil: data.idPerfil, idEquipo: data.idEquipo, idSolicitud: data.idSolicitud}])"></i>
-                    <i class="fa-solid fa-xmark" (click)="validacion([])"></i>
+                    <i class="fa-solid fa-check" (click)="validacion([true, {idPerfil: data.idPerfil, idEquipo: data.idEquipo, idSolicitud: data.idSolicitud}])"></i>
+                    <i class="fa-solid fa-xmark" (click)="validacion([false, {idPerfil: data.idPerfil, idEquipo: data.idEquipo, idSolicitud: data.idSolicitud}])"></i>
                 </div>
             </div>
         </div>

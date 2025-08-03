@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Equipo } from '../../../interfaces/equipo';
 import { EquipoService } from '../../../services/equipo.service';
 import { ModalLoadingComponent } from "../../../shared/ModalDir/modal-loading/modal-loading.component";
@@ -15,7 +15,7 @@ import { ModalSolicitudesComponent } from "../../../shared/ModalDir/modal-solici
 
 @Component({
   selector: 'app-equipo-perfil',
-  imports: [CommonModule, ModalLoadingComponent, TimestampPipe, ModalResponseComponent, ModalSolicitudesComponent],
+  imports: [CommonModule, ModalLoadingComponent, TimestampPipe, ModalResponseComponent, ModalSolicitudesComponent, RouterOutlet],
   templateUrl: './equipo-perfil.component.html',
   styleUrl: './equipo-perfil.component.scss'
 })
@@ -99,14 +99,14 @@ export class EquipoPerfilComponent implements OnInit{
     },
   ]
 
-  menu_cocapitan = [
-    {
-      name: 'Solicitudes',
-      icon: 'fa-solid fa-people-group'
-    },  
+  menu_cocapitan = [ 
     {
       name: '',
       icon: 'fa-regular fa-futbol'
+    },
+    {
+      name: 'Solicitudes',
+      icon: 'fa-solid fa-people-group'
     },
     {
       name: 'Stats',
@@ -132,8 +132,10 @@ export class EquipoPerfilComponent implements OnInit{
 
   selectedMenuNoPertenece: number = 3
   selectedMenuEsCapitan: number = 2
+  selectedMenuEsCocapitan: number = 0
+  selectedMenuEsJugadores: number = 4
 
-  hasNotification: boolean = false
+  hasNotification: boolean = true
 
   listSolicitudes: any[] = []
 
@@ -152,7 +154,6 @@ export class EquipoPerfilComponent implements OnInit{
         .then(res => {
           res ? this.perteneceAlEquipo = true : this.perteneceAlEquipo = false
         })
-
       this.initDatas(this.equipoID)   
     }
 
@@ -247,47 +248,79 @@ export class EquipoPerfilComponent implements OnInit{
   async selectMenu(tipo: string, menu: number){
     const uid = await this.authService.getUid()
 
+    switch(tipo){
+      case 'esJugador':
+        switch(menu){
+          case 0:
+            this.selectedMenuEsJugadores = menu
+            break;
+          case 1:
+            this.selectedMenuEsJugadores = menu
+            break;
+          default:
+            this.selectedMenuEsJugadores = 4
+        }
+        break;
+      case 'esCocapitan':
+        switch(menu){
+          case 0:
+            this.selectedMenuEsCocapitan = menu
+            break;
+          case 1:
+            this.selectedMenuEsCocapitan = menu
+            break;
+          case 2:
+            this.selectedMenuEsCocapitan = menu
+            break;
+          case 3:
+            this.selectedMenuEsCocapitan = menu
+            break;
+          default:
+            this.selectedMenuEsCocapitan = 0
+        }
+        break;
+      case 'esCapitan':
+        switch(menu){
+          case 0:
+            this.selectedMenuEsCapitan = menu
+            break;
+          case 1:
+            this.showListSolicitudes = true
+            this.selectedMenuEsCapitan = menu
+            break;
+          case 2:
+            this.selectedMenuEsCapitan = menu
+            break;
+          case 3:
+            this.selectedMenuEsCapitan = menu
+            break;
+          case 4:
+            this.selectedMenuEsCapitan = menu
+            break;
+          default:
+            this.selectedMenuEsCapitan = 2
+        }
+        break;
+      default:
+        switch(menu){
+          case 0:
+            this.selectedMenuNoPertenece = menu
+            this.loading = true
+            this.equipoID && uid ?
+              await this.addSolicitud(this.equipoID, uid) :
+              console.log("No se han leido las credenciales")
+            this.loading = false
+            break;
+          case 1:
+            this.selectedMenuNoPertenece = menu
+            break;
+          default:
+            this.selectedMenuNoPertenece = 4
+        }
+        break;
 
 
-
-    // switch(menu){
-    //   case 0:
-    //     this.selectedMenu = menu
-
-    //     if(tipo === 'noPertenece'){
-    //       this.loading = true
-
-    //       uid && this.equipoID ?
-    //         this.addSolicitud(this.equipoID, uid)
-    //         : console.log("Error: No ha leido credenciales")
-    //     }else{
-    //       this.showListSolicitudes = true
-    //     }
-
-    //     break;
-    //   case 1:   
-    //     // this.router.navigate(['/user','main','my-teams'])
-    //     this.selectedMenu = menu
-    //     break;
-    //   case 2:
-    //     // this.router.navigate(['/user','main','partidos'])   
-    //     this.selectedMenu = menu
-    //     break;
-    //   case 3:
-    //     this.selectedMenu = menu
-    //     break;
-    //   case 4:
-    //     this.selectedMenu = menu
-    //     break;
-    //   case 5:   
-    //     // this.router.navigate(['/user','main','perfil'])
-    //     this.selectedMenu = menu
-    //     break;
-    //   default:
-    //     // this.router.navigate(['/user','main','partidos'])
-    //     this.selectedMenu = 1
-    //     break;
-    // }
+    }
 
   }
 
@@ -309,7 +342,7 @@ export class EquipoPerfilComponent implements OnInit{
     if(this.esCapitan == true){
       return Math.floor(this.menu_capitan.length / 2);  
     }else if(this.esCocapitan == true){
-      return 2
+      return 0
     }else{
       return 3
     }
@@ -320,34 +353,57 @@ export class EquipoPerfilComponent implements OnInit{
 
     if(modal == 'solicitarIngreso'){
       this.showSolicitarIngreso = false
-      this.selectedMenuNoPertenece = 10
     }else if(modal == 'solicitudEnProceso'){
       this.showSolicitudEnProceso = false
-      this.selectedMenuNoPertenece = 10
     }else if(modal == 'listaSolicitudes'){
       this.showListSolicitudes = false
-      this.selectedMenuNoPertenece = 10
     }
+
+    this.initSelectedMenu()
+  }
+
+  initSelectedMenu(){
+    this.selectedMenuNoPertenece = 10
+    this.selectedMenuEsCapitan = 10
+    this.selectedMenuEsCocapitan = 10
+    this.selectedMenuEsJugadores = 10
   }
 
   eventModalSolicitudes(event: any){
-    event.length != 0 ? this.addJugadorToEquipo(event[0]) : this.rejectedJugadorToEquipo() 
+
+    const acepta = event[0]
+    const data = event[1]
+
+    acepta ? this.addJugadorToEquipo(data) : this.rejectedJugadorToEquipo(data) 
   }
 
   async addJugadorToEquipo(data: any){
+
+    console.log(data)
     
     this.loading = true
     this.showListSolicitudes = false
-    this.selectedMenuNoPertenece = 10
+    this.initSelectedMenu()
 
-    await this.solicitudesService.aceptarSolicitudYAgregarjugador(data.idEquipo, data.idPerfil, data.idSolicitud) ?
-      this.initDatas(data.idEquipo) :
-      console.log('Jugador no anadido')
+    // await this.solicitudesService.aceptarSolicitudYAgregarjugador(data.idEquipo, data.idPerfil, data.idSolicitud) ?
+    //   this.initDatas(data.idEquipo) :
+    //   console.log('Jugador no anadido')
   
       this.loading = false
   }
 
-  async rejectedJugadorToEquipo(){
-    console.log('rejected')
+  async rejectedJugadorToEquipo(data: any){
+
+    this.loading = true
+    this.showListSolicitudes = false
+    this.initSelectedMenu()
+
+    await this.solicitudesService.rechazarSolicitud(data.idEquipo, data.idPerfil, data.idSolicitud) ?
+      this.initDatas(data.idEquipo) :
+      console.log('Jugador no ha sido rechazado')
+
+    this.loading = false
+
+
   }
 }

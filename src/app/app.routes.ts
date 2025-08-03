@@ -19,6 +19,8 @@ import { UserComponent } from './pages/UserPage/user/user.component';
 import { EquipoComponent } from './pages/UserPage/equipo/equipo.component';
 import { EquipoPerfilComponent } from './pages/UserPage/equipo-perfil/equipo-perfil.component';
 import { MisEquiposComponent } from './pages/UserPage/mis-equipos/mis-equipos.component';
+import { EquipoGestionComponent } from './pages/UserPage/equipo-gestion/equipo-gestion.component';
+
 
 export const routes: Routes = [
     {
@@ -51,8 +53,11 @@ export const routes: Routes = [
             {path: 'check-out', component: CheckOutComponent},
 
             {
-                path: 'mi-equipo/perfil/:id', 
-                component: EquipoPerfilComponent
+                path: 'mi-equipo/perfil/:id',  
+                component: EquipoPerfilComponent,
+                children: [
+                    {path: 'mi-gestion', component: EquipoGestionComponent}
+                ]
             },
 
             {path: '**', redirectTo: 'main'}

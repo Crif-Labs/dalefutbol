@@ -1,3 +1,5 @@
+<router-outlet></router-outlet>
+
 <app-modal-loading *ngIf="loading"></app-modal-loading>
 
 <div *ngIf="!loading" class="container-ep">
@@ -96,20 +98,6 @@
         </div>
     </div>
 
-    <!-- <div class="footer-ep perteneceAlEquipo" *ngIf="perteneceAlEquipo">
-        <button class="btn btn-menu" 
-            *ngFor="let menu of menus_equipo; let i = index" 
-            [ngClass]="{'selected' : selectedMenu == i, 'centro': i == getCentroIndex()}"
-            (click)="selectMenu('pertenece',i)" >
-
-            <i class="{{menu.icon}}">
-                <span *ngIf="i == 0 && hasNotification" class="dot"></span>
-            </i>
-            {{menu.name}}
-
-        </button>
-    </div> -->
-
     <div class="footer-ep esCapitan" *ngIf="esCapitan">
         <button class="btn btn-menu" 
             *ngFor="let menu of menu_capitan; let i = index" 
@@ -117,8 +105,33 @@
             (click)="selectMenu('esCapitan',i)" >
 
             <i class="{{menu.icon}}">
+                <span *ngIf="i == 1 && hasNotification" class="dot"></span>
+            </i>
+            {{menu.name}}
+
+        </button>
+    </div>
+
+    <div class="footer-ep esCocapitan" *ngIf="esCocapitan">
+        <button class="btn btn-menu" 
+            *ngFor="let menu of menu_cocapitan; let i = index" 
+            [ngClass]="{'selected' : selectedMenuEsCocapitan == i, 'centro': i == getCentroIndex()}"
+            (click)="selectMenu('esCocapitan',i)" >
+
+            <i class="{{menu.icon}}">
                 <span *ngIf="i == 0 && hasNotification" class="dot"></span>
             </i>
+            {{menu.name}}
+
+        </button>
+    </div>
+
+    <div class="footer-ep esJugador" *ngIf="esJugador && perteneceAlEquipo">
+        <button class="btn btn-menu" 
+            *ngFor="let menu of menu_jugador; let i = index" 
+            [ngClass]="{'selected' : selectedMenuEsJugadores == i, 'centro': i == getCentroIndex()}"
+            (click)="selectMenu('esJugador',i)" >
+
             {{menu.name}}
 
         </button>
