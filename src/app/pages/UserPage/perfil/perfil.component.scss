@@ -43,25 +43,6 @@
         }
     }
 
-    .stats-perfil{
-        // border: 1px solid red;
-        display: flex;
-        flex-direction: column;
-        color: whitesmoke;
-        width: 90%;
-        margin: auto;
-
-        .stats{
-            display: grid;
-            grid-template-columns: 1fr .5fr;
-            border-right: 1px solid $rojo;
-            border-bottom: 1px solid $gray;
-            padding-top: 10px;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
-    }
-
     .options-buttons{
         display: flex;
         flex-direction: column;

@@ -20,6 +20,7 @@ import { EquipoComponent } from './pages/UserPage/equipo/equipo.component';
 import { EquipoPerfilComponent } from './pages/UserPage/equipo-perfil/equipo-perfil.component';
 import { MisEquiposComponent } from './pages/UserPage/mis-equipos/mis-equipos.component';
 import { EquipoGestionComponent } from './pages/UserPage/equipo-gestion/equipo-gestion.component';
+import { EstadisticasComponent } from './pages/UserPage/estadisticas/estadisticas.component';
 
 
 export const routes: Routes = [
@@ -44,6 +45,7 @@ export const routes: Routes = [
                     {path: 'torneo', component: TorneoComponent},
                     {path: 'equipo', component: EquipoComponent},
                     {path: 'my-teams', component: MisEquiposComponent},
+                    {path: 'estadisticas', component: EstadisticasComponent},
                     {path: '**', redirectTo: 'partidos'}
                 ]
             },

@@ -1,0 +1,46 @@
+@use '../../../app.component.scss' as *;
+
+.container-estadisticas{
+
+    .header-estadistica{
+        color: whitesmoke;
+        border-bottom: 1px solid whitesmoke;
+        text-align: center;
+        margin: 10px;
+        padding: 5px;
+    }
+
+    .stats-perfil{
+        display: flex;
+        flex-direction: column;
+        color: whitesmoke;
+        width: 90%;
+        margin: 10px auto;
+
+        .stats{
+            display: grid;
+            grid-template-columns: 1fr .5fr;
+            border-right: 1px solid $rojo;
+            border-bottom: 1px solid $gray;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .graphics{
+        background-color: whitesmoke;
+        width: 90%;
+        margin: auto;
+        padding: 10px;
+        border-radius: 10px;
+
+        h3{
+            border-bottom: 1px solid $rojo;
+            width: fit-content;
+            padding-right: 30px;
+        }
+
+    }
+}
+

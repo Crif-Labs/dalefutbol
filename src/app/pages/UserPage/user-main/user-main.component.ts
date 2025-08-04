@@ -118,6 +118,9 @@ export class UserMainComponent implements OnInit{
         break;
       case '/user/main/partidos':
         this.selectedMenu = 2;
+        break;      
+      case '/user/main/estadisticas':
+        this.selectedMenu = 3;
         break;
       case '/user/main/perfil':
         this.selectedMenu = 23;
@@ -143,6 +146,7 @@ export class UserMainComponent implements OnInit{
         this.selectedMenu = menu
         break;
       case 3:
+        this.router.navigate(['/user','main','estadisticas'])
         this.selectedMenu = menu
         break;
       case 4:
