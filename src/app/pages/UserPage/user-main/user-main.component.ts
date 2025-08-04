@@ -151,7 +151,7 @@ export class UserMainComponent implements OnInit{
         this.selectedMenu = menu
         break;
       case 4:
-        
+        this.showSupportModal = true
         this.selectedMenu = menu
         break;
       case 5:   
@@ -188,5 +188,25 @@ export class UserMainComponent implements OnInit{
     return Math.floor(this.menus.length / 2);
   }
 
+
+  showSupportModal: boolean = false
+  closeSupportModal(){
+    this.showSupportModal = false
+  }
+  getDataSupportModal(data: string){
+    const numero = '56933021601'
+    const message = data
+
+    const text = 
+      `*Usuario:* ${this.perfil.nombre} ${this.perfil.apellido} \n` +
+      `*ID:* ${this.perfil.id} \n\n` +
+      `*Mensaje:* ${message}`
+
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
+
+    window.open(url, '_blanck')
+
+    this.closeSupportModal()
+  }
 }
 

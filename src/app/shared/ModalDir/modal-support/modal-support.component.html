@@ -2,22 +2,23 @@
     <div class="custom-modal" @fadeModal>
 
         <div class="header-modal">
-            <h5>{{title}}</h5>
+            <h5>Soporte</h5>
         </div>
         
         <div class="body-modal">
-            <form class="form-suport">
-                <span class="list"><i class="fa-brands fa-whatsapp"></i> +56 9 49386899</span>
+            <form class="form-support" [formGroup]="formSupport">
+                <!-- <span class="list"><i class="fa-brands fa-whatsapp"></i> +56 9 49386899</span> -->
 
-                <textarea name="" id=""></textarea>
+                <span>Ingresa tu duda, sugerencia o problema</span>
+                <textarea name="" id="" formControlName="description"></textarea>
 
-                <button class="btn-primary">Enviar</button>
+                <button class="btn-primary" (click)="sendDescription()">Enviar</button>
             </form>
 
         </div>
 
         <div class="footer-modal">
-            <button class="btn-secondary" (click)="close()" >{{ textButtonClose }}</button>
+            <button class="btn-secondary" (click)="close()" >Cerrar</button>
         </div>
     </div>
 </div>

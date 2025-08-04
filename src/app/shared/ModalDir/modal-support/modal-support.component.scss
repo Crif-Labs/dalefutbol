@@ -46,6 +46,27 @@
         .body-modal{
             margin: auto;
             overflow-y: auto;
+
+            .form-support{
+                display: flex;
+                flex-direction: column;
+
+                textarea{
+                    margin: 10px 0px;
+                    border: 1px solid $lightGray;
+                    border-radius: 5px;
+                    height: 200px;
+
+                    &:focus-visible{
+                        outline: $rojo auto 1px;
+                    }
+                }
+
+                .btn-primary{
+                    border-radius: 5px;
+                    padding: 4px;
+                }
+            }
         }
 
         .footer-modal{
