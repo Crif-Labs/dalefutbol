@@ -8,10 +8,11 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { NotificacionService } from '../../../services/notificacion.service';
 import { ModalNotificationComponent } from "../../../shared/ModalDir/modal-notification/modal-notification.component";
 import { Notificacion } from '../../../interfaces/notificacion';
+import { ModalSupportComponent } from "../../../shared/ModalDir/modal-support/modal-support.component";
 
 @Component({
   selector: 'app-user-main',
-  imports: [CommonModule, RouterOutlet, ModalNotificationComponent],
+  imports: [CommonModule, RouterOutlet, ModalNotificationComponent, ModalSupportComponent],
   templateUrl: './user-main.component.html',
   styleUrl: './user-main.component.scss'
 })
@@ -150,6 +151,7 @@ export class UserMainComponent implements OnInit{
         this.selectedMenu = menu
         break;
       case 4:
+        
         this.selectedMenu = menu
         break;
       case 5:   
