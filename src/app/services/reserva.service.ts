@@ -163,4 +163,33 @@ export class ReservaService {
     }
   }
 
+
+  async getReservaByHorario(idPerfil: string, idHorario: string): Promise<boolean | null>{
+
+    const refPerfilReserva = collection(this.firestore, `perfil/${idPerfil}/reserva`)
+    const q = query(
+      refPerfilReserva,
+      where('horario_id','==',idHorario),
+      where('estado','==','Pendiente')
+    )
+
+    try {
+
+      const snapShot = await getDocs(q)
+
+      snapShot.forEach((doc) => {
+        console.log(doc.data())
+      })
+
+
+      if(snapShot.empty)
+        return false 
+      
+      return true
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  }
+
 }

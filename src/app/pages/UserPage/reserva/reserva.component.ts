@@ -10,11 +10,13 @@ import { LoadingPageComponent } from "../../../shared/loading-page/loading-page.
 import { Horario } from '../../../interfaces/horario';
 import { SessionStorageService } from '../../../services/session-storage.service';
 import { ReservaService } from '../../../services/reserva.service';
+import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/modal-response.component";
+import { AuthService } from '../../../services/auth.service';
 
 
 @Component({
   selector: 'app-reserva',
-  imports: [CommonModule, FormsModule, GoogleMap, GoogleMapsModule, LoadingPageComponent],
+  imports: [CommonModule, FormsModule, GoogleMap, GoogleMapsModule, LoadingPageComponent, ModalResponseComponent],
   templateUrl: './reserva.component.html',
   styleUrl: './reserva.component.scss'
 })
@@ -105,8 +107,10 @@ export class ReservaComponent implements OnInit, AfterViewInit {
 
   constructor(
     private reservaService: ReservaService, 
-    private storage: Storage, private router: Router, private googleMapsServices: GoogleMapsService, 
+    private storage: Storage, private router: Router, 
+    private googleMapsServices: GoogleMapsService, 
     private ssService: SessionStorageService,
+    private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: object
   ){
 
@@ -133,8 +137,9 @@ export class ReservaComponent implements OnInit, AfterViewInit {
       
   }
 
+  showButtonReservaPendiente: boolean = false
 
-  cargarDatos(){
+  async cargarDatos(){
     const ssCancha =  this.ssService.getItem('cancha')    
     const ssHorario =  this.ssService.getItem('horario')    
 
@@ -142,6 +147,33 @@ export class ReservaComponent implements OnInit, AfterViewInit {
       this.dataCancha = JSON.parse(String(ssCancha))
 
       const horario: Horario = JSON.parse(String(ssHorario))
+
+      const uid = this.authService.getUid()
+      let x
+
+      if(uid && horario.id){
+        console.log('ID Perfil: ',uid)
+        console.log('ID Horario: ', horario.id)
+
+        x = await this.reservaService.getReservaByHorario(uid, horario.id)
+
+        console.log(x)
+
+        switch(x){
+          case true:
+            this.showButtonReservaPendiente = true
+            this.showModalResponseReservaPendienteHorario = true
+            break;
+          case null:
+            console.log('❌ Error al buscar el horario en la reserva')
+            break;
+          default:
+            this.showButtonReservaPendiente = false
+            this.showModalResponseReservaPendienteHorario = false
+            break;
+        }
+
+      }
 
     // se asigna los links de las imagenes obtenidas de la cancha
       this.dataCancha.link_image != undefined ? this.images = this.dataCancha.link_image : this.images = []
@@ -238,8 +270,34 @@ export class ReservaComponent implements OnInit, AfterViewInit {
       const url = `https://www.google.com/maps?q=${coordenadas.lat},${coordenadas.lng}`
       window.open(url, '_blank')
     }
+  }
+
+  atencionClienteWSP(estado: 'Pendiente' | 'Cancelado' | 'Confirmado' | undefined){
+    const numero = '56933021601'
+    let message
+
+    const uid = this.authService.getUid()
+
+    switch(estado){
+      case 'Pendiente':
+        message = 'Quiero hacer una consulta de mi reserva!';
+        break;
+      case 'Cancelado':
+        message = 'Mi Reserva fue rechazada, me gustaria saber la informacion'
+        break;
+      case undefined:
+        message = 'Error al ver partido en reserva'
+        break;
+    }
+    
+    const text = 
+      `*Usuario:* ${uid} \n` +
+      `*Mensaje:* ${message}`
 
 
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
+
+    window.open(url, '_blanck')
   }
 
   async getPhoto(){
@@ -276,10 +334,17 @@ export class ReservaComponent implements OnInit, AfterViewInit {
   //     })
   // }
 
+  showModalResponse: boolean = false
+  showModalResponseReservaPendienteHorario: boolean = false
+  closeModalResponse(){
+    this.showModalResponse = false
+    this.showModalResponseReservaPendienteHorario = false
+  }
+
 
   redirecToCheckOut(){
     if(this.colorTeam == ''){
-      console.log("Debes seleccionar un equipo")
+      this.showModalResponse = true
     }else{
       this.router.navigate(['/user','check-out'], {queryParams : {color: this.colorTeam}})
     }

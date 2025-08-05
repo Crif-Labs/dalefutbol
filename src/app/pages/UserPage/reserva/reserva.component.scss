@@ -462,6 +462,12 @@
             box-shadow: 2px 4px 4px black;
             border: none;
             border-radius: 10px;
+
+            &.Pendiente{
+                background-color: #ccb119d7;
+            }
         }
+
+
     }
 }

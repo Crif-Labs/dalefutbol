@@ -122,6 +122,17 @@
     </div>
 
     <div class="reserva-footer">
-        <button class="btn btn-reservar" (click)="redirecToCheckOut()">Unirme al Partido</button>
+        <button *ngIf="!showButtonReservaPendiente" class="btn btn-reservar" (click)="redirecToCheckOut()">Unirme al Partido</button>
+        <button *ngIf="showButtonReservaPendiente" class="btn btn-reservar Pendiente" (click)="atencionClienteWSP('Pendiente')">
+            ⚠️
+            <br>
+            <i class="fa-brands fa-whatsapp"></i>
+            Ir al Whatsapp
+            <i class="fa-solid fa-angle-right"></i>
+        </button>
     </div>
 </div>
+
+
+<app-modal-response *ngIf="showModalResponse" (closed)="closeModalResponse()" [title]="'❌ Error'" [subtitle]="'Selección de equipo'" [message]="'Debes seleccionar un equipo con el que jugar'" [showButtonClose]="false"></app-modal-response>
+<app-modal-response *ngIf="showModalResponseReservaPendienteHorario" (closed)="closeModalResponse()" [title]="'⚠️ Atención!'" [subtitle]="'Sistema de reservas'" [message]="'Ya tienes una reserva en este horario'" [showButtonClose]="true" [textButtonSuccess]="'Ir a mi reserva'" ></app-modal-response>
