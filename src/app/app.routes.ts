@@ -85,7 +85,7 @@ export const routes: Routes = [
     {
         path: 'admin-main',
         component: AdminMainComponent,
-        // ...canActivate( () => redirectUnauthorizedTo(['login']))
+        ...canActivate( () => redirectUnauthorizedTo(['login'])),
         children: [
             {path: 'reservas', component: ReservasComponent},
             {path: '**', redirectTo: 'admin-main'}

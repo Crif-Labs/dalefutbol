@@ -7,7 +7,7 @@ const config: CapacitorConfig = {
   plugins: {
     GoogleAuth: {
       scopes: ['profile', 'email'],
-      clientId: 'TU_WEB_CLIENT_ID_DE_FIREBASE',
+      clientId: '259286345543-kuj233b4dt179jnctpi8s8gsi3kj43l6.apps.googleusercontent.com',
       // offline: true
     }
   }

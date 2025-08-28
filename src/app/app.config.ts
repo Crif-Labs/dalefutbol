@@ -1,4 +1,5 @@
 import { ApplicationConfig,
+   importProvidersFrom,
    provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
@@ -13,12 +14,14 @@ import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { IonicModule } from '@ionic/angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes), 
+    importProvidersFrom(IonicModule.forRoot()),
     provideClientHydration(withEventReplay()),
     provideFirebaseApp(() => initializeApp(
       { 
@@ -39,5 +42,6 @@ export const appConfig: ApplicationConfig = {
     provideDatabase(() => getDatabase()),
     provideMessaging(() => getMessaging()),
     provideStorage(() => getStorage()),
-    provideAnimationsAsync()]
+    provideAnimationsAsync()
+  ]
 };
