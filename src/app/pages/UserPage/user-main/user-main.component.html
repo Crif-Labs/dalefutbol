@@ -39,6 +39,8 @@
     </div>
 </div>
 
-<app-modal-notification *ngIf="showModalNotification" [list]="listNotificacion" [title]="'Notificaciones'" [textButtonClose]="'Cerrar'" (closed)="changeShowModalNotification()"></app-modal-notification>
+<app-modal-notification *ngIf="showModalNotification" [list]="listNotificacion" [title]="'Notificaciones'" [textButtonClose]="'Cerrar'" (closed)="changeShowModalNotification()" (marcarNotificaciones)="updateNotificaciones($event)"></app-modal-notification>
 
 <app-modal-support *ngIf="showSupportModal" (description)="getDataSupportModal($event)" (closed)="closeSupportModal()"></app-modal-support>
+
+<app-modal-loading *ngIf="showModalLoading"></app-modal-loading>

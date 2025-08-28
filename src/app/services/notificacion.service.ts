@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, Firestore, getDocs, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, doc, Firestore, FirestoreError, getDocs, query, Timestamp, updateDoc, where, writeBatch } from '@angular/fire/firestore';
 import { Notificacion } from '../interfaces/notificacion';
-import { from, map, Observable } from 'rxjs';
+import { from, map, Observable, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -47,13 +47,38 @@ export class NotificacionService {
     return updateDoc(ref, {leido: true})
   }
 
-  getNotificacionesNoLeidas(uid: string): Observable<boolean>{
+  marcarTodasComoLeida(uid: string){
     const ref = collection(this.firestore, `perfil/${uid}/${this.collectionName}`)
     const q = query(ref, where('leido','==',false))
 
     return from(getDocs(q)).pipe(
-      map(snapshot => !snapshot.empty)
-    )
+      switchMap(snapshot => {
+        const batch = writeBatch(this.firestore);
+
+        snapshot.forEach( d => {
+          const docRef = doc(this.firestore, `perfil/${uid}/${this.collectionName}/${d.id}`);
+          batch.update(docRef, { leido: true })
+        });
+
+        return from(batch.commit())
+      })
+    );
+  }
+
+  getNotificacionesNoLeidas(uid: string): Observable<any[]> {
+    const ref = collection(this.firestore, `perfil/${uid}/${this.collectionName}`);
+    const q = query(ref, where('leido', '==', false));
+
+    // collectionData escucha en tiempo real
+    return collectionData(q, { idField: 'id' }).pipe(
+      map((docs: any[]) =>
+        docs.map(doc => ({
+          ...doc,
+          fecha: (doc.fecha as Timestamp).toDate()
+        }))
+        .sort((a, b) => b.fecha.getTime() - a.fecha.getTime())
+      )
+    );
   }
 
 }

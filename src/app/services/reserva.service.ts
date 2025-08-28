@@ -71,6 +71,20 @@ export class ReservaService {
     }
   }
 
+  async getReservaByPerfil(perfilID: string, reservaID: string): Promise<Reserva2 | null>{
+    const ref = doc(this.firestore, `perfil/${perfilID}/reserva/${reservaID}`);
+    const snap = await getDoc(ref)
+
+    if(snap.exists()){
+      return {
+        id: snap.id,
+        ...snap.data() as Reserva2
+      }
+    }else{
+      return null
+    }
+  }
+
   async getReservaFromPerfil(perfilID: string): Promise<Reserva2[]>{
     const ref = collection(this.firestore, `perfil/${perfilID}/${this.collectionName}`)
     const q = query(ref, orderBy('fecha_reserva','desc'))

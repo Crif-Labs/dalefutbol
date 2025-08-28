@@ -5,17 +5,20 @@
             <h5>{{title}}</h5>
             <!-- <p class="subtitle">{{subtitle}}</p> -->
 
-            <span class="check-notification">Marcar como leídas <i class="fa-solid fa-check"></i></span>
+            <span *ngIf="list.length != 0"  class="check-notification" (click)="marcarNotificacion(true, undefined)">Marcar como leídas <i class="fa-solid fa-check"></i></span>
         </div>
 
         <div class="body-modal">
-            <div *ngFor="let data of list" class="notification-card" [ngClass]="{'leido': data.leido}" >
+            <div *ngFor="let data of list" class="notification-card" [ngClass]="{'leido': data.leido}" (click)="marcarNotificacion(false, data)">
                 <div class="text">
                     <h4 class="message">{{data.mensaje}}</h4>
                     <span>{{data.fecha | date: 'dd/MM/yyyy'}}</span>
                 </div>
                 <i class="fa-solid fa-chevron-right"></i>
             </div>
+            
+
+            <p *ngIf="list.length == 0" class="message-no-notification">No existen notificaciones pendientes</p>
         </div>
 
 

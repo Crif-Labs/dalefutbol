@@ -9,10 +9,18 @@ import { NotificacionService } from '../../../services/notificacion.service';
 import { ModalNotificationComponent } from "../../../shared/ModalDir/modal-notification/modal-notification.component";
 import { Notificacion } from '../../../interfaces/notificacion';
 import { ModalSupportComponent } from "../../../shared/ModalDir/modal-support/modal-support.component";
+import { ReservaService } from '../../../services/reserva.service';
+import { Horario } from '../../../interfaces/horario';
+import { HorarioService } from '../../../services/horario.service';
+import { CanchaService } from '../../../services/cancha.service';
+import { ReservaTransferServiceService } from '../../../services/reserva-transfer-service.service';
+import { Reserva2 } from '../../../interfaces/reserva-2';
+import { Cancha } from '../../../interfaces/cancha';
+import { ModalLoadingComponent } from "../../../shared/ModalDir/modal-loading/modal-loading.component";
 
 @Component({
   selector: 'app-user-main',
-  imports: [CommonModule, RouterOutlet, ModalNotificationComponent, ModalSupportComponent],
+  imports: [CommonModule, RouterOutlet, ModalNotificationComponent, ModalSupportComponent, ModalLoadingComponent],
   templateUrl: './user-main.component.html',
   styleUrl: './user-main.component.scss'
 })
@@ -33,6 +41,7 @@ export class UserMainComponent implements OnInit{
   listNotificacion: Notificacion[] = []
 
   showModalNotification: boolean = false
+  showModalLoading: boolean = false
 
   correo: string | any = ''
 
@@ -74,8 +83,14 @@ export class UserMainComponent implements OnInit{
     private authService: AuthService, 
     private router:Router, 
     private perfilService: PerfilService, 
-    private lsService: LocalStorageService){
-  }
+    private lsService: LocalStorageService,
+    private reservaService: ReservaService,
+    private horarioService: HorarioService,
+    private canchaService: CanchaService,
+    private reservaTransferService: ReservaTransferServiceService
+  ){}
+
+
   ngOnInit(): void {
     this.getMenu();
 
@@ -95,13 +110,17 @@ export class UserMainComponent implements OnInit{
 
           // Obtener notificaciones
           this.notificacionService.getNotificacionesNoLeidas(this.uid).subscribe({
-            next: (res) => this.hasNotification = res,
-            error: (err) => console.error('Error al obtener notificaciones no leídas:', err)
-          });
+            next: (res) => {              
 
-          this.notificacionService.getNotificacionesByUser(this.uid).subscribe({
-            next: (res) => this.listNotificacion = res,
-            error: (err) => console.error('Error al obtener lista de notificaciones:', err)
+              if(res.length != 0){
+                this.hasNotification = true
+                this.listNotificacion = res
+              }else{
+                this.hasNotification = false
+                this.listNotificacion = []
+              }
+            },
+            error: (err) => console.error('Error al obtener notificaciones no leídas:', err)
           });
         }
       },
@@ -207,6 +226,54 @@ export class UserMainComponent implements OnInit{
     window.open(url, '_blanck')
 
     this.closeSupportModal()
+  }
+
+  async updateNotificaciones(data: boolean | Notificacion){
+    if(data == true){
+      if(this.uid)
+        await this.notificacionService.marcarTodasComoLeida(this.uid).subscribe()
+      
+      this.changeShowModalNotification()
+    }else{
+      this.showModalLoading = true
+      this.changeShowModalNotification() 
+      if(this.uid && data !== false && data.id && data.referenciaId){
+        await this.notificacionService.marcarComoLeida(this.uid, data.id)    
+        if(data.tipo === 'reserva'){
+          const reservaSnap = await this.getReserva(this.uid, data.referenciaId)
+          const horarioSnap = await this.getHorario(reservaSnap.horario_id)
+          const canchaSnap = await this.getCancha(reservaSnap.horario_id, reservaSnap.cancha_id)
+
+          this.redirectToMiPartido({
+            reserva: reservaSnap,
+            horario: horarioSnap,
+            cancha: canchaSnap
+          })
+        }
+      }
+    }
+  }
+
+  async getReserva(uid: string, idReserva: string): Promise<Reserva2>{
+      const x = await this.reservaService.getReservaByPerfil(uid, idReserva)  
+      return x as Reserva2  
+  }
+
+  async getHorario(idHorario: string): Promise<Horario>{
+    const x = await this.horarioService.getHorario(idHorario)
+    return x as Horario
+  }
+
+  async getCancha(idHorario: string, idCancha: string): Promise<Cancha>{
+    const x = await this.canchaService.getCanchaFromHorario(idHorario, idCancha)
+    return x as Cancha
+  }
+
+  async redirectToMiPartido(data: {reserva: Reserva2, horario: Horario, cancha: Cancha}){
+    await this.reservaTransferService.setDatos(data)
+    this.showModalLoading = false
+
+    this.router.navigate(['/user','mi-partido'])
   }
 }
 

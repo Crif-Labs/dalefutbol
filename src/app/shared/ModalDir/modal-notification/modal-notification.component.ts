@@ -29,7 +29,7 @@ import { CommonModule } from '@angular/common';
       ])
     ],
   })
-export class ModalNotificationComponent {
+export class ModalNotificationComponent{
   @Input() title: string = 'Notificaciones'
   @Input() textButtonClose: string = 'Cerrar'
   @Input() uid: string | null = null
@@ -53,14 +53,23 @@ export class ModalNotificationComponent {
   ]
 
   @Output() closed = new EventEmitter<boolean>()
+  @Output() marcarNotificaciones = new EventEmitter<boolean | Notificacion>()
 
   constructor(){
   }
 
 
-
   close(){
     this.closed.emit(false)
+  }
+
+  marcarNotificacion(marcarTodas: boolean, data: Notificacion | undefined){
+    if(marcarTodas){
+      this.marcarNotificaciones.emit(true)
+    }else{
+      if(data)
+        this.marcarNotificaciones.emit(data)
+    }
   }
 
 }
