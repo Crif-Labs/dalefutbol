@@ -134,5 +134,7 @@
 </div>
 
 
-<app-modal-response *ngIf="showModalResponse" (closed)="closeModalResponse()" [title]="'❌ Error'" [subtitle]="'Selección de equipo'" [message]="'Debes seleccionar un equipo con el que jugar'" [showButtonClose]="false"></app-modal-response>
-<app-modal-response *ngIf="showModalResponseReservaPendienteHorario" (closed)="closeModalResponse()" [title]="'⚠️ Atención!'" [subtitle]="'Sistema de reservas'" [message]="'Ya tienes una reserva en este horario'" [showButtonClose]="true" [textButtonSuccess]="'Ir a mi reserva'" ></app-modal-response>
+<app-modal-response *ngIf="showModalResponse" (closed)="closeModalResponse($event, 'equipo')" [title]="'❌ Error'" [subtitle]="'Selección de equipo'" [message]="'Debes seleccionar un equipo con el que jugar'" [showButtonClose]="false"></app-modal-response>
+<app-modal-response *ngIf="showModalResponseReservaPendienteHorario" (closed)="closeModalResponse($event, 'reserva')" [title]="'⚠️ Atención!'" [subtitle]="'Sistema de reservas'" [message]="'Ya tienes una reserva en este horario.'" [showButtonClose]="true" [textButtonSuccess]="'Ir a mi reserva'" ></app-modal-response>
+
+<app-modal-loading *ngIf="showModalLoading"></app-modal-loading>

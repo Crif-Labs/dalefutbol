@@ -13,6 +13,7 @@ import * as bootstrap from 'bootstrap'
 import { LoadingPageComponent } from "../../../shared/loading-page/loading-page.component";
 import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/modal-response.component";
 import { ModalResponse } from '../../../interfaces/modal-response';
+import { WhatsappService } from '../../../services/whatsapp.service';
 
 
 
@@ -26,7 +27,13 @@ export class PerfilComponent implements OnInit{
 
   // @ViewChild('updateProfileModal') updateProfileModal!: ElementRef;
 
-  perfil!: Perfil
+  perfil: Perfil = {
+    nombre: '',
+    apellido: '',
+    celular: '',
+    rol: 'jugador',
+    id_usuario: ''
+  }
 
   comunaList: Comuna[] = []
 
@@ -60,10 +67,19 @@ export class PerfilComponent implements OnInit{
     private router: Router,
     private lsService: LocalStorageService,
     private comunaService: ComunaService,
-    private perfilService: PerfilService
+    private perfilService: PerfilService,
+    private whatsappService: WhatsappService
   ){
+    this.formPerfil = new FormGroup({
+      celular: new FormControl(this.perfil.celular, [Validators.required]),
+      posicion: new FormControl(this.perfil.posicion, [Validators.required]),
+      comuna: new FormControl(this.perfil.comuna, [Validators.required])
+    })
 
 
+    this.formWhatsapp = new FormGroup({
+      message: new FormControl('', [Validators.required])
+    })
   }
 
 
@@ -80,16 +96,7 @@ export class PerfilComponent implements OnInit{
       this.comunaList = res.sort((a,b) => a.nombre.localeCompare(b.nombre))
     })
 
-    this.formPerfil = new FormGroup({
-      celular: new FormControl(this.perfil.celular, [Validators.required]),
-      posicion: new FormControl(this.perfil.posicion, [Validators.required]),
-      comuna: new FormControl(this.perfil.comuna, [Validators.required])
-    })
 
-
-    this.formWhatsapp = new FormGroup({
-      message: new FormControl('', [Validators.required])
-    })
   }
 
   statusCopiedText = ''
@@ -126,17 +133,10 @@ export class PerfilComponent implements OnInit{
   }
 
   enviarWhatsapp(){
-    const numero = '56933021601'
-    const message = this.formWhatsapp.controls['message'].value
     
-    const text = 
-      `*Usuario:* ${this.perfil.nombre} ${this.perfil.apellido} \n` +
-      `*ID:* ${this.perfil.id} \n\n` +
-      `*Mensaje:* ${message}`
+    if(this.perfil.id)
+      this.whatsappService.contactSupport(this.perfil.id, this.perfil.nombre, this.perfil.apellido, this.formWhatsapp.controls['message'].value)
 
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
-
-    window.open(url, '_blanck')
   }
 
   clearStatusCopiedText(){

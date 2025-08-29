@@ -17,6 +17,7 @@ import { ReservaTransferServiceService } from '../../../services/reserva-transfe
 import { Reserva2 } from '../../../interfaces/reserva-2';
 import { Cancha } from '../../../interfaces/cancha';
 import { ModalLoadingComponent } from "../../../shared/ModalDir/modal-loading/modal-loading.component";
+import { WhatsappService } from '../../../services/whatsapp.service';
 
 @Component({
   selector: 'app-user-main',
@@ -87,7 +88,8 @@ export class UserMainComponent implements OnInit{
     private reservaService: ReservaService,
     private horarioService: HorarioService,
     private canchaService: CanchaService,
-    private reservaTransferService: ReservaTransferServiceService
+    private reservaTransferService: ReservaTransferServiceService,
+    private whatsappService: WhatsappService
   ){}
 
 
@@ -212,18 +214,11 @@ export class UserMainComponent implements OnInit{
   closeSupportModal(){
     this.showSupportModal = false
   }
-  getDataSupportModal(data: string){
-    const numero = '56933021601'
-    const message = data
+  getDataSupportModal(message: string){
 
-    const text = 
-      `*Usuario:* ${this.perfil.nombre} ${this.perfil.apellido} \n` +
-      `*ID:* ${this.perfil.id} \n\n` +
-      `*Mensaje:* ${message}`
+    if(this.perfil.id)
+      this.whatsappService.contactSupport(this.perfil.id, this.perfil.nombre, this.perfil.apellido, message)
 
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
-
-    window.open(url, '_blanck')
 
     this.closeSupportModal()
   }

@@ -188,12 +188,7 @@ export class ReservaService {
     )
 
     try {
-
       const snapShot = await getDocs(q)
-
-      snapShot.forEach((doc) => {
-        console.log(doc.data())
-      })
 
 
       if(snapShot.empty)
@@ -204,6 +199,21 @@ export class ReservaService {
       console.log(error)
       return null
     }
+  }
+
+  async getReservaByHorarioAndPerfil(idPerfil: string, idHorario: string): Promise<Reserva2[]>{
+    const ref = collection(this.firestore, `perfil/${idPerfil}/reserva`)
+    const q = query(ref,
+      where('horario_id','==',idHorario)
+      // where('estado','==','Pendiente')
+    )
+
+    const snapshot = await getDocs(q)
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    } as Reserva2))
   }
 
 }

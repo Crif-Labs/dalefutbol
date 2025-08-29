@@ -12,11 +12,17 @@ import { SessionStorageService } from '../../../services/session-storage.service
 import { ReservaService } from '../../../services/reserva.service';
 import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/modal-response.component";
 import { AuthService } from '../../../services/auth.service';
+import { ModalLoadingComponent } from "../../../shared/ModalDir/modal-loading/modal-loading.component";
+import { CanchaService } from '../../../services/cancha.service';
+import { HorarioService } from '../../../services/horario.service';
+import { ReservaTransferServiceService } from '../../../services/reserva-transfer-service.service';
+import { Reserva2 } from '../../../interfaces/reserva-2';
+import { WhatsappService } from '../../../services/whatsapp.service';
 
 
 @Component({
   selector: 'app-reserva',
-  imports: [CommonModule, FormsModule, GoogleMap, GoogleMapsModule, LoadingPageComponent, ModalResponseComponent],
+  imports: [CommonModule, FormsModule, GoogleMap, GoogleMapsModule, LoadingPageComponent, ModalResponseComponent, ModalLoadingComponent],
   templateUrl: './reserva.component.html',
   styleUrl: './reserva.component.scss'
 })
@@ -111,6 +117,10 @@ export class ReservaComponent implements OnInit, AfterViewInit {
     private googleMapsServices: GoogleMapsService, 
     private ssService: SessionStorageService,
     private authService: AuthService,
+    private canchaService: CanchaService,
+    private horarioService: HorarioService,
+    private reservaTransferService: ReservaTransferServiceService,
+    private whatsappService: WhatsappService,
     @Inject(PLATFORM_ID) private platformId: object
   ){
 
@@ -267,32 +277,32 @@ export class ReservaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  atencionClienteWSP(estado: 'Pendiente' | 'Cancelado' | 'Confirmado' | undefined){
-    const numero = '56933021601'
-    let message
+  async atencionClienteWSP(estado: 'Pendiente' | 'Cancelado' | 'Confirmado' | undefined){
 
     const uid = this.authService.getUid()
+    const ssHorario = this.ssService.getItem('horario')
+    const horario: Horario = JSON.parse(String(ssHorario))
 
-    switch(estado){
-      case 'Pendiente':
-        message = 'Quiero hacer una consulta de mi reserva!';
-        break;
-      case 'Cancelado':
-        message = 'Mi Reserva fue rechazada, me gustaria saber la informacion'
-        break;
-      case undefined:
-        message = 'Error al ver partido en reserva'
-        break;
+
+
+    if(uid && horario.id){
+      const snap = await this.reservaService.getReservaByHorarioAndPerfil(uid, horario.id)
+      const reservaSnap: Reserva2 = snap[0]
+
+      if(reservaSnap.id)
+        switch(estado){
+          case 'Pendiente':
+            this.whatsappService.reservaMessage(uid,reservaSnap.id,estado, 'Quiero hacer una consulta de mi reserva!')
+            break;
+          case 'Cancelado':
+            this.whatsappService.reservaMessage(uid,reservaSnap.id,estado, 'Mi Reserva fue rechazada, me gustaria saber la informacion')
+            break;
+          case undefined:
+            this.whatsappService.reservaMessage(uid,reservaSnap.id,estado, 'Error al ver partido en reserva')
+            break;
+        }
     }
     
-    const text = 
-      `*Usuario:* ${uid} \n` +
-      `*Mensaje:* ${message}`
-
-
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
-
-    window.open(url, '_blanck')
   }
 
   async getPhoto(){
@@ -331,9 +341,45 @@ export class ReservaComponent implements OnInit, AfterViewInit {
 
   showModalResponse: boolean = false
   showModalResponseReservaPendienteHorario: boolean = false
-  closeModalResponse(){
-    this.showModalResponse = false
-    this.showModalResponseReservaPendienteHorario = false
+  showModalLoading: boolean = false
+
+  async closeModalResponse(x: boolean,tipo: string){
+
+    if(tipo === 'reserva'){
+      
+      if(x){
+        this.showModalLoading = true
+
+        const uid = this.authService.getUid()
+        const ssHorario = this.ssService.getItem('horario')
+
+        const horario: Horario = JSON.parse(String(ssHorario))
+
+
+        if(uid && horario.id){
+          const snap = await this.reservaService.getReservaByHorarioAndPerfil(uid, horario.id)
+          const reservaSnap: Reserva2 = snap[0]
+
+          const horarioSnap: Horario | null = await this.horarioService.getHorario(reservaSnap.horario_id)
+          const canchaSnap: Cancha | null = await this.canchaService.getCanchaFromHorario(reservaSnap.horario_id, reservaSnap.cancha_id)
+
+          await this.reservaTransferService.setDatos({reserva: reservaSnap, horario: horarioSnap, cancha: canchaSnap})
+          this.showModalLoading = false
+
+          this.router.navigate(['/user','mi-partido'])
+
+          
+        }
+
+      }else{
+        this.showModalResponseReservaPendienteHorario = false
+      }
+
+      this.showModalLoading = false
+
+    }else{
+      this.showModalResponse = false
+    }
   }
 
 
