@@ -9,7 +9,7 @@ export class WhatsappService {
 
   constructor() { }
 
-  reservaMessage(uid: string, idReserva: string, estado:string | undefined, message: string){    
+  consultaMiReserva(uid: string, idReserva: string, estado:string | undefined, message: string){    
     const text = 
       `*MENSAJE GENERADO AUTOMATICAMENTE*\n\n` +
       `*Mensaje:* ${message} \n\n` +
@@ -34,4 +34,20 @@ export class WhatsappService {
 
     window.open(url, '_blanck')
   }
+
+  reservaCheckOut(uid: string, nombre: string, apellido: string, idReserva: string, monto: number){
+    const text =
+      `*MENSAJE GENERADO AUTOMATICAMENTE*\n` +
+    `* *Recuerda compartir tu voucher para confirmar la reserva*\n\n` +
+    `*ID:* ${uid}\n`+
+    `*Usuario:* ${nombre} ${apellido}\n`+
+    `*Reserva:* ${idReserva}\n`+
+    `*Monto:* ${monto}\n`
+
+    const url = `https://wa.me/${this.numeroTelefonico}?text=${encodeURIComponent(text)}`;
+
+    window.open(url, '_blanck')
+  }
+
+
 }

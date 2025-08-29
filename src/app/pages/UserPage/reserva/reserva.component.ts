@@ -292,13 +292,13 @@ export class ReservaComponent implements OnInit, AfterViewInit {
       if(reservaSnap.id)
         switch(estado){
           case 'Pendiente':
-            this.whatsappService.reservaMessage(uid,reservaSnap.id,estado, 'Quiero hacer una consulta de mi reserva!')
+            this.whatsappService.consultaMiReserva(uid,reservaSnap.id,estado, 'Quiero hacer una consulta de mi reserva!')
             break;
           case 'Cancelado':
-            this.whatsappService.reservaMessage(uid,reservaSnap.id,estado, 'Mi Reserva fue rechazada, me gustaria saber la informacion')
+            this.whatsappService.consultaMiReserva(uid,reservaSnap.id,estado, 'Mi Reserva fue rechazada, me gustaria saber la informacion')
             break;
           case undefined:
-            this.whatsappService.reservaMessage(uid,reservaSnap.id,estado, 'Error al ver partido en reserva')
+            this.whatsappService.consultaMiReserva(uid,reservaSnap.id,estado, 'Error al ver partido en reserva')
             break;
         }
     }

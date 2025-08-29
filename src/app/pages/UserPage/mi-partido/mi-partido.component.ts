@@ -3,12 +3,14 @@ import { ReservaTransferServiceService } from '../../../services/reserva-transfe
 import { Reserva2 } from '../../../interfaces/reserva-2';
 import { Horario } from '../../../interfaces/horario';
 import { Cancha } from '../../../interfaces/cancha';
-import { Router } from '@angular/router';
+import { Data, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingPageComponent } from "../../../shared/loading-page/loading-page.component";
 import { ReservaService } from '../../../services/reserva.service';
 import { GoogleMapsService } from '../../../services/google-maps.service';
 import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
+import { WhatsappService } from '../../../services/whatsapp.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-mi-partido',
@@ -62,7 +64,9 @@ export class MiPartidoComponent implements OnInit{
     private router: Router,
     private reservaTransferSrevice: ReservaTransferServiceService,
     private reservaService: ReservaService,
-    private googleMapServices: GoogleMapsService
+    private googleMapServices: GoogleMapsService,
+    private whatsappService: WhatsappService,
+    private authService: AuthService
   ){}
 
   async ngOnInit() {
@@ -114,30 +118,25 @@ export class MiPartidoComponent implements OnInit{
     this.router.navigate(['/user','mis-reservas'])
   }
 
-  atencionClienteWSP(estado: 'Pendiente' | 'Cancelado' | 'Confirmado' | undefined){
-    const numero = '56933021601'
-    let message
+  async atencionClienteWSP(estado: 'Pendiente' | 'Cancelado' | 'Confirmado' | undefined){
 
-    switch(estado){
-      case 'Pendiente':
-        message = 'Mi Reserva aun sale como pendiente, por favor mayor informacion';
-        break;
-      case 'Cancelado':
-        message = 'Mi Reserva fue rechazada, me gustaria saber la informacion'
-        break;
-      case undefined:
-        message = 'Error al ver partido en reserva'
-        break;
-    }
+    const uid = await this.authService.getUid()
+    const idReserva = this.data?.reserva?.id
+
+    if(uid && idReserva)
+
+      switch(estado){
+        case 'Pendiente':
+          this.whatsappService.consultaMiReserva(uid, idReserva, estado, 'Mi Reserva aun sale como pendiente, por favor mayor informacion')
+          break;
+        case 'Cancelado': 
+          this.whatsappService.consultaMiReserva(uid, idReserva, estado,'Mi Reserva fue rechazada, me gustaria saber la informacion')
+          break;
+        case undefined: 
+          this.whatsappService.consultaMiReserva(uid, idReserva, estado, 'Error al ver partido en reserva')
+          break;
+      }
     
-    const text = 
-      `*Reserva:* ${this.data?.reserva?.id} \n` +
-      `*ID:* ${this.data?.reserva?.responsable.id} \n\n` +
-      `*Mensaje:* ${message}`
-
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
-
-    window.open(url, '_blanck')
   }
 
 }

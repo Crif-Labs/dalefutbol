@@ -15,6 +15,7 @@ import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/
 import { ModalResponse } from '../../../interfaces/modal-response';
 import { ModalLoadingComponent } from "../../../shared/ModalDir/modal-loading/modal-loading.component";
 import { ModalConditionTermsComponent } from "../../../shared/ModalDir/modal-condition-terms/modal-condition-terms.component";
+import { WhatsappService } from '../../../services/whatsapp.service';
 
 @Component({
   selector: 'app-check-out',
@@ -100,7 +101,9 @@ export class CheckOutComponent {
     private perfilService: PerfilService, 
     private reservaService: ReservaService, 
     private localStorageService: LocalStorageService, 
-    private sessionStorageService: SessionStorageService){
+    private sessionStorageService: SessionStorageService,
+    private whatsappService: WhatsappService
+  ){
     if(localStorageService.getItem('perfil') != null || sessionStorageService.getItem('cancha') != null || sessionStorageService.getItem('horario')){
 
       dataRoute.queryParams.subscribe( params => {
@@ -159,19 +162,9 @@ export class CheckOutComponent {
           console.log("❌ No se pudo realizar la reserva.");
           return;
         }
-  
-        const text =
-        `*ID:* ${this.perfil.id}\n`+
-        `*Usuario:* ${this.perfil.nombre} ${this.perfil.apellido}\n`+
-        `*Reserva:* ${newReserva.id}\n`+
-        `*Monto:* ${this.cancha.precio}\n\n`+
-        `* *Recuerda subir tu voucher para confirmar la reserva*`
-  
-        const url = `https://wa.me/${this.whatsapp}?text=${encodeURIComponent(text)}`;
-  
-        // console.log("✅ Reserva completada con éxito:", newReserva);
-  
-        window.open(url, '_blanck')
+        
+        if(this.perfil.id && newReserva.id)
+          this.whatsappService.reservaCheckOut(this.perfil.id, this.perfil.nombre, this.perfil.apellido, newReserva.id, this.cancha.precio)
   
         this.loading = false
   
