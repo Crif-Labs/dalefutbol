@@ -152,9 +152,6 @@ export class ReservaComponent implements OnInit, AfterViewInit {
       let x
 
       if(uid && horario.id){
-        console.log('ID Perfil: ',uid)
-        console.log('ID Horario: ', horario.id)
-
         x = await this.reservaService.getReservaByHorario(uid, horario.id)
 
         console.log(x)
