@@ -154,8 +154,6 @@ export class ReservaComponent implements OnInit, AfterViewInit {
       if(uid && horario.id){
         x = await this.reservaService.getReservaByHorario(uid, horario.id)
 
-        console.log(x)
-
         switch(x){
           case true:
             this.showButtonReservaPendiente = true
