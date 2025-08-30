@@ -14,6 +14,7 @@ import { LoadingPageComponent } from "../../../shared/loading-page/loading-page.
 import { ModalResponseComponent } from "../../../shared/ModalDir/modal-response/modal-response.component";
 import { ModalResponse } from '../../../interfaces/modal-response';
 import { WhatsappService } from '../../../services/whatsapp.service';
+import { BancoService } from '../../../services/banco.service';
 
 
 
@@ -68,7 +69,8 @@ export class PerfilComponent implements OnInit{
     private lsService: LocalStorageService,
     private comunaService: ComunaService,
     private perfilService: PerfilService,
-    private whatsappService: WhatsappService
+    private whatsappService: WhatsappService,
+    private bancoService: BancoService
   ){
     this.formPerfil = new FormGroup({
       celular: new FormControl(this.perfil.celular, [Validators.required]),
@@ -101,6 +103,7 @@ export class PerfilComponent implements OnInit{
 
   statusCopiedText = ''
   copiarText(text: string){
+
     if(isPlatformBrowser(this.platformID)){
       navigator.clipboard.writeText(text).then( async () => {
         this.statusCopiedText = await `Dato Copiado!`
@@ -108,6 +111,14 @@ export class PerfilComponent implements OnInit{
         console.log('text no cpiado: ',err)
       })
     }
+  }
+
+  get datos(){
+    return this.bancoService.getDatos()
+  }
+
+  copiarDatosBancarios(){
+    this.bancoService.copiarDatos()
   }
 
 

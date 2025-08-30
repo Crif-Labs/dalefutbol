@@ -189,31 +189,33 @@
         <div class="modal-body">
             <div class="datos-transferencia">
                 <div class="dato">
-                  <strong>RUT:</strong> {{ cuentaBancaria.rut }}
-                  <button (click)="copiarText(cuentaBancaria.rut)"><i class="fa-solid fa-copy"></i></button>
+                  <strong>RUT:</strong> {{ datos.rut }}
+                  <button (click)="copiarText(datos.rut)"><i class="fa-solid fa-copy"></i></button>
                 </div>
                 <div class="dato">
-                  <strong>Nombre:</strong> {{ cuentaBancaria.nombre }}
-                  <button (click)="copiarText(cuentaBancaria.nombre)"><i class="fa-solid fa-copy"></i></button>
+                  <strong>Nombre:</strong> {{ datos.nombre }}
+                  <button (click)="copiarText(datos.nombre)"><i class="fa-solid fa-copy"></i></button>
                 </div>
                 <div class="dato">
-                  <strong>Banco:</strong> {{ cuentaBancaria.banco }}
-                  <button (click)="copiarText(cuentaBancaria.banco)"><i class="fa-solid fa-copy"></i></button>
+                  <strong>Banco:</strong> {{ datos.banco }}
+                  <button (click)="copiarText(datos.banco)"><i class="fa-solid fa-copy"></i></button>
                 </div>
                 <div class="dato">
-                  <strong>Tipo de cuenta:</strong> {{ cuentaBancaria.tipoCuenta }}
-                  <button (click)="copiarText(cuentaBancaria.tipoCuenta)"><i class="fa-solid fa-copy"></i></button>
+                  <strong>Tipo de cuenta:</strong> {{ datos.tipo }}
+                  <button (click)="copiarText(datos.tipo)"><i class="fa-solid fa-copy"></i></button>
                 </div>
                 <div class="dato">
-                  <strong>N° Cuenta:</strong> {{ cuentaBancaria.numeroCuenta }}
-                  <button (click)="copiarText(cuentaBancaria.numeroCuenta)" ><i class="fa-solid fa-copy"></i></button>
+                  <strong>N° Cuenta:</strong> {{ datos.cuenta }}
+                  <button (click)="copiarText(datos.cuenta)" ><i class="fa-solid fa-copy"></i></button>
                 </div>
                 <div class="dato">
-                  <strong>Correo:</strong> {{ cuentaBancaria.correo }}
-                  <button (click)="copiarText(cuentaBancaria.correo)"><i class="fa-solid fa-copy"></i></button>
+                  <strong>Correo:</strong> {{ datos.correo }}
+                  <button (click)="copiarText(datos.correo)"><i class="fa-solid fa-copy"></i></button>
                 </div>
 
                 <span class="confirm-copied " style="color: black;">{{statusCopiedText}}</span>
+
+                <button class="btn btn-primary mt-3" (click)="copiarDatosBancarios()"><i class="fa-solid fa-copy"></i>&nbsp;Copiar Datos</button>
             </div>
 
             
