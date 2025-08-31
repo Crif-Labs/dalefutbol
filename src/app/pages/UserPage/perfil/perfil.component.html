@@ -215,7 +215,7 @@
 
                 <span class="confirm-copied " style="color: black;">{{statusCopiedText}}</span>
 
-                <button class="btn btn-primary mt-3" (click)="copiarDatosBancarios()"><i class="fa-solid fa-copy"></i>&nbsp;Copiar Datos</button>
+                <button class="btn btn-primary mt-3" (click)="copiarDatosBancarios()" data-bs-dismiss="modal" ><i class="fa-solid fa-copy"></i>&nbsp;Copiar Datos</button>
             </div>
 
             
@@ -265,3 +265,12 @@
 
   (closed)="onLogout($event)"
 ></app-modal-response>
+
+<app-modal-response *ngIf="showModalDatosBancarios"
+  [title]="'Datos Bancarios'" 
+  [subtitle]="subtitleModalDatosBancario"
+  [message]="messageModalDatosBancario"
+  [showButtonClose]="false"
+
+  (closed)="closeModalDatosBancarios()"
+  ></app-modal-response>

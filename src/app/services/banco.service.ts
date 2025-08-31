@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { booleanAttribute, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -21,26 +21,24 @@ export class BancoService {
     return this.datos;
   }
 
-  copiarDatos(){
+  async copiarDatos(): Promise<boolean>{
+    let datoCopiado: boolean = false
+
     const texto = 
-      `Banco: ${this.datos.banco}
-      Tipo de cuenta: ${this.datos.tipo}
-      Numero de cuenta: ${this.datos.cuenta}
-      RUT: ${this.datos.rut}
-      Nombre: ${this.datos.nombre}
-      Correo: ${this.datos.correo}`
+      `Banco: ${this.datos.banco}\nTipo de cuenta: ${this.datos.tipo}\nNumero de cuenta: ${this.datos.cuenta}\nRUT: ${this.datos.rut}\nNombre: ${this.datos.nombre}\nCorreo: ${this.datos.correo}`
 
       if(isPlatformBrowser(this.platformID)){
-        navigator.clipboard.writeText(texto).then(async () => {
-          alert('Texto Copiado')
+        await navigator.clipboard.writeText(texto).then(async () => {
+          datoCopiado = true
         }).catch(err => {
-          console.log('Texto no copiado: ',err)
-          this.fallbackCopiar(texto)
+          datoCopiado = this.fallbackCopiar(texto)
         })
       }
+
+      return datoCopiado
   }
 
-  private fallbackCopiar(texto: string): void {
+  private fallbackCopiar(texto: string):boolean {
     const textarea = document.createElement('textarea');
     textarea.value = texto;
     textarea.style.position = 'fixed'; // evitar que haga scroll
@@ -51,11 +49,13 @@ export class BancoService {
 
     try {
       document.execCommand('copy');
-      alert('Texto copiado ✅');
+      document.body.removeChild(textarea);
+      return true
     } catch (err) {
-      console.error('Error al copiar: ', err);
+      document.body.removeChild(textarea);
+      return false
     }
 
-    document.body.removeChild(textarea);
+    
   }
 }

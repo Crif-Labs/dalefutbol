@@ -117,8 +117,24 @@ export class PerfilComponent implements OnInit{
     return this.bancoService.getDatos()
   }
 
-  copiarDatosBancarios(){
-    this.bancoService.copiarDatos()
+  messageModalDatosBancario: string = 'Pide ayuda en Atención al Cliente.'
+  subtitleModalDatosBancario: string = '❌ Los datos no se han copiado.'
+  showModalDatosBancarios: boolean = false
+  async copiarDatosBancarios(){
+
+    if(await this.bancoService.copiarDatos()){
+      this.subtitleModalDatosBancario = ''
+      this.messageModalDatosBancario = '✅ Los datos se han copiado de forma inteligente.'
+      this.showModalDatosBancarios = true
+    }else{
+      this.subtitleModalDatosBancario = '❌ Los datos no se han copiado.'
+      this.messageModalDatosBancario = 'Pide ayuda en Atención al Cliente.'
+      this.showModalDatosBancarios = true
+    }
+  }
+
+  closeModalDatosBancarios(){
+    this.showModalDatosBancarios = false
   }
 
 
