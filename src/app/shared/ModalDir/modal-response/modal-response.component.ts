@@ -33,6 +33,7 @@ export class ModalResponseComponent {
   @Input() title: string = 'Titulo'
   @Input() subtitle: string = 'Subtitulo'
   @Input() message: string = 'Message...'
+  @Input() message2: string = ''
 
   @Input() textButtonSuccess: string = 'Aceptar'
   @Input() textButtonClose: string = 'Cerrar'
