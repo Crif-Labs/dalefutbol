@@ -1,1 +1,3 @@
 <router-outlet />
+
+<app-modal-response *ngIf="showModalResponseNotification" [title]="titleNoti" [subtitle]="''" [message]="bodyNoti" [showButtonClose]="false" (closed)="closeModalResponseNotification()"></app-modal-response>

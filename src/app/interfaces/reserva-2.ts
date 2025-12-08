@@ -4,7 +4,7 @@ import { Perfil } from "./perfil";
 
 export interface Reserva2 {
     id?: string;
-    fecha_reserva: Timestamp;
+    fecha_reserva: Timestamp | any;
     hora_reserva: string;
     responsable: Perfil | Equipo, //| 'admin',
     estado: 'Pendiente' | 'Confirmado' | 'Cancelado';

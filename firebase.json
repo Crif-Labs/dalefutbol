@@ -2,7 +2,7 @@
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
-  },  
+  },
   "hosting": {
     "public": "dist/dalefutbol/browser",
     "ignore": [
@@ -19,5 +19,58 @@
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "emulators": {
+        "ui": {
+          "enabled": true,
+          "port": 4000
+        },
+        "firestore": {
+          "port": 8080
+        },
+        "functions": {
+          "port": 5001
+        }
+      },
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ],
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "database": {
+      "port": 9000
+    },
+    "storage": {
+      "port": 9199
+    },
+    "functions": {
+      "port": 5001
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }
